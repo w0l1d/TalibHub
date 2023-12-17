@@ -1,0 +1,21 @@
+server:
+  port: 8081
+spring:
+  docker:
+    compose:
+      file: ./backend/compose-test.yaml
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9090/realms/talibhub-realm/protocol/openid-connect/certs
+          issuer-uri: http://localhost:9090/realms/talibhub-realm
+  jpa:
+    show-sql: true
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/talibhubDB
+    username: ilisi2023-2024
+    password: secret
