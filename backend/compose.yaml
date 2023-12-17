@@ -1,9 +1,37 @@
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: 'postgres'
     environment:
-      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_DB=talibhubDB'
       - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_USER=ilisi2023-2024'
     ports:
       - '5432'
+    networks:
+      - 'postgres-network'
+    volumes:
+      - 'postgres-data:/var/lib/postgresql'
+
+  keycloak:
+    image: 'bitnami/keycloak:latest'
+    container_name: 'keycloak'
+    ports:
+      - '9090:8080'
+    networks:
+      - 'postgres-network'
+    environment:
+      - 'KEYCLOAK_ADMIN_USER=admin'
+      - 'KEYCLOAK_ADMIN_PASSWORD=admin'
+      - 'KEYCLOAK_DATABASE_HOST=postgres'
+      - 'KEYCLOAK_DATABASE_PORT=5432'
+      - 'KEYCLOAK_DATABASE_NAME=talibhubDB'
+      - 'KEYCLOAK_DATABASE_USER=ilisi2023-2024'
+      - 'KEYCLOAK_DATABASE_PASSWORD=secret'
+
+networks:
+  postgres-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
