@@ -14,9 +14,9 @@
 ######### Backend #########
 backend/HELP.md
 backend/target/
-backend/!.mvn/wrapper/maven-wrapper.jar
-backend/!**/src/main/**/target/
-backend/!**/src/test/**/target/
+!backend/.mvn/wrapper/maven-wrapper.jar
+!backend/**/src/main/**/target/
+!backend/**/src/test/**/target/
 
 ### STS ###
 backend/.apt_generated
@@ -73,10 +73,10 @@ frontend/*.sublime-workspace
 
 # Visual Studio Code
 frontend/.vscode/*
-frontend/!.vscode/settings.json
-frontend/!.vscode/tasks.json
-frontend/!.vscode/launch.json
-frontend/!.vscode/extensions.json
+!frontend/.vscode/settings.json
+!frontend/.vscode/tasks.json
+!frontend/.vscode/launch.json
+!frontend/.vscode/extensions.json
 frontend/.history/*
 
 # Miscellaneous
