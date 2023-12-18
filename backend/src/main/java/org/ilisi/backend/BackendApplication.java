@@ -1,8 +1,12 @@
 package org.ilisi.backend;
 
 
+import org.ilisi.backend.entity.UserRole;
+import org.ilisi.backend.repository.StudentRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -14,9 +18,8 @@ public class BackendApplication {
     /*@Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository){
         return args -> {
-            studentRepository.save(Student.builder().firstName("John").lastName("Doe").build());
-            studentRepository.save(Student.builder().firstName("Jane").lastName("Doe").build());
-            studentRepository.save(Student.builder().firstName("Jack").lastName("Doe").build());
+            //create two roles USER,ADMIN
+            UserRole userRole = new UserRole("1","USER");
         };
     }*/
 

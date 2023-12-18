@@ -29,6 +29,17 @@ services:
       - 'KEYCLOAK_DATABASE_USER=ilisi2023-2024'
       - 'KEYCLOAK_DATABASE_PASSWORD=secret'
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "15050:80"
+    networks:
+      - postgres-network
+
 networks:
   postgres-network:
     driver: bridge
