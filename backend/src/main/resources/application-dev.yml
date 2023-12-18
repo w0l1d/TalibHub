@@ -1,1 +1,6 @@
-
+jwt:
+  key: "YourSecretKeyHereYourSecretKeyHereYourSecretKeyHereYourSecretKeyHere"
+  access-token-expiration-in-minutes: 10
+  refresh-token-expiration-in-days: 30
+server:
+  port: 8081
