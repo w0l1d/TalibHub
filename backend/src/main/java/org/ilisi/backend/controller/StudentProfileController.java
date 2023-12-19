@@ -38,7 +38,11 @@ public class StudentProfileController {
             if(education.getInstitut() != null) {
                 Institut institut = institutRepository.
                         findByName(education.getInstitut().getName())
-                        .orElse(institutRepository.save(education.getInstitut()));
+                        .orElse(null);
+
+                if (institut == null) {
+                    institut = institutRepository.save(education.getInstitut());
+                }
 
                 education.setInstitut(institut);
             }
@@ -52,15 +56,19 @@ public class StudentProfileController {
     @PostMapping("/addExperiences")
     public Profile addExperiences(@RequestBody ProfileDto profileDto) {
         Profile profile = profileRepository.findById(profileDto.getId()).get();
-        /*profileDto.getExperiences().forEach(experience -> {
+        profileDto.getExperiences().forEach(experience -> {
             if(experience.getInstitut() != null) {
                 Institut institut = institutRepository.
                         findByName(experience.getInstitut().getName())
-                        .orElse(institutRepository.save(experience.getInstitut()));
+                        .orElse(null);
+
+                if (institut == null) {
+                    institut = institutRepository.save(experience.getInstitut());
+                }
 
                 experience.setInstitut(institut);
             }
-        });*/
+        });
 
         profile.setExperiences(profileDto.getExperiences());
         experienceRepository.saveAll(profileDto.getExperiences());
