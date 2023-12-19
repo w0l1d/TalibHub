@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,12 +42,18 @@ public class AuthenticationControllerUnitTest {
         authRequestDTO.setPassword("test123456");
 
         when(authenticationService.authenticate(any(AuthRequestDTO.class)))
-                .thenReturn(Collections.singletonMap("token", "dummy-token"));
+                .thenReturn(Map.of(
+                        "access-token", "dummy-access-token",
+                        "refresh-token", "dummy-refresh-token"
+                ));
 
         Map<String, Object> tokens = authenticationController.login(authRequestDTO);
 
-        assertTrue(tokens.containsKey("token"));
-        assertEquals("dummy-token", tokens.get("token"));
+        assertTrue(tokens.containsKey("access-token"));
+        assertEquals("dummy-access-token", tokens.get("access-token"));
+        assertTrue(tokens.containsKey("refresh-token"));
+        assertEquals("dummy-refresh-token", tokens.get("refresh-token"));
+
     }
 
     @Test

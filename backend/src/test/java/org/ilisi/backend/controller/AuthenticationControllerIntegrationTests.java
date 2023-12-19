@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Testcontainers
 @Slf4j
@@ -89,7 +89,7 @@ public class AuthenticationControllerIntegrationTests {
     public void loginReturns400WhenAuthenticationFails() throws Exception {
         // given
         User user = getEnabledInvalidTestManager();
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
 
         // when
