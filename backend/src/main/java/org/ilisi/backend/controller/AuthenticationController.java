@@ -1,5 +1,6 @@
 package org.ilisi.backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.AuthRequestDTO;
@@ -22,9 +23,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody AuthRequestDTO appUser) {
+    public Map<String, Object> login(@RequestBody @Valid AuthRequestDTO appUser) {
         log.info("Received login request for username: {}", appUser.getUsername());
-
         try {
             // Authentication logic
             Map<String, Object> tokens = authenticationService.authenticate(appUser);
