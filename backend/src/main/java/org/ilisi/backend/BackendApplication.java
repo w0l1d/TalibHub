@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableConfigurationProperties(org.ilisi.backend.security.JwtProperties.class)
@@ -18,7 +18,8 @@ public class BackendApplication {
     }
 
     @Bean
-    public CommandLineRunner commadnLineRunner(UserRepository userRepository) {
+    public CommandLineRunner commadnLineRunner(UserRepository userRepository,
+                                               PasswordEncoder passwordEncoder) {
         // create user
         return args -> {
             Student student = new Student();
@@ -32,7 +33,7 @@ public class BackendApplication {
             student.setEnrollmentYear(java.time.Year.now());
             student.setEnabled(true);
             // encode password with BCryptPasswordEncoder
-            student.setPassword(new BCryptPasswordEncoder().encode("123456"));
+            student.setPassword(passwordEncoder.encode("12345678"));
             userRepository.save(student);
         };
     }
