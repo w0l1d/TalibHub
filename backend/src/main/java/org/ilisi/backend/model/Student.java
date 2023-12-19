@@ -45,4 +45,5 @@ public class Student extends User {
     public boolean hasGraduated() {
         return graduationYear != null && graduationYear.isBefore(Year.now());
     }
+
 }

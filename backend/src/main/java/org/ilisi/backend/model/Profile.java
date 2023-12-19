@@ -1,5 +1,6 @@
 package org.ilisi.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Profile {
     @OneToMany
     private List<Experience> experiences;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "student_id")
     private Student student;
 }

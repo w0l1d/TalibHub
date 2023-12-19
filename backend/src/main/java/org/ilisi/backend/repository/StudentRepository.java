@@ -10,7 +10,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface StudentRepository extends JpaRepository<Student, String> {
-
-
-
 }
