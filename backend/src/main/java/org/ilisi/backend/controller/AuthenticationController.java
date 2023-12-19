@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.AuthRequestDTO;
 import org.ilisi.backend.services.AuthenticationService;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -32,6 +29,20 @@ public class AuthenticationController {
             return tokens;
         } catch (AuthenticationException e) {
             log.error("Authentication failed for user: {}", appUser.getUsername(), e);
+            throw e; // Rethrow the exception for handling in a global exception handler, if configured.
+        }
+    }
+
+    @PostMapping("/refreshToken")
+    public Map<String, Object> generateRefreshToken(@RequestParam("refreshToken") String refreshToken) {
+        log.info("Received refresh token request for token: {}", refreshToken);
+        try {
+            // Authentication logic
+            Map<String, Object> tokens = authenticationService.generateNewAccessToken(refreshToken);
+            log.info("Refresh token successful for token: {}", refreshToken);
+            return tokens;
+        } catch (AuthenticationException e) {
+            log.error("Refresh token failed for token: {}", refreshToken, e);
             throw e; // Rethrow the exception for handling in a global exception handler, if configured.
         }
     }

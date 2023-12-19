@@ -32,6 +32,10 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public Date extractIssuedAt(String token) {
+        return extractClaim(token, Claims::getIssuedAt);
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -50,13 +54,27 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateAccessToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
+        if (extractAllClaims(token).get("type", String.class).equals("accessToken")) return false;
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    public Boolean validateRefreshToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        if (!extractAllClaims(token).get("type", String.class).equals("refreshToken")) return false;
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && isRefreshToken(token));
+    }
+
+    public Boolean isRefreshToken(String token) {
+        return extractClaim(token, claims -> claims.get("type", String.class)).equals("refreshToken");
+    }
 
     public String generateAccessToken(User user) {
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (user.getAuthorities() == null) throw new IllegalArgumentException("User authorities cannot be null"
+        );
+        if (user.getId() == null) throw new IllegalArgumentException("User id cannot be null");
         Map<String, Object> claims = Map.of(
                 "roles", user.getAuthorities(),
                 "userId", user.getId(),
