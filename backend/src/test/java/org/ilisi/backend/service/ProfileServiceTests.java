@@ -3,6 +3,7 @@ package org.ilisi.backend.service;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.ProfileDto;
 import org.ilisi.backend.model.Education;
+import org.ilisi.backend.model.Experience;
 import org.ilisi.backend.model.Institut;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.repository.EducationRepository;
@@ -57,22 +58,47 @@ public class ProfileServiceTests {
 
         //arrange
         Profile profile = Profile.builder().id(UUID.randomUUID().toString()).build();
-        List<Education> educations = List.of(
-                Education.builder().institut(Institut.builder().name("institut1").build()).build(),
-                Education.builder().institut(Institut.builder().name("institut2").build()).build()
-                );
-        Mockito.when(profileRepository.findById(profile.getId())).thenReturn(Optional.of(profile));
-        Mockito.when(institutRepository.findByName("institut1")).thenReturn(null);
-        Mockito.when(institutRepository.findByName("institut2")).thenReturn(Optional.of(Institut.builder().name("institut2").build()));
-        Mockito.when(institutRepository.save(Institut.builder().name("institut1").build())).thenReturn(Institut.builder().name("institut1").build());
+        Education education1 = Education.builder().institut(Institut.builder().id(null).name("institut1").build()).build();
+        Education education2 = Education.builder().institut(Institut.builder().id(UUID.randomUUID().toString()).build()).build();
+        List<Education> educations = List.of(education1, education2);
+
 
         //act
+        Mockito.when(profileRepository.findById(profile.getId())).thenReturn(Optional.of(profile));
+        Mockito.when(institutRepository.findById(education2.getInstitut().getId())).thenReturn(Optional.of(education2.getInstitut()));
+        Mockito.when(institutRepository.save(education1.getInstitut())).thenReturn(education1.getInstitut());
+        Mockito.when(profileRepository.save(profile)).thenReturn(profile);
+
         Profile result = profileService.addEducations(ProfileDto.builder().id(profile.getId()).educations(educations).build());
+
         //assert
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.getEducations().isEmpty());
         Assertions.assertEquals(2, result.getEducations().size());
 
+    }
+
+    @Test
+    public void addExperiencesReturnsProfile() {
+
+        //arrange
+        Profile profile = Profile.builder().id(UUID.randomUUID().toString()).build();
+        Experience experience1 = Experience.builder().institut(Institut.builder().id(null).name("institut1").build()).build();
+        Experience experience2 = Experience.builder().institut(Institut.builder().id(UUID.randomUUID().toString()).build()).build();
+        List<Experience> experiences = List.of(experience1, experience2);
+
+        //act
+        Mockito.when(profileRepository.findById(profile.getId())).thenReturn(Optional.of(profile));
+        Mockito.when(institutRepository.findById(experience2.getInstitut().getId())).thenReturn(Optional.of(experience2.getInstitut()));
+        Mockito.when(institutRepository.save(experience1.getInstitut())).thenReturn(experience1.getInstitut());
+        Mockito.when(profileRepository.save(profile)).thenReturn(profile);
+
+        Profile result = profileService.addExperiences(ProfileDto.builder().id(profile.getId()).experiences(experiences).build());
+
+        //assert
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.getExperiences().isEmpty());
+        Assertions.assertEquals(2, result.getExperiences().size());
     }
 
 }
