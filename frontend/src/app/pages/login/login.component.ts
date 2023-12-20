@@ -1,8 +1,9 @@
-import {Component} from "@angular/core";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {environment as env} from "../../../environments/environment.development";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {NgIf} from "@angular/common";
+import { Component } from "@angular/core";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { environment as env } from "../../../environments/environment.development";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { NgIf } from "@angular/common";
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -37,8 +38,8 @@ export class LoginComponent {
       this.http.post(`${env.api}/auth/login`, this.loginForm.getRawValue())
       .subscribe((res: any) => {
         console.log(res);
-        localStorage.setItem('access_token', res.access_token);
-        localStorage.setItem('refresh_token', res.refresh_token);
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
 
         // TODO: redirect to home page
       })
