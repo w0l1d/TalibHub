@@ -80,8 +80,8 @@ public class AuthenticationControllerIntegrationTests {
             log.info("Parsed response content: {}", tokens);
             log.info("********************************");
             // assert that it returned Access and Refresh tokens
-            assertTrue(tokens.containsKey("access-token"));
-            assertTrue(tokens.containsKey("refresh-token"));
+            assertTrue(tokens.containsKey("accessToken"));
+            assertTrue(tokens.containsKey("refreshToken"));
         });
     }
 
