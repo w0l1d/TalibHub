@@ -2,17 +2,17 @@ package org.ilisi.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ilisi.backend.dto.ProfileDto;
-import org.ilisi.backend.model.Institut;
+import org.ilisi.backend.dto.EducationDto;
+import org.ilisi.backend.dto.ExperienceDto;
+import org.ilisi.backend.mapper.EducationMapper;
+import org.ilisi.backend.mapper.ExperienceMapper;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.repository.EducationRepository;
 import org.ilisi.backend.repository.ExperienceRepository;
 import org.ilisi.backend.repository.InstitutRepository;
 import org.ilisi.backend.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,37 +27,37 @@ public class ProfileService {
     private EducationRepository educationRepository;
     private InstitutRepository institutRepository;
     private ExperienceRepository experienceRepository;
+    private EducationMapper educationMapper;
+    private ExperienceMapper experienceMapper;
 
     public List<Profile> getAll() {
         return profileRepository.findAll();
     }
 
 
-    public Profile addEducations(ProfileDto profileDto) {
-        Profile profile = profileRepository.findById(profileDto.getId()).get();
-        profileDto.getEducations().forEach(education -> {
-            if(education.getInstitut().getId() != null)
-                education.setInstitut(institutRepository.findById(education.getInstitut().getId()).get());
-            else
-                education.setInstitut(institutRepository.save(education.getInstitut()));
-        });
+    public Profile addEducation(Profile profile, EducationDto educationDto) {
+        if(educationDto.getInstitut().getId() != null)
+            educationDto.setInstitut(institutRepository.findById(educationDto.getInstitut().getId()).get());
+        else
+            educationDto.setInstitut(institutRepository.save(educationDto.getInstitut()));
 
-        profile.setEducations(profileDto.getEducations());
-        educationRepository.saveAll(profileDto.getEducations());
+        profile.getEducations().add(educationMapper.educationDtoToEducation(educationDto));
         return profileRepository.save(profile);
     }
 
-    public Profile addExperiences(ProfileDto profileDto) {
-        Profile profile = profileRepository.findById(profileDto.getId()).get();
-        profileDto.getExperiences().forEach(experience -> {
-            if(experience.getInstitut().getId() != null)
-                experience.setInstitut(institutRepository.findById(experience.getInstitut().getId()).get());
-            else
-                experience.setInstitut(institutRepository.save(experience.getInstitut()));
-        });
+    public Profile addExperience(Profile profile, ExperienceDto experienceDto) {
+        if(experienceDto.getInstitut().getId() != null)
+            experienceDto.setInstitut(institutRepository.findById(experienceDto.getInstitut().getId()).get());
+        else
+            experienceDto.setInstitut(institutRepository.save(experienceDto.getInstitut()));
 
-        profile.setExperiences(profileDto.getExperiences());
-        experienceRepository.saveAll(profileDto.getExperiences());
+        profile.getExperiences().add(experienceMapper.experienceDtoToExperience(experienceDto));
         return profileRepository.save(profile);
+
+    }
+
+    public Profile findById(String id) {
+        Optional<Profile> profile = profileRepository.findById(id);
+        return profile.orElse(null);
     }
 }

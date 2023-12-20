@@ -1,8 +1,11 @@
 package org.ilisi.backend.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.dto.EducationDto;
+import org.ilisi.backend.dto.ExperienceDto;
 import org.ilisi.backend.dto.ProfileDto;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.service.ProfileService;
@@ -23,13 +26,23 @@ public class StudentProfileController {
     }
 
 
-    @PostMapping("/addEducations")
-    public Profile addEducations(@RequestBody ProfileDto profileDto) {
-        return profileService.addEducations(profileDto);
+    @PostMapping("/{profileId}/education")
+    public Profile addEducations(@RequestParam String profileId, @RequestBody @Valid EducationDto educationDto) {
+        Profile profile = profileService.findById(profileId);
+        if(profile == null) {
+            log.error("Profile not found");
+            throw new RuntimeException("Profile +" + profileId + " not found");
+        }
+        return profileService.addEducation(profile, educationDto);
     }
 
-    @PostMapping("/addExperiences")
-    public Profile addExperiences(@RequestBody ProfileDto profileDto) {
-        return profileService.addExperiences(profileDto);
+    @PostMapping("/{profileId}/experience")
+    public Profile addExperience(@RequestParam String profileId, @RequestBody @Valid ExperienceDto experienceDto) {
+        Profile profile = profileService.findById(profileId);
+        if(profile == null) {
+            log.error("Profile not found");
+            throw new RuntimeException("Profile +" + profileId + " not found");
+        }
+        return profileService.addExperience(profile, experienceDto);
     }
 }

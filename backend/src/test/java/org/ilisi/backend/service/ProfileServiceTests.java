@@ -1,9 +1,9 @@
 package org.ilisi.backend.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ilisi.backend.dto.ProfileDto;
+import org.ilisi.backend.mapper.EducationMapper;
+import org.ilisi.backend.mapper.ExperienceMapper;
 import org.ilisi.backend.model.Education;
-import org.ilisi.backend.model.Experience;
 import org.ilisi.backend.model.Institut;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.repository.EducationRepository;
@@ -32,6 +32,10 @@ public class ProfileServiceTests {
     private InstitutRepository institutRepository;
     @Mock
     private ExperienceRepository experienceRepository;
+    @Mock
+    private EducationMapper educationMapper;
+    @Mock
+    private ExperienceMapper experienceMapper;
 
     @InjectMocks
     private ProfileService profileService;
@@ -53,7 +57,7 @@ public class ProfileServiceTests {
         Assertions.assertEquals(2, result.size());
     }
 
-    @Test
+    /*@Test
     public void addEducationsReturnsProfile() {
 
         //arrange
@@ -76,9 +80,9 @@ public class ProfileServiceTests {
         Assertions.assertFalse(result.getEducations().isEmpty());
         Assertions.assertEquals(2, result.getEducations().size());
 
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void addExperiencesReturnsProfile() {
 
         //arrange
@@ -99,6 +103,35 @@ public class ProfileServiceTests {
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.getExperiences().isEmpty());
         Assertions.assertEquals(2, result.getExperiences().size());
+    }*/
+
+    @Test
+    public void findByIdReturnsProfile() {
+
+        //arrange
+        Profile profile = Profile.builder().id(UUID.randomUUID().toString()).build();
+
+        //act
+        Mockito.when(profileRepository.findById(profile.getId())).thenReturn(Optional.of(profile));
+        Profile result = profileService.findById(profile.getId());
+
+        //assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(profile.getId(), result.getId());
     }
 
+    @Test
+    public void addEducationWithExistingInstitutReturnsProfile() {
+
+        //arrange
+        Profile profile = Profile.builder().id(UUID.randomUUID().toString()).build();
+        Education education = Education.builder().institut(Institut.builder().id(UUID.randomUUID().toString()).name("institut1").build()).build();
+        //act
+        Mockito.when(institutRepository.findById(education.getInstitut().getId())).thenReturn(Optional.of(education.getInstitut()));
+        Profile result = profileService.addEducation(profile, educationMapper.educationToEducationDto(education));
+        //assert
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.getEducations().isEmpty());
+        Assertions.assertEquals(1, result.getEducations().size());
+    }
 }
