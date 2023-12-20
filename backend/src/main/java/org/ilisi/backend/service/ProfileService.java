@@ -7,6 +7,8 @@ import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
 import org.ilisi.backend.mapper.EducationMapper;
 import org.ilisi.backend.mapper.ExperienceMapper;
+import org.ilisi.backend.model.Education;
+import org.ilisi.backend.model.Experience;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.repository.EducationRepository;
 import org.ilisi.backend.repository.ExperienceRepository;
@@ -24,11 +26,11 @@ import java.util.Optional;
 public class ProfileService {
 
     private ProfileRepository profileRepository;
-    private EducationRepository educationRepository;
     private InstitutRepository institutRepository;
-    private ExperienceRepository experienceRepository;
     private EducationMapper educationMapper;
     private ExperienceMapper experienceMapper;
+    private EducationRepository educationRepository;
+    private ExperienceRepository experienceRepository;
 
     public List<Profile> getAll() {
         return profileRepository.findAll();
@@ -41,7 +43,8 @@ public class ProfileService {
         else
             educationDto.setInstitut(institutRepository.save(educationDto.getInstitut()));
 
-        profile.getEducations().add(educationMapper.educationDtoToEducation(educationDto));
+        Education education = educationRepository.save(educationMapper.educationDtoToEducation(educationDto));
+        profile.getEducations().add(education);
         return profileRepository.save(profile);
     }
 
@@ -51,7 +54,8 @@ public class ProfileService {
         else
             experienceDto.setInstitut(institutRepository.save(experienceDto.getInstitut()));
 
-        profile.getExperiences().add(experienceMapper.experienceDtoToExperience(experienceDto));
+        Experience experience = experienceRepository.save(experienceMapper.experienceDtoToExperience(experienceDto));
+        profile.getExperiences().add(experience);
         return profileRepository.save(profile);
 
     }

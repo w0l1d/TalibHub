@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
-import org.ilisi.backend.dto.ProfileDto;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.service.ProfileService;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,8 @@ public class StudentProfileController {
     }
 
 
-    @PostMapping("/{profileId}/education")
-    public Profile addEducations(@RequestParam String profileId, @RequestBody @Valid EducationDto educationDto) {
+    @PostMapping("/{profileId}/educations")
+    public Profile addEducations(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
             log.error("Profile not found");
@@ -36,8 +35,8 @@ public class StudentProfileController {
         return profileService.addEducation(profile, educationDto);
     }
 
-    @PostMapping("/{profileId}/experience")
-    public Profile addExperience(@RequestParam String profileId, @RequestBody @Valid ExperienceDto experienceDto) {
+    @PostMapping("/{profileId}/experiences")
+    public Profile addExperience(@PathVariable String profileId, @RequestBody @Valid ExperienceDto experienceDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
             log.error("Profile not found");

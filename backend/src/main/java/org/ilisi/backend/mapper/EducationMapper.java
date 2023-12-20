@@ -1,14 +1,17 @@
 package org.ilisi.backend.mapper;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.model.Education;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class EducationMapper {
 
     public EducationDto educationToEducationDto(Education education) {
+        log.info("educationToEducationDto");
         return EducationDto.builder()
                 .id(education.getId())
                 .title(education.getTitle())
@@ -17,6 +20,7 @@ public class EducationMapper {
                 .startDate(education.getStartDate())
                 .endDate(education.getEndDate())
                 .location(education.getLocation())
+                .institut(education.getInstitut())
                 .build();
     }
 
@@ -29,6 +33,7 @@ public class EducationMapper {
                 .startDate(educationDto.getStartDate())
                 .endDate(educationDto.getEndDate())
                 .location(educationDto.getLocation())
+                .institut(educationDto.getInstitut())
                 .build();
     }
 }

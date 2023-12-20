@@ -15,6 +15,7 @@ public class ExperienceMapper {
                 .startDate(experience.getStartDate())
                 .endDate(experience.getEndDate())
                 .location(experience.getLocation())
+                .institut(experience.getInstitut())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class ExperienceMapper {
                 .startDate(experienceDto.getStartDate())
                 .endDate(experienceDto.getEndDate())
                 .location(experienceDto.getLocation())
+                .institut(experienceDto.getInstitut())
                 .build();
     }
 }
