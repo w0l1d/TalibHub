@@ -4,3 +4,8 @@ jwt:
   refresh-token-expiration-in-days: 30
 server:
   port: 8081
+
+spring:
+  docker:
+    compose:
+      file: ./backend/compose.yaml

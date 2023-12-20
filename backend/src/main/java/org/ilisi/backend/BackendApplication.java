@@ -17,7 +17,7 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public CommandLineRunner commadnLineRunner(UserRepository userRepository,
                                                PasswordEncoder passwordEncoder) {
         // create user
@@ -36,5 +36,5 @@ public class BackendApplication {
             student.setPassword(passwordEncoder.encode("12345678"));
             userRepository.save(student);
         };
-    }
+    }*/
 }

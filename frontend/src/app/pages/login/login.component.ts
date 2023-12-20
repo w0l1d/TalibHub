@@ -1,21 +1,48 @@
-import { Component } from '@angular/core';
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {MatCardModule} from "@angular/material/card";
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-
+import {Component} from "@angular/core";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {environment as env} from "../../../environments/environment.development";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {NgIf} from "@angular/common";
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    MatSlideToggleModule,
-    MatCardModule,
-    MatInputModule,
-    MatSelectModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgIf
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
+  loginForm: FormGroup | any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+  ) { }
+
+  ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
+    });
+  }
+
+  onSubmit(): void {
+    console.warn('Your order has been submitted', this.loginForm);
+    if(this.loginForm.valid) {
+
+      this.http.post(`${env.api}/auth/login`, this.loginForm.getRawValue())
+      .subscribe((res: any) => {
+        console.log(res);
+        localStorage.setItem('access_token', res.access_token);
+        localStorage.setItem('refresh_token', res.refresh_token);
+
+        // TODO: redirect to home page
+      })
+    }
+  }
 
 }
