@@ -1,15 +1,14 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { environment as env } from "../../../environments/environment.development";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { NgIf } from "@angular/common";
+import {AuthService} from "../../services/auth.service";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    HttpClientModule,
     NgIf
   ],
   templateUrl: './login.component.html',
@@ -21,7 +20,7 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -35,13 +34,17 @@ export class LoginComponent {
     console.warn('Your order has been submitted', this.loginForm);
     if(this.loginForm.valid) {
 
-      this.http.post(`${env.api}/auth/login`, this.loginForm.getRawValue())
-      .subscribe((res: any) => {
-        console.log(res);
-        localStorage.setItem("accessToken", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
+      this.authService.login(this.loginForm.getRawValue())
+      .subscribe((res: HttpResponse<any>) => {
+        if(res.ok) {
+          console.log(res.body);
+          localStorage.setItem("accessToken", res.body.accessToken);
+          localStorage.setItem("refreshToken", res.body.refreshToken);
+          // TODO: redirect to home page
 
-        // TODO: redirect to home page
+        }else{
+          console.log("Login failed");
+        }
       })
     }
   }
