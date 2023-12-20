@@ -1,11 +1,12 @@
 package org.ilisi.backend.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.YearMonth;
 
 @Entity
 @Data
@@ -20,8 +21,8 @@ public class Experience {
 
     private String title;
     private String description;
-    private String startDate;
-    private String endDate;
+    private YearMonth startAt;
+    private YearMonth endAt;
     private String location;
 
     @ManyToOne

@@ -1,12 +1,14 @@
 package org.ilisi.backend.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import org.ilisi.backend.model.Institut;
+
+import java.time.YearMonth;
 
 @Data
 @AllArgsConstructor
@@ -16,13 +18,13 @@ public class ExperienceDto {
 
     private String id;
 
-    @NotNull
+    @NotBlank
     private String title;
     private String description;
     @NotNull
-    private String startDate;
+    private YearMonth startAt;
     @NotNull
-    private String endDate;
+    private YearMonth endAt;
     private String location;
     @NotNull
     private Institut institut;

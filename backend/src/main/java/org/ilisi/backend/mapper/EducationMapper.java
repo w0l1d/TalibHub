@@ -17,8 +17,8 @@ public class EducationMapper {
                 .title(education.getTitle())
                 .studyField(education.getStudyField())
                 .description(education.getDescription())
-                .startDate(education.getStartDate())
-                .endDate(education.getEndDate())
+                .startAt(education.getStartAt())
+                .endAt(education.getEndAt())
                 .location(education.getLocation())
                 .institut(education.getInstitut())
                 .build();
@@ -30,8 +30,8 @@ public class EducationMapper {
                 .title(educationDto.getTitle())
                 .studyField(educationDto.getStudyField())
                 .description(educationDto.getDescription())
-                .startDate(educationDto.getStartDate())
-                .endDate(educationDto.getEndDate())
+                .startAt(educationDto.getStartAt())
+                .endAt(educationDto.getEndAt())
                 .location(educationDto.getLocation())
                 .institut(educationDto.getInstitut())
                 .build();

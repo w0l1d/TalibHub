@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ import java.util.UUID;
 @Slf4j
 public class ProfileServiceTests {
     @Mock
-    private ProfileRepository profileRepository;;
+    private ProfileRepository profileRepository;
     @Mock
     private InstitutRepository institutRepository;
     @Mock
@@ -84,18 +85,20 @@ public class ProfileServiceTests {
                 .educations(new ArrayList<>())
                 .build();
 
+
         EducationDto educationDto = EducationDto.builder()
                 .title("title")
                 .studyField("studyField")
-                .startDate("2019-01-01")
-                .endDate("2020-01-01")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
                 .institut(Institut.builder().name("institut").build()).build();
         Education education = Education.builder()
                 .title(educationDto.getTitle())
                 .studyField(educationDto.getStudyField())
-                .startDate(educationDto.getStartDate())
-                .endDate(educationDto.getEndDate())
+                .startAt(educationDto.getStartAt())
+                .endAt(educationDto.getEndAt())
                 .institut(educationDto.getInstitut()).build();
+
         //act
         Mockito.when(institutRepository.findById(educationDto.getInstitut().getId())).thenReturn(Optional.of(education.getInstitut()));
         Mockito.when(educationMapper.educationDtoToEducation(educationDto)).thenReturn(education);
@@ -103,6 +106,7 @@ public class ProfileServiceTests {
         Mockito.when(profileRepository.save(profile)).thenReturn(profile);
 
         Profile result = profileService.addEducation(profile, educationDto);
+
         //assert
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.getEducations().isEmpty());
@@ -120,15 +124,15 @@ public class ProfileServiceTests {
         ExperienceDto experienceDto = ExperienceDto.builder()
                 .title("title")
                 .description("description")
-                .startDate("2019-01-01")
-                .endDate("2020-01-01")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
                 .institut(Institut.builder().name("institut").build()).build();
 
         Experience experience = Experience.builder()
                 .title(experienceDto.getTitle())
                 .description(experienceDto.getDescription())
-                .startDate(experienceDto.getStartDate())
-                .endDate(experienceDto.getEndDate())
+                .startAt(experienceDto.getStartAt())
+                .endAt(experienceDto.getEndAt())
                 .institut(experienceDto.getInstitut()).build();
 
         //act
@@ -142,5 +146,18 @@ public class ProfileServiceTests {
         Assertions.assertNotNull(result);
         Assertions.assertFalse(result.getExperiences().isEmpty());
         Assertions.assertEquals(1, result.getExperiences().size());
+    }
+
+
+    @Test
+    public void testYearMonthParsedFromString() {
+        //arrange
+        String yearMonth = "2020-01";
+        //act
+        YearMonth result = YearMonth.parse(yearMonth);
+        //assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2020, result.getYear());
+        Assertions.assertEquals(1, result.getMonthValue());
     }
 }

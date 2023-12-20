@@ -4,8 +4,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.ilisi.backend.model.Institut;
 
+import java.time.YearMonth;
+
 @Data
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Builder
 public class EducationDto {
@@ -16,9 +19,9 @@ public class EducationDto {
     private String studyField;
     private String description;
     @NotNull
-    private String startDate;
+    private YearMonth startAt;
     @NotNull
-    private String endDate;
+    private YearMonth endAt;
     private String location;
     @NotNull
     private Institut institut;

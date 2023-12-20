@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.YearMonth;
+
 @Entity
 @Data
 @Builder
@@ -19,8 +21,8 @@ public class Education {
     private String title;
     private String studyField;
     private String description;
-    private String startDate;
-    private String endDate;
+    private YearMonth startAt;
+    private YearMonth endAt;
     private String location;
 
     @ManyToOne
