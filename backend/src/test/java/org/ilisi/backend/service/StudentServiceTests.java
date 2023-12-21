@@ -65,9 +65,5 @@ public class StudentServiceTests {
         return student;
     }
 
-    @Test
-    public void failingTest() {
-        Assertions.fail("a failing test");
-    }
 
 }
