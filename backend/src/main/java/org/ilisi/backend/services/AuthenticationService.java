@@ -45,8 +45,8 @@ public class AuthenticationService {
         log.info("saving refresh token : {}", sessionRepository.save(sessionEntity).getToken());
         // return tokens
         return Map.of(
-                "access-token", jwtService.generateAccessToken(user),
-                "refresh-token", refreshToken
+                "accessToken", jwtService.generateAccessToken(user),
+                "refreshToken", refreshToken
         );
     }
 
@@ -65,7 +65,7 @@ public class AuthenticationService {
             // refresh access token and return tokens
             String accessToken = jwtService.generateAccessToken(user);
             return Map.of(
-                    "access-token", accessToken
+                    "accessToken", accessToken
             );
         }
         throw new RuntimeException("Refresh Token is not Valid..!!");

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.Map;
@@ -43,17 +45,20 @@ public class AuthenticationControllerUnitTest {
 
         when(authenticationService.authenticate(any(AuthRequestDTO.class)))
                 .thenReturn(Map.of(
-                        "access-token", "dummy-access-token",
-                        "refresh-token", "dummy-refresh-token"
+                        "accessToken", "dummy-access-token",
+                        "refreshToken", "dummy-refresh-token"
                 ));
 
-        Map<String, Object> tokens = authenticationController.login(authRequestDTO);
+        ResponseEntity<Map<String, ?>> response = authenticationController.login(authRequestDTO);
 
-        assertTrue(tokens.containsKey("access-token"));
-        assertEquals("dummy-access-token", tokens.get("access-token"));
-        assertTrue(tokens.containsKey("refresh-token"));
-        assertEquals("dummy-refresh-token", tokens.get("refresh-token"));
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
 
+        Map<String, ?> tokens = response.getBody();
+        assert tokens != null;
+        assertTrue(tokens.containsKey("accessToken"));
+        assertEquals("dummy-access-token", tokens.get("accessToken"));
+        assertTrue(tokens.containsKey("refreshToken"));
+        assertEquals("dummy-refresh-token", tokens.get("refreshToken"));
     }
 
     @Test
