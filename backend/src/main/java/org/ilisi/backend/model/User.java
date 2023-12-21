@@ -3,7 +3,6 @@ package org.ilisi.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -51,19 +50,19 @@ public abstract class User implements UserDetails {
     @Override
     @Transient
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     @Transient
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     @Transient
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

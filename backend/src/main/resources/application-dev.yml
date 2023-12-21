@@ -1,1 +1,15 @@
+jwt:
+  key: "YourSecretKeyHereYourSecretKeyHereYourSecretKeyHereYourSecretKeyHere"
+  access-token-expiration-in-minutes: 10
+  refresh-token-expiration-in-days: 30
+server:
+  port: 8081
 
+spring:
+  docker:
+    compose:
+      file: ./backend/compose.yaml
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
