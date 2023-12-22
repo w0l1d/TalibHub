@@ -1,8 +1,10 @@
-package org.ilisi.backend.services;
+package org.ilisi.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.AuthRequestDTO;
+import org.ilisi.backend.exception.AuthenticationFailedException;
+import org.ilisi.backend.exception.InvalidTokenException;
 import org.ilisi.backend.model.Session;
 import org.ilisi.backend.model.User;
 import org.ilisi.backend.repository.SessionRepository;
@@ -32,7 +34,7 @@ public class AuthenticationService {
         );
         // check if authentication is successful
         if (!authentication.isAuthenticated()) {
-            throw new RuntimeException("Authentication failed..!!");
+            throw new AuthenticationFailedException("username or password is incorrect !", "INVALID_CREDENTIALS");
         }
         // save refresh token
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -55,7 +57,7 @@ public class AuthenticationService {
         Session session = sessionRepository.findByToken(refreshToken)
                 .orElse(null);
         if (session == null) {
-            throw new RuntimeException("Refresh Token is not in DB..!!");
+            throw new InvalidTokenException("login again, session not valid !", "REFRESH_TOKEN_SESSION_NOT_FOUND");
         }
         User user = session.getUser();
         if (jwtService.validateRefreshToken(refreshToken, user)) {
@@ -68,7 +70,7 @@ public class AuthenticationService {
                     "accessToken", accessToken
             );
         }
-        throw new RuntimeException("Refresh Token is not Valid..!!");
+        throw new InvalidTokenException("login again, session not valid !", "REFRESH_TOKEN_SESSION_NOT_VALID");
     }
 
 }
