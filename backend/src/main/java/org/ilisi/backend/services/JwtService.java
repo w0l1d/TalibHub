@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.User;
 import org.ilisi.backend.security.JwtProperties;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtService {
 
@@ -55,8 +57,9 @@ public class JwtService {
     }
 
     public Boolean validateAccessToken(String token, UserDetails userDetails) {
+
         final String username = extractUsername(token);
-        if (extractAllClaims(token).get("type", String.class).equals("accessToken")) return false;
+        if (!extractAllClaims(token).get("type", String.class).equals("accessToken")) return false;
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

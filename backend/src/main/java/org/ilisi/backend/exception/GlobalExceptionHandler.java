@@ -16,6 +16,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalExceptionHandler {
 
+
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Map<String, ?>> handleInvalidTokenException(InvalidTokenException e) {
+        Map<String, ?> body = Map.of("message", e.getMessage());
+        log.error("Invalid token", e);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Map<String, ?>> handleAuthenticationException(AuthenticationException e) {
         Map<String, ?> body = Map.of("message", e.getMessage());

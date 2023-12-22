@@ -1,10 +1,12 @@
-package org.ilisi.backend.auth;
+package org.ilisi.backend.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.exception.InvalidTokenException;
 import org.ilisi.backend.repository.UserRepository;
 import org.ilisi.backend.services.JwtService;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -44,7 +47,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (!jwtService.validateAccessToken(accessToken, userDetails)) {
-            throw new RuntimeException("Access Token is not valid..!!");
+            //enhance exception message
+
+            throw new InvalidTokenException("Invalid authentication credentials");
         }
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
