@@ -3,6 +3,7 @@ import {environment as env} from "../../environments/environment.development";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {catchError, of, tap} from "rxjs";
+import {Token} from "../models/token";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class AuthService {
         .post<any>(`${this.baseUrl}/auth/login`, data)
         .subscribe({
 
-          next: (tokens: any) => {
+          next: (tokens: Token) => {
             console.log("login got response", tokens);
             this.doLoginUser(data.username, tokens);
             resolve(true);
@@ -56,7 +57,7 @@ export class AuthService {
         refreshToken: this.getRefreshToken(),
       })
       .pipe(
-        tap((token: any) => {
+        tap((token: Token) => {
           console.log("refreshToken got new accessToken", token.accessToken);
           this.storeJwtToken(token.accessToken);
         }),
