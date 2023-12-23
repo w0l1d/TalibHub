@@ -58,7 +58,7 @@ public class JwtService {
 
     public Boolean validateAccessToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        if (extractAllClaims(token).get("type", String.class).equals(ACCESS_TOKEN_ATTR)) return false;
+        if (!extractAllClaims(token).get("type", String.class).equals(ACCESS_TOKEN_ATTR)) return false;
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
