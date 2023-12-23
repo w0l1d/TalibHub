@@ -1,9 +1,8 @@
-package org.ilisi.backend.repositoryTests;
+package org.ilisi.backend.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.Manager;
 import org.ilisi.backend.model.User;
-import org.ilisi.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @Slf4j
-class UserRepositoryTest {
+class UserRepositoryTests {
 
     @Mock
     private UserRepository userRepository;

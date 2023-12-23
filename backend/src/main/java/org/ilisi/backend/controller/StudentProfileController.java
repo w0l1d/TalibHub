@@ -27,7 +27,7 @@ public class StudentProfileController {
 
 
     @PostMapping("/{profileId}/educations")
-    public Profile addEducations(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
+    public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
             log.error("Profile not found");
