@@ -1,7 +1,6 @@
 package org.ilisi.backend.security;
 
 import lombok.RequiredArgsConstructor;
-import org.ilisi.backend.auth.JwtAuthFilter;
 import org.ilisi.backend.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

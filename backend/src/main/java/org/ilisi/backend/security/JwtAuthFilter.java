@@ -1,4 +1,4 @@
-package org.ilisi.backend.auth;
+package org.ilisi.backend.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        if (!jwtService.validateAccessToken(accessToken, userDetails)) {
+        if (Boolean.FALSE.equals(jwtService.validateAccessToken(accessToken, userDetails))) {
             throw new InvalidTokenException("Unauthorized access to this resource with this token");
         }
 

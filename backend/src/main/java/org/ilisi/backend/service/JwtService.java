@@ -1,4 +1,4 @@
-package org.ilisi.backend.services;
+package org.ilisi.backend.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
