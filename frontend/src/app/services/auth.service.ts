@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import {environment as env} from "../../environments/environment.development";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {catchError, of, tap} from "rxjs";
-import {Token} from "../models/token";
+import { Injectable } from "@angular/core";
+import { environment as env } from "../../environments/environment.development";
+import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { catchError, of, tap } from "rxjs";
+import { Token } from "../models/token";
 
 @Injectable({
   providedIn: 'root'
@@ -68,11 +68,11 @@ export class AuthService {
       );
   }
 
-  getJwtToken(): string|any {
+  getJwtToken(): string | null {
     return localStorage.getItem(this.JWT_TOKEN);
   }
 
-  private doLoginUser(username?: string, tokens?: any) {
+  private doLoginUser(username: string, tokens: Token) {
     this.loggedUser = username;
     this.storeTokens(tokens);
   }
@@ -91,7 +91,7 @@ export class AuthService {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 
-  private storeTokens(tokens:any) {
+  private storeTokens(tokens: Token) {
     localStorage.setItem(this.JWT_TOKEN, tokens.accessToken);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshToken);
   }
