@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { NgIf } from "@angular/common";
+import {Component} from "@angular/core";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
@@ -16,7 +16,7 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent {
 
-  loginForm: FormGroup | any;
+    loginForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,14 +38,14 @@ export class LoginComponent {
       this.authService.login(this.loginForm.getRawValue())
       .then((success: boolean) => {
         if (success) {
-          alert("Login successful");
-          this.router.navigate(['/home']);
+            console.log("Login successful");
+            this.router.navigate(['/home']).then(() => console.log("navigated to home"));
         }else {
-          alert("Login failed");
+            console.log("Login failed");
         }
       })
       .catch((error: any) => {
-        alert("Login failed");
+          console.error("Login failed", error);
       });
     }
   }
