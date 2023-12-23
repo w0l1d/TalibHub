@@ -2,6 +2,8 @@ package org.ilisi.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.dto.EducationDto;
+import org.ilisi.backend.model.Institut;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.*;
@@ -24,6 +26,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +117,51 @@ class StudentProfileControllerIntegrationTests {
             assertFalse(profiles.isEmpty());
             assertEquals(givenProfiles.size(), profiles.size());
         });
+    }
+
+    @Test
+    void addEducationReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = Profile.builder().
+                id(UUID.randomUUID().toString())
+                .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
+                .build();
+        profileRepository.save(profile);
+
+        EducationDto educationDto = EducationDto.builder()
+                .title("title")
+                .studyField("studyField")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(Institut.builder().name("institut").build()).build();
+
+        //act
+        ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/educations", profile.getId()))
+                        .header("Authorization", "Bearer " + JWT_TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                String.format(
+                                        "{\"title\": \"%s\", \"studyField\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"name\": \"%s\"}}",
+                                        educationDto.getTitle(),
+                                        educationDto.getStudyField(),
+                                        educationDto.getStartAt(),
+                                        educationDto.getEndAt(),
+                                        educationDto.getInstitut().getName())));
+
+        //assert
+        test.andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    // parse content to JSON
+                    Profile profile1 = objectMapper.readValue(content, Profile.class);
+
+                    assertFalse(profile1.getEducations().isEmpty());
+                    assertEquals(1, profile1.getEducations().size());
+                });
     }
 
 
