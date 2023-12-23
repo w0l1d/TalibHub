@@ -2,7 +2,7 @@ package org.ilisi.backend.controller;
 
 import jakarta.validation.ConstraintViolation;
 import org.ilisi.backend.dto.AuthRequestDTO;
-import org.ilisi.backend.services.AuthenticationService;
+import org.ilisi.backend.service.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class AuthenticationControllerUnitTest {
+class AuthenticationControllerUnitTest {
 
     @Mock
     private AuthenticationService authenticationService;
@@ -38,7 +38,7 @@ public class AuthenticationControllerUnitTest {
 
 
     @Test
-    public void loginReturnsTokenWhenAuthenticationSucceeds() {
+    void loginReturnsTokenWhenAuthenticationSucceeds() {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setUsername("test@example.com");
         authRequestDTO.setPassword("test123456");
@@ -49,7 +49,7 @@ public class AuthenticationControllerUnitTest {
                         "refreshToken", "dummy-refresh-token"
                 ));
 
-        ResponseEntity<Map<String, ?>> response = authenticationController.login(authRequestDTO);
+        ResponseEntity<Map<String, Object>> response = authenticationController.login(authRequestDTO);
 
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
 
@@ -62,7 +62,7 @@ public class AuthenticationControllerUnitTest {
     }
 
     @Test
-    public void loginThrowsExceptionWhenAuthenticationFails() {
+    void loginThrowsExceptionWhenAuthenticationFails() {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setUsername("test@example.com");
         authRequestDTO.setPassword("wrong-password");
@@ -76,7 +76,7 @@ public class AuthenticationControllerUnitTest {
 
 
     @Test
-    public void loginThrowsExceptionWhenInputIsInvalid() {
+    void loginThrowsExceptionWhenInputIsInvalid() {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setUsername("invalid-email");
         authRequestDTO.setPassword("short");
@@ -99,7 +99,7 @@ public class AuthenticationControllerUnitTest {
     }
 
     @Test
-    public void loginThrowsExceptionWhenAuthenticationServiceThrowsException() {
+    void loginThrowsExceptionWhenAuthenticationServiceThrowsException() {
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setUsername("test@example.com");
         authRequestDTO.setPassword("test123456");

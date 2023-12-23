@@ -2,7 +2,6 @@ package org.ilisi.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;

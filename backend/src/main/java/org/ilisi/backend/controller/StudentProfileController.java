@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
+import org.ilisi.backend.exception.EntityNotFoundException;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.service.ProfileService;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class StudentProfileController {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
             log.error("Profile not found");
-            throw new RuntimeException("Profile +" + profileId + " not found");
+            throw new EntityNotFoundException(String.format("Profile with id %s not found", profileId), "PROFILE_NOT_FOUND");
         }
         return profileService.addEducation(profile, educationDto);
     }
@@ -40,7 +41,7 @@ public class StudentProfileController {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
             log.error("Profile not found");
-            throw new RuntimeException("Profile +" + profileId + " not found");
+            throw new EntityNotFoundException(String.format("Profile with id %s not found", profileId), "PROFILE_NOT_FOUND");
         }
         return profileService.addExperience(profile, experienceDto);
     }

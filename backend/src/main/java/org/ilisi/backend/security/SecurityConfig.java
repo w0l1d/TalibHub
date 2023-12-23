@@ -1,7 +1,8 @@
 package org.ilisi.backend.security;
 
+import lombok.RequiredArgsConstructor;
+import org.ilisi.backend.auth.JwtAuthFilter;
 import org.ilisi.backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,13 +28,13 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    JwtAuthFilter jwtAuthFilter;
 
-    @Autowired
-    UserRepository userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
+
+    private final UserRepository userDetailsService;
 
 
     @Bean
@@ -52,7 +53,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-//        return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
@@ -74,7 +74,6 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-
     }
 
     @Bean

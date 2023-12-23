@@ -17,29 +17,33 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
 
-
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<Map<String, ?>> handleInvalidTokenException(InvalidTokenException e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
-        log.error("Invalid token", e);
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    @ExceptionHandler(GlobalAppException.class)
+    public ResponseEntity<Map<String, Object>> handleGlobalAppException(GlobalAppException e) {
+        Map<String, Object> body = Map.of(
+                "message", e.getMessage(),
+                "errorCode", e.getErrorCode(),
+                "timestamp", e.getTimestamp()
+        );
+        log.error("Global app exception", e);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Map<String, ?>> handleAuthenticationException(AuthenticationException e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleAuthenticationException(AuthenticationException e) {
+        Map<String, Object> body = Map.of("message", e.getMessage());
         log.error("Authentication failed", e);
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, ?>> handleIllegalArgumentException(IllegalArgumentException e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException e) {
+        Map<String, Object> body = Map.of("message", e.getMessage());
         log.error("Illegal argument", e);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, ?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
 
         Map<String, String> errors = e.getBindingResult()
@@ -54,8 +58,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, ?>> handleException(Exception e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
+        Map<String, Object> body = Map.of("message", e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

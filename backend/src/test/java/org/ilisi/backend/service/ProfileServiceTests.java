@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
-public class ProfileServiceTests {
+class ProfileServiceTests {
     @Mock
     private ProfileRepository profileRepository;
     @Mock
@@ -45,11 +45,11 @@ public class ProfileServiceTests {
     private ProfileService profileService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
     @Test
-    public void getAllReturnsProfiles() {
+    void getAllReturnsProfiles() {
 
         //arrange
         List<Profile> profiles = List.of(Profile.builder().build(), Profile.builder().build());
@@ -62,7 +62,7 @@ public class ProfileServiceTests {
     }
 
     @Test
-    public void findByIdReturnsProfile() {
+    void findByIdReturnsProfile() {
 
         //arrange
         Profile profile = Profile.builder().id(UUID.randomUUID().toString()).build();
@@ -77,7 +77,7 @@ public class ProfileServiceTests {
     }
 
     @Test
-    public void addEducationWithExistingInstitutReturnsProfile() {
+    void addEducationWithExistingInstitutReturnsProfile() {
 
         //arrange
         Profile profile = Profile.builder().
@@ -114,7 +114,7 @@ public class ProfileServiceTests {
     }
 
     @Test
-    public void addExperienceWithExistingInstitutReturnsProfile(){
+    void addExperienceWithExistingInstitutReturnsProfile() {
         //arrange
         Profile profile = Profile.builder().
                 id(UUID.randomUUID().toString())
@@ -150,7 +150,7 @@ public class ProfileServiceTests {
 
 
     @Test
-    public void testYearMonthParsedFromString() {
+    void testYearMonthParsedFromString() {
         //arrange
         String yearMonth = "2020-01";
         //act

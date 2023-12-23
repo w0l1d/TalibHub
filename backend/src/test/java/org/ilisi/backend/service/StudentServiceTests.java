@@ -18,7 +18,7 @@ import java.time.Year;
 import java.util.List;
 
 @Slf4j
-public class StudentServiceTests {
+class StudentServiceTests {
 
     @Mock
     private StudentRepository studentRepository;
@@ -34,7 +34,7 @@ public class StudentServiceTests {
     }
 
     @Test
-    public void createStudentsReturnsStudents() {
+    void createStudentsReturnsStudents() {
 
         //arrange
         Student student1 = createStudent("CNE1", "firstName1", "lastName1", "email1", "phone1", "CIN1");

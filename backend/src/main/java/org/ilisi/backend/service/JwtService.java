@@ -6,7 +6,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.User;
 import org.ilisi.backend.security.JwtProperties;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +18,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class JwtService {
 
+    public static final String ACCESS_TOKEN_ATTR = "accessToken";
+    public static final String REFRESH_TOKEN_ATTR = "refreshToken";
 
     private final JwtProperties jwtProperties;
 
@@ -57,20 +57,19 @@ public class JwtService {
     }
 
     public Boolean validateAccessToken(String token, UserDetails userDetails) {
-
         final String username = extractUsername(token);
-        if (!extractAllClaims(token).get("type", String.class).equals("accessToken")) return false;
+        if (!extractAllClaims(token).get("type", String.class).equals(ACCESS_TOKEN_ATTR)) return false;
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public Boolean validateRefreshToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        if (!extractAllClaims(token).get("type", String.class).equals("refreshToken")) return false;
+        if (!extractAllClaims(token).get("type", String.class).equals(REFRESH_TOKEN_ATTR)) return false;
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && isRefreshToken(token));
     }
 
     public Boolean isRefreshToken(String token) {
-        return extractClaim(token, claims -> claims.get("type", String.class)).equals("refreshToken");
+        return extractClaim(token, claims -> claims.get("type", String.class)).equals(REFRESH_TOKEN_ATTR);
     }
 
     public String generateAccessToken(User user) {
@@ -81,7 +80,7 @@ public class JwtService {
         Map<String, Object> claims = Map.of(
                 "roles", user.getAuthorities(),
                 "userId", user.getId(),
-                "type", "accessToken"
+                "type", ACCESS_TOKEN_ATTR
         );
         Instant instant = Instant.now();
         return Jwts.builder()
@@ -98,7 +97,7 @@ public class JwtService {
                 "firstName", user.getFirstName(),
                 "lastName", user.getLastName(),
                 "userId", user.getId(),
-                "type", "refreshToken"
+                "type", REFRESH_TOKEN_ATTR
         );
         Instant instant = Instant.now();
         return Jwts.builder()

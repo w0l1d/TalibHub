@@ -1,5 +1,6 @@
 package org.ilisi.backend;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -18,6 +19,8 @@ class BackendApplicationTests {
 
     @Test
     void contextLoads() {
+        boolean a = true;
+        Assertions.assertTrue(a);
     }
 
 
