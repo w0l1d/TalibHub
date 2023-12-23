@@ -5,8 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.ilisi.backend.exception.InvalidTokenException;
 import org.ilisi.backend.repository.UserRepository;
-import org.ilisi.backend.services.JwtService;
+import org.ilisi.backend.service.JwtService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (!jwtService.validateAccessToken(accessToken, userDetails)) {
-            throw new RuntimeException("Access Token is not valid..!!");
+            throw new InvalidTokenException("Unauthorized access to this resource with this token");
         }
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

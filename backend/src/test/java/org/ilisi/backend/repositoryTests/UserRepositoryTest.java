@@ -6,7 +6,6 @@ import org.ilisi.backend.model.User;
 import org.ilisi.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @Slf4j
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
     @Mock
     private UserRepository userRepository;
@@ -29,7 +28,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void findByEmailReturnsUserWhenUserExists() {
+    void findByEmailReturnsUserWhenUserExists() {
         User user = new Manager();
         user.setEmail("test@example.com");
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
@@ -41,7 +40,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void findByEmailReturnsEmptyWhenUserDoesNotExist() {
+    void findByEmailReturnsEmptyWhenUserDoesNotExist() {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
         Optional<User> returnedUser = userRepository.findByEmail("test@example.com");
@@ -50,7 +49,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void loadUserByUsernameReturnsUserDetailsWhenUserExists() {
+    void loadUserByUsernameReturnsUserDetailsWhenUserExists() {
         User user = new Manager();
         user.setEmail("test@example.com");
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
@@ -62,7 +61,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void loadUserByUsernameThrowsExceptionWhenUserDoesNotExist() {
+    void loadUserByUsernameThrowsExceptionWhenUserDoesNotExist() {
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
         when(userRepository.loadUserByUsername("test@example.com")).thenCallRealMethod();
 
