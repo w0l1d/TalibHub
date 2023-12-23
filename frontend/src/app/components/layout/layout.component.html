@@ -1,0 +1,67 @@
+<!-- Main Layout -->
+<div class="grid grid-cols-12 h-dvh w-screen ">
+    <button data-collapse-toggle="navbar-default" type="button" class="m-2 items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 hidden lg:inline-flex" aria-controls="navbar-default" aria-expanded="false">
+        <i class="fa-solid fa-bars fa-xl"></i>
+    </button>
+    <!-- Left side Bar -->
+    <div class="col-start-1 col-end-4 h-dvh flex flex-col justify-between  border-r-2 border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed">
+        <div>
+            <div class="w-full pl-10 py-5 cursor-pointer bold-cd-font ">
+                <span class="text-3xl xl:text-2xl text-textBlack">Talib:</span>
+                <span class="text-3xl xl:text-2xl text-bodyLightPurple">hub</span>
+            </div>
+            <ul class="flex text-xl xl:text-lg 2xl:text-2xl flex-col mx-auto w-full text-textBlack cursor-pointer font-bold medium-cd-font">
+                <a href="#">
+                    <li class="text-bodyLightPurple py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
+                        <i class="fa-solid fa-house fa-lg"></i>
+                        <span class="ml-2">Home</span>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="text-textBlack py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
+                        <i class="fa-solid fa-newspaper fa-lg"></i>
+                        <span class="ml-2">News</span>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="text-textBlack py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
+                        <i class="fa-solid fa-bookmark fa-lg"></i>
+                        <span class="ml-2"> Saved</span>
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="text-textBlack py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
+                        <i class="fa-sharp fa-solid fa-shield-halved fa fa-lg"></i>
+                        <span class="ml-2">Admin</span>
+                    </li>
+                </a>
+            </ul>
+        </div>
+        <div class=" w-full bottom-0 py-5 medium-cd-font ">
+            <div class="flex justify-between  pl-9 m-2 ">
+                <button class="flex hover:bg-bodyWhite rounded-md p-1 cursor-pointer">
+                    <img src="../../../assets/images/profilePic1.png" class="w-12 h-12" alt="">
+                    <div class="flex flex-col ">
+                        <span class="">
+                            Yassine Zawarudo
+                        </span>
+                        <span class="text-bodyGray">
+                            <i class="fa-solid fa-moon text-yellow-500"></i>
+                            Idle
+                        </span>
+                    </div>
+                </button>
+                <div class="mt-4">
+                    <i class="fa-solid fa-ellipsis-vertical fa-xl mx-1"></i>
+                    <i class="fa-solid fa-sun fa-lg mx-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Middle section -->
+    <app-data-table class="col-start-4 col-end-13 lg:col-start-1 mx-10">
+
+    </app-data-table>
+    <!-- Right side bar (for studnents) -->
+    <!-- <app-profile class="col-start-10 col-end-13"></app-profile> -->
+</div>
