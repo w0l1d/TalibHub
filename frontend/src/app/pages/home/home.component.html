@@ -1,13 +1,10 @@
 <!-- Main Layout -->
 <div class="grid grid-cols-12 h-dvh w-screen bg-bodyLightWhite">
-    <button data-collapse-toggle="navbar-default" type="button" class=" items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400  hidden lg:inline-flex" aria-controls="navbar-default" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-        </svg>
+    <button data-collapse-toggle="navbar-default" type="button" class="m-2 items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400  hidden lg:inline-flex" aria-controls="navbar-default" aria-expanded="false">
+        <i class="fa-solid fa-bars fa-xl"></i>
     </button>
     <!-- Left side Bar -->
-<div class="col-span-3 flex flex-col justify-between  border-r-2 border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm">
+    <div class="col-start-1 col-end-4 flex flex-col justify-between  border-r-2 border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm">
         <div>
             <div class="w-full pl-10 py-5 cursor-pointer bold-cd-font ">
                 <span class="text-3xl xl:text-2xl text-textBlack">Talib:</span>
@@ -16,7 +13,6 @@
             <ul class="flex text-xl xl:text-lg 2xl:text-2xl flex-col mx-auto w-full text-textBlack cursor-pointer font-bold medium-cd-font">
                 <a href="#">
                     <li class="text-bodyLightPurple py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
-                        <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon> -->
                         <i class="fa-solid fa-house fa-lg"></i>
                         <span class="ml-2">Home</span>
                     </li>
@@ -42,10 +38,10 @@
             </ul>
         </div>
         <div class=" w-full bottom-0 py-5 medium-cd-font ">
-            <div class="flex justify-between hover:bg-bodyWhite pl-12  rounded-md     m-2 ">
-                <div class="flex ">
-                    <img src="../../../assets/images/Frame 3.png" class="w-12 h-12" alt="">
-                    <div class="flex flex-col">
+            <div class="flex justify-between  pl-9 m-2 ">
+                <button class="flex hover:bg-bodyWhite rounded-md p-1 cursor-pointer">
+                    <img src="../../../assets/images/profilePic1.png" class="w-12 h-12" alt="">
+                    <div class="flex flex-col ">
                         <span class="">
                             Yassine Zawarudo
                         </span>
@@ -54,7 +50,7 @@
                             Idle
                         </span>
                     </div>
-                </div>
+                </button>
                 <div class="mt-4">
                     <i class="fa-solid fa-ellipsis-vertical fa-xl mx-1"></i>
                     <i class="fa-solid fa-sun fa-lg mx-1"></i>
@@ -63,6 +59,7 @@
         </div>
     </div>
     <!-- Middle section -->
-
+    
     <!-- Right side bar -->
+    <app-profile class="col-start-10 col-end-13"></app-profile>
 </div>

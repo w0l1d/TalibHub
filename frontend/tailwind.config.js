@@ -12,7 +12,11 @@ module.exports = {
         bodyLightPurple: "#CCB3F5",
         bodyGray: "#9F9999",
         textBlack: "#323232",
+      },
+      fontSize: {
+        ss: '0.65rem',
       }
+  
     },
     screens: {
       '2xl': {'max': '1535px'},
