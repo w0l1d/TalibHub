@@ -1,5 +1,6 @@
 package org.ilisi.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.ilisi.backend.model.Institut;
@@ -19,8 +20,10 @@ public class EducationDto {
     private String studyField;
     private String description;
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM", shape = JsonFormat.Shape.STRING)
     private YearMonth startAt;
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM", shape = JsonFormat.Shape.STRING)
     private YearMonth endAt;
     private String location;
     @NotNull

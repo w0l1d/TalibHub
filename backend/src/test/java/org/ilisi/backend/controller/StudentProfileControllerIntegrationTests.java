@@ -3,9 +3,8 @@ package org.ilisi.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.EducationDto;
-import org.ilisi.backend.model.Institut;
-import org.ilisi.backend.model.Profile;
-import org.ilisi.backend.model.Student;
+import org.ilisi.backend.dto.ExperienceDto;
+import org.ilisi.backend.model.*;
 import org.ilisi.backend.repository.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +47,8 @@ class StudentProfileControllerIntegrationTests {
     @ServiceConnection
     @Container
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
-    static ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
     private static String JWT_TOKEN;
     @Autowired
     private MockMvc mockMvc;
@@ -70,7 +70,6 @@ class StudentProfileControllerIntegrationTests {
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
     }
 
-    //get the JWT token before each test
     @BeforeEach
     void beforeEachSetup() throws Exception {
         Student student = saveStudent("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
@@ -125,7 +124,7 @@ class StudentProfileControllerIntegrationTests {
         //arrange
         Profile profile = Profile.builder().
                 id(UUID.randomUUID().toString())
-                .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
+                .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailed@gmail.com", "test-phone-2", "test-cin-2"))
                 .build();
         profileRepository.save(profile);
 
@@ -157,12 +156,60 @@ class StudentProfileControllerIntegrationTests {
 
                     log.info("Response content: {}", content);
                     // parse content to JSON
-                    Profile profile1 = objectMapper.readValue(content, Profile.class);
+                    Map<String, Object> profileJson = objectMapper.readValue(content, Map.class);
+                    List<Education> educations = (List<Education>) profileJson.get("educations");
 
-                    assertFalse(profile1.getEducations().isEmpty());
-                    assertEquals(1, profile1.getEducations().size());
+                    assertFalse(educations.isEmpty());
+                    assertEquals(1, educations.size());
                 });
     }
+
+    @Test
+    void addExperienceReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = Profile.builder().
+                id(UUID.randomUUID().toString())
+                .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailex@gmail.com", "test-phone-2", "test-cin-2"))
+                .build();
+        profileRepository.save(profile);
+        ExperienceDto experienceDto = ExperienceDto.builder()
+                .title("title")
+                .location("location")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(Institut.builder().name("institut").build())
+                .build();
+
+        //act
+        ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/experiences", profile.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"location\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"name\": \"%s\"}}",
+                                experienceDto.getTitle(),
+                                experienceDto.getLocation(),
+                                experienceDto.getStartAt(),
+                                experienceDto.getEndAt(),
+                                experienceDto.getInstitut().getName())));
+
+        //assert
+        test.andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    // parse content to JSON
+                    Map profileJson = objectMapper.readValue(content, Map.class);
+                    List<Experience> experiences = (List<Experience>) profileJson.get("experiences");
+
+                    assertFalse(experiences.isEmpty());
+                    assertEquals(1, experiences.size());
+                });
+    }
+
 
 
     private List<Profile> saveListOfValidTestProfiles() {

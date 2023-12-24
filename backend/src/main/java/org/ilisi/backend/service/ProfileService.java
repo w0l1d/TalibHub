@@ -48,9 +48,9 @@ public class ProfileService {
             institutRepository.findById(institute).ifPresentOrElse(educationDto::setInstitut, () -> {
                 throw new EntityNotFoundException(String.format("Institute with id %s not found", institute), "INSTITUTE_NOT_FOUND");
             });
-
         Education education = educationRepository.save(educationMapper.educationDtoToEducation(educationDto));
         profile.getEducations().add(education);
+        log.info("Profile: {}", profile);
         return profileRepository.save(profile);
     }
 

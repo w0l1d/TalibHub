@@ -33,6 +33,8 @@ public class StudentProfileController {
             log.error("Profile not found");
             throw new EntityNotFoundException(String.format("Profile with id %s not found", profileId), "PROFILE_NOT_FOUND");
         }
+        log.info("Profile found");
+        log.info("EducationDto: {}", educationDto);
         return profileService.addEducation(profile, educationDto);
     }
 
