@@ -1,10 +1,10 @@
 <!-- Main Layout -->
-<div class="grid grid-cols-12 h-dvh w-screen ">
+<div class="grid grid-cols-12 h-dvh w-screen bg-bodyLightWhite">
     <button data-collapse-toggle="navbar-default" type="button" class="m-2 items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 hidden lg:inline-flex" aria-controls="navbar-default" aria-expanded="false">
         <i class="fa-solid fa-bars fa-xl"></i>
     </button>
     <!-- Left side Bar -->
-    <div class="col-start-1 col-end-4 h-dvh flex flex-col justify-between  border-r-2 border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed">
+    <div class="col-start-1 col-end-4 h-dvh flex flex-col justify-between  border-r border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed bg-bodyLightWhite">
         <div>
             <div class="w-full pl-10 py-5 cursor-pointer bold-cd-font ">
                 <span class="text-3xl xl:text-2xl text-textBlack">Talib:</span>
@@ -40,7 +40,7 @@
         <div class=" w-full bottom-0 py-5 medium-cd-font ">
             <div class="flex justify-between  pl-9 m-2 ">
                 <button class="flex hover:bg-bodyWhite rounded-md p-1 cursor-pointer">
-                    <img src="../../../assets/images/profilePic1.png" class="w-12 h-12" alt="">
+                    <img src="./assets/images/profilePic1.png" class="w-12 h-12" alt="">
                     <div class="flex flex-col ">
                         <span class="">
                             Yassine Zawarudo
@@ -58,10 +58,8 @@
             </div>
         </div>
     </div>
-    <!-- Middle section -->
-    <app-data-table class="col-start-4 col-end-13 lg:col-start-1 mx-10">
+    
 
-    </app-data-table>
-    <!-- Right side bar (for studnents) -->
-    <!-- <app-profile class="col-start-10 col-end-13"></app-profile> -->
+    <ng-content></ng-content>
+    
 </div>
