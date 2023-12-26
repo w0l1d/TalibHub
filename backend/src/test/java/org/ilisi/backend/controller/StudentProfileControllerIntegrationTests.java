@@ -26,10 +26,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -72,6 +69,7 @@ class StudentProfileControllerIntegrationTests {
 
     @BeforeEach
     void beforeEachSetup() throws Exception {
+        //studentRepository.deleteAll();
         Student student = saveStudent("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
         String tokens = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -90,12 +88,16 @@ class StudentProfileControllerIntegrationTests {
 
     @AfterEach
     void afterEachSetup() {
+        cleanDatabase();
+    }
+
+    void cleanDatabase() {
         profileRepository.deleteAll();
+        studentRepository.deleteAll();
         educationRepository.deleteAll();
         experienceRepository.deleteAll();
         institutRepository.deleteAll();
     }
-
 
     @Test()
     void getProfilesReturnsProfiles() throws Exception {
@@ -122,18 +124,8 @@ class StudentProfileControllerIntegrationTests {
     void addEducationReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = Profile.builder().
-                id(UUID.randomUUID().toString())
-                .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailed@gmail.com", "test-phone-2", "test-cin-2"))
-                .build();
-        profileRepository.save(profile);
-
-        EducationDto educationDto = EducationDto.builder()
-                .title("title")
-                .studyField("studyField")
-                .startAt(YearMonth.of(2019, 1))
-                .endAt(YearMonth.of(2020, 1))
-                .institut(Institut.builder().name("institut").build()).build();
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailed@gmail.com", "test-phone-2", "test-cin-2"));
+        EducationDto educationDto = createEducationDto("title", "studyField", YearMonth.of(2019, 1), YearMonth.of(2020, 1), Institut.builder().name("institut").build());
 
         //act
         ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/educations", profile.getId()))
@@ -165,21 +157,81 @@ class StudentProfileControllerIntegrationTests {
     }
 
     @Test
+    void addEducationWithExistingInstitutReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Institut institut = saveInstitut("institut");
+        EducationDto educationDto = createEducationDto("title", "studyField", YearMonth.of(2019, 1), YearMonth.of(2020, 1), institut);
+        //act
+        ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/educations", profile.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"studyField\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"id\": \"%s\"}}",
+                                educationDto.getTitle(),
+                                educationDto.getStudyField(),
+                                educationDto.getStartAt(),
+                                educationDto.getEndAt(),
+                                educationDto.getInstitut().getId())));
+
+        //assert
+        test.andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    // parse content to JSON
+                    Map<String, Object> profileJson = objectMapper.readValue(content, Map.class);
+                    LinkedHashMap<String, Object> educationJson = (LinkedHashMap<String, Object>) ((List) profileJson.get("educations")).get(0);
+                    List<Education> educations = (List<Education>) profileJson.get("educations");
+                    Map<String, Object> institutJson = (Map<String, Object>) educationJson.get("institut");
+                    assertFalse(educations.isEmpty());
+                    assertEquals(1, educations.size());
+                    assertEquals(institut.getId(), institutJson.get("id"));
+                    assertEquals(institut.getName(), institutJson.get("name"));
+                });
+
+    }
+
+    @Test
+    void addEducationWithInExistingProfileThrowsException() throws Exception {
+
+        //arrange
+        EducationDto educationDto = createEducationDto("title", "studyField", YearMonth.of(2019, 1), YearMonth.of(2020, 1), Institut.builder().name("institut").build());
+
+        //act
+        ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/educations", UUID.randomUUID()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"studyField\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"name\": \"%s\"}}",
+                                educationDto.getTitle(),
+                                educationDto.getStudyField(),
+                                educationDto.getStartAt(),
+                                educationDto.getEndAt(),
+                                educationDto.getInstitut().getName())));
+
+        //assert
+        test.andExpect(result -> {
+            String content = result.getResponse().getContentAsString();
+            assert !content.isEmpty();
+
+            log.info("Response content: {}", content);
+            // parse content to JSON
+            Map<String, Object> errorJson = objectMapper.readValue(content, Map.class);
+            assertEquals("PROFILE_NOT_FOUND", errorJson.get("errorCode"));
+        });
+    }
+    @Test
     void addExperienceReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = Profile.builder().
-                id(UUID.randomUUID().toString())
-                .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailex@gmail.com", "test-phone-2", "test-cin-2"))
-                .build();
-        profileRepository.save(profile);
-        ExperienceDto experienceDto = ExperienceDto.builder()
-                .title("title")
-                .location("location")
-                .startAt(YearMonth.of(2019, 1))
-                .endAt(YearMonth.of(2020, 1))
-                .institut(Institut.builder().name("institut").build())
-                .build();
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        ExperienceDto experienceDto = createExperienceDto("title", "location", YearMonth.of(2019, 1), YearMonth.of(2020, 1), Institut.builder().name("institut").build());
 
         //act
         ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/experiences", profile.getId()))
@@ -210,21 +262,95 @@ class StudentProfileControllerIntegrationTests {
                 });
     }
 
+    @Test
+    void addExperienceWithExistingInstitutReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Institut institut = saveInstitut("institut");
+        ExperienceDto experienceDto = createExperienceDto("title", "location", YearMonth.of(2019, 1), YearMonth.of(2020, 1), institut);
+        //act
+        ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/experiences", profile.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"location\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"id\": \"%s\"}}",
+                                experienceDto.getTitle(),
+                                experienceDto.getLocation(),
+                                experienceDto.getStartAt(),
+                                experienceDto.getEndAt(),
+                                experienceDto.getInstitut().getId())));
+
+        //assert
+        test.andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    // parse content to JSON
+                    Map<String, Object> profileJson = objectMapper.readValue(content, Map.class);
+                    LinkedHashMap<String, Object> experienceJson = (LinkedHashMap<String, Object>) ((List) profileJson.get("experiences")).get(0);
+                    List<Experience> experiences = (List<Experience>) profileJson.get("experiences");
+                    Map<String, Object> institutJson = (Map<String, Object>) experienceJson.get("institut");
+                    assertFalse(experiences.isEmpty());
+                    assertEquals(1, experiences.size());
+                    assertEquals(institut.getId(), institutJson.get("id"));
+                    assertEquals(institut.getName(), institutJson.get("name"));
+                });
+    }
+
+    @Test
+    void addExperienceWithInExistingProfileThrowsException() throws Exception {
+
+        //arrange
+        ExperienceDto experienceDto = createExperienceDto("title", "location", YearMonth.of(2019, 1), YearMonth.of(2020, 1), Institut.builder().name("institut").build());
+
+        //act
+        ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/experiences", UUID.randomUUID()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"location\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"name\": \"%s\"}}",
+                                experienceDto.getTitle(),
+                                experienceDto.getLocation(),
+                                experienceDto.getStartAt(),
+                                experienceDto.getEndAt(),
+                                experienceDto.getInstitut().getName())));
+
+        //assert
+        test.andExpect(result -> {
+            String content = result.getResponse().getContentAsString();
+            assert !content.isEmpty();
+
+            log.info("Response content: {}", content);
+            // parse content to JSON
+            Map<String, Object> errorJson = objectMapper.readValue(content, Map.class);
+            assertEquals("PROFILE_NOT_FOUND", errorJson.get("errorCode"));
+        });
+    }
 
 
     private List<Profile> saveListOfValidTestProfiles() {
+
         return profileRepository.saveAll(List.of(
-                Profile.builder()
-                        .id(UUID.randomUUID().toString())
-                        .student(saveStudent("test-cne-1", "test-first-name-1", "test-last-name-1", "testemail1@gmail.com", "test-phone-1", "test-cin-1"))
-                        .build(),
-                Profile.builder()
-                        .id(UUID.randomUUID().toString())
-                        .student(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
-                        .build()
+                saveProfile(saveStudent("test-cne-1", "test-first-name-1", "test-last-name-1", "testemail1@gmail.com", "test-phone-1", "test-cin-1")),
+                saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
         ));
     }
 
+    private Profile saveProfile(Student student) {
+        return profileRepository.save(Profile.builder()
+                .id(UUID.randomUUID().toString())
+                .student(student)
+                .build());
+    }
+
+    private Institut saveInstitut(String name) {
+        return institutRepository.save(Institut.builder().id(UUID.randomUUID().toString()).name(name).build());
+    }
 
     private Student saveStudent(String cne, String firstName, String lastName, String email, String phone, String cin) {
         Student student = new Student();
@@ -239,5 +365,25 @@ class StudentProfileControllerIntegrationTests {
         student.setEnabled(true);
         student.setPassword(passwordEncoder.encode("123456789"));
         return studentRepository.save(student);
+    }
+
+    private EducationDto createEducationDto(String title, String studyField, YearMonth startAt, YearMonth endAt, Institut institut) {
+        return EducationDto.builder()
+                .title(title)
+                .studyField(studyField)
+                .startAt(startAt)
+                .endAt(endAt)
+                .institut(institut)
+                .build();
+    }
+
+    private ExperienceDto createExperienceDto(String title, String location, YearMonth startAt, YearMonth endAt, Institut institut) {
+        return ExperienceDto.builder()
+                .title(title)
+                .location(location)
+                .startAt(startAt)
+                .endAt(endAt)
+                .institut(institut)
+                .build();
     }
 }
