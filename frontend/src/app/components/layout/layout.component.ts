@@ -17,5 +17,9 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
+  collapsed:boolean = false;
   @Input() navBarData!: any;
+  toggleCollapsed(): void {
+    this.collapsed = !this.collapsed;
+  }
 }

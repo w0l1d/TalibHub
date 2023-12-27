@@ -1,14 +1,19 @@
 <!-- Main Layout -->
-<div class="grid grid-cols-12 h-dvh w-screen bg-bodyLightWhite">
-    <button data-collapse-toggle="navbar-default" type="button" class="m-2 items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 hidden lg:inline-flex" aria-controls="navbar-default" aria-expanded="false">
+<div class="h-dvh w-screen bg-bodyLightWhite">
+    <button type="button" class="m-2 items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 hidden lg:inline-flex" (click)="toggleCollapsed()">
         <i class="fa-solid fa-bars fa-xl"></i>
     </button>
     <!-- Left side Bar -->
-    <aside class="col-start-1 col-end-4 h-dvh flex flex-col justify-between  border-r border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed bg-bodyLightWhite">
+    <aside class="top-0 left-0 h-dvh flex flex-col justify-between  border-r border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed bg-bodyLightWhite overflow-auto" [class]="collapsed ? 'show-aside' :''">
         <div>
-            <div class="w-full pl-10 py-5 cursor-pointer bold-cd-font ">
-                <span class="text-3xl xl:text-2xl text-textBlack">Talib:</span>
+            <div class="flex justify-between w-full pl-10 py-5 cursor-pointer bold-cd-font ">
+                <div class="">
+                    <span class="text-3xl xl:text-2xl text-textBlack">Talib:</span>
                 <span class="text-3xl xl:text-2xl text-bodyLightPurple">hub</span>
+                </div>
+                <button class="mx-5" [class]="collapsed ? 'block' : 'hidden'" (click)="toggleCollapsed()">
+                    <i class="fa-solid fa-xmark fa-xl"></i>
+                </button>
             </div>
             <ul class="flex text-xl xl:text-lg 2xl:text-2xl flex-col mx-auto w-full text-textBlack cursor-pointer font-bold medium-cd-font">
                 
