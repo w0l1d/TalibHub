@@ -1,5 +1,6 @@
 package org.ilisi.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.Manager;
@@ -108,7 +109,8 @@ class AuthenticationControllerIntegrationTests {
                     assert !content.isBlank();
 
                     // parse content to JSON
-                    Map<String, Object> body = objectMapper.readValue(content, Map.class);
+                    Map<String, Object> body = objectMapper.readValue(content, new TypeReference<>() {
+                    });
 
                     // assert that it returned an error message
                     assertTrue(body.containsKey("message"));
@@ -116,7 +118,8 @@ class AuthenticationControllerIntegrationTests {
 
                     // assert that it returned a list of errors
                     assertTrue(body.containsKey("errors"));
-                    Map<String, String> errors = objectMapper.convertValue(body.get("errors"), Map.class);
+                    Map<String, String> errors = objectMapper.convertValue(body.get("errors"), new TypeReference<>() {
+                    });
 
                     // assert that the list of errors contains the expected errors
                     assertTrue(errors.containsKey("username"));
