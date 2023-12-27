@@ -1,5 +1,6 @@
 package org.ilisi.backend.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,5 +62,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleException(Exception e) {
         Map<String, Object> body = Map.of("message", e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException e) {
+        Map<String, Object> body = Map.of("message", e.getMessage());
+        log.error("Constraint violation exception", e);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
