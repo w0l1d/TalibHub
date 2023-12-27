@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ProfileComponent } from '../../components/profile/profile.component';
 import { LayoutComponent } from '../../components/layout/layout.component';
+import NavbarData from './navbar-data';
 
 @Component({
   selector: 'app-home',
@@ -13,5 +14,5 @@ import { LayoutComponent } from '../../components/layout/layout.component';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
+  navbarData = NavbarData;
 }

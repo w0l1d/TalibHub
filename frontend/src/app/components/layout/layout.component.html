@@ -4,37 +4,20 @@
         <i class="fa-solid fa-bars fa-xl"></i>
     </button>
     <!-- Left side Bar -->
-    <div class="col-start-1 col-end-4 h-dvh flex flex-col justify-between  border-r border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed bg-bodyLightWhite">
+    <aside class="col-start-1 col-end-4 h-dvh flex flex-col justify-between  border-r border-textBlack border-opacity-20 lg:hidden xl:text-xs 2xl:text-sm fixed bg-bodyLightWhite">
         <div>
             <div class="w-full pl-10 py-5 cursor-pointer bold-cd-font ">
                 <span class="text-3xl xl:text-2xl text-textBlack">Talib:</span>
                 <span class="text-3xl xl:text-2xl text-bodyLightPurple">hub</span>
             </div>
             <ul class="flex text-xl xl:text-lg 2xl:text-2xl flex-col mx-auto w-full text-textBlack cursor-pointer font-bold medium-cd-font">
-                <a href="#">
-                    <li class="text-bodyLightPurple py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
-                        <i class="fa-solid fa-house fa-lg"></i>
-                        <span class="ml-2">Home</span>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="text-textBlack py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
-                        <i class="fa-solid fa-newspaper fa-lg"></i>
-                        <span class="ml-2">News</span>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="text-textBlack py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
-                        <i class="fa-solid fa-bookmark fa-lg"></i>
-                        <span class="ml-2"> Saved</span>
-                    </li>
-                </a>
-                <a href="#">
-                    <li class="text-textBlack py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md">
-                        <i class="fa-sharp fa-solid fa-shield-halved fa fa-lg"></i>
-                        <span class="ml-2">Admin</span>
-                    </li>
-                </a>
+                
+                <li class=" py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md" *ngFor="let navData of navBarData">
+                    <a [href]="navData.route" [class]="navData.highlight ? 'text-bodyLightPurple' : ''">
+                        <i class="fa-lg" [class]="navData.icon"></i>
+                        <span class="ml-2">{{navData.label}}</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class=" w-full bottom-0 py-5 medium-cd-font ">
@@ -57,7 +40,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </aside>
     
 
     <ng-content></ng-content>

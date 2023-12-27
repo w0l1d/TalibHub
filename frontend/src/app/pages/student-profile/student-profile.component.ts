@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LayoutComponent } from '../../components/layout/layout.component';
+import NavbarData from './navbar-data';
 
 @Component({
   selector: 'app-student-profile',
@@ -11,5 +12,6 @@ import { LayoutComponent } from '../../components/layout/layout.component';
   styleUrl: './student-profile.component.css'
 })
 export class StudentProfileComponent {
-
+  navbarData = NavbarData;
+   
 }

@@ -1,5 +1,5 @@
-<app-layout>
-    <div class="col-start-4 col-end-13 lg:col-start-2 text-textBlack py-10">
+<app-layout [navBarData]="navbarData">
+    <div class=" col-start-4 col-end-13 lg:col-start-2 text-textBlack py-10">
         <div class="mx-10 medium-cd-font border border-opacity-15 bg-white rounded-md pb-10">
             <div class="z-10">
                 <img src="./assets/images/coverPic.jpg" alt="" class=" h-32 w-full rounded-t-md">
@@ -10,13 +10,18 @@
                     <i class="fa-solid fa-circle text-green-400 absolute right-1 bottom-1"></i>
                 </div>
             </div>
-            <div class="ml-12 w-full flex flex-col">
-                <p class="font-bold">
-                    Yassine Zawarduo
-                </p>
-                <p class="text-sm text-bodyGray">
-                    Software Engineering Student | Looking for PFE internship
-                </p>
+            <div class="flex">
+                <div class="ml-12 w-full flex flex-col">
+                    <p class="font-bold">
+                        Yassine Zawarduo
+                    </p>
+                    <p class="text-sm text-bodyGray">
+                        Software Engineering Student | Looking for PFE internship
+                    </p>
+                </div>
+                <button class="m-5 ">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
             </div>
         </div>
         <div class="flex flex-col gap-5 mx-10 medium-cd-font mt-10 border border-opacity-15 bg-white rounded-md p-5">
@@ -36,13 +41,17 @@
                         EdInfo · InternshipEdInfo · Internship May 2023 - Jul 2023 · 3 mosMay 2023 - Jul 2023 · 3 mos Casablanca-Settat, Morocco · RemoteCasablanca-Settat, Morocco · Remote
 
                         Designed and developed a web application for commercial management
+                        Designed and developed a web application for commercial management
+                        Designed and developed a web application for commercial management
+                        Designed and developed a web application for commercial management
+                        Designed and developed a web application for commercial management
                     </p>
                 </div>
                 
             </div>
-            <div class="regular-cd-font text-sm ml-auto">
+            <button class="regular-cd-font text-sm ml-auto">
                 ...see more
-            </div>
+            </button>
         </div>
         <div class="flex flex-col gap-5 mx-10 medium-cd-font mt-10 border border-opacity-15 bg-white rounded-md p-5">
             <p class="font-bold">
@@ -66,9 +75,9 @@
                 </div>
                 
             </div>
-            <div class="regular-cd-font text-sm ml-auto">
+            <button class="regular-cd-font text-sm ml-auto">
                 ...see more
-            </div>
+            </button>
         </div>
     </div>
 </app-layout>
