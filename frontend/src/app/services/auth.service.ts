@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { environment as env } from "../../environments/environment.development";
-import { HttpClient } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { catchError, of, tap } from "rxjs";
-import { Token } from "../models/token";
+import {Injectable} from "@angular/core";
+import {environment as env} from "../../environments/environment.development";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {catchError, of, tap} from "rxjs";
+import {Token} from "../models/token";
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,7 @@ export class AuthService {
           error: (error) => {
             // Handle error appropriately
             console.error('Login failed:', error);
-            reject(false);
+              reject(error);
           }
         });
     });
@@ -63,6 +63,7 @@ export class AuthService {
         }),
         catchError((error) => {
           this.doLogoutUser();
+            console.error("refreshToken failed:", error);
           return of(false);
         })
       );
@@ -80,7 +81,7 @@ export class AuthService {
   private doLogoutUser() {
     this.loggedUser = null;
     this.removeTokens();
-    this.router.navigate(["/login"]);
+      this.router.navigate(["/login"]).then(() => console.log("navigated to login"));
   }
 
   private getRefreshToken() {

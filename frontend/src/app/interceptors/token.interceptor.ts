@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
 import {
-  HTTP_INTERCEPTORS,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
+    HTTP_INTERCEPTORS,
+    HttpErrorResponse,
+    HttpEvent,
+    HttpHandler,
+    HttpInterceptor,
+    HttpRequest
 } from "@angular/common/http";
-import { BehaviorSubject, Observable, throwError } from "rxjs";
-import { catchError, filter, switchMap, take } from "rxjs/operators";
-import { AuthService } from "../services/auth.service";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
+import {catchError, filter, switchMap, take} from "rxjs/operators";
+import {AuthService} from "../services/auth.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -33,7 +33,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse && error.status === 401 || error.status === 403) {
           return this.handle401Error(request, next);
         } else {
-          return throwError(error);
+            return throwError(() => error);
         }
       })
     );
