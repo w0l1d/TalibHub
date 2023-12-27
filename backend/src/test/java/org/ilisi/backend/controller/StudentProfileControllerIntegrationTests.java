@@ -1,5 +1,7 @@
 package org.ilisi.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.EducationDto;
@@ -44,9 +46,9 @@ class StudentProfileControllerIntegrationTests {
     @ServiceConnection
     @Container
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+    private static String JWT_TOKEN;
     @Autowired
     private ObjectMapper objectMapper;
-    private static String JWT_TOKEN;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -129,16 +131,16 @@ class StudentProfileControllerIntegrationTests {
 
         //act
         ResultActions test = mockMvc.perform(post(String.format("/profiles/%s/educations", profile.getId()))
-                        .header("Authorization", "Bearer " + JWT_TOKEN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(
-                                String.format(
-                                        "{\"title\": \"%s\", \"studyField\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"name\": \"%s\"}}",
-                                        educationDto.getTitle(),
-                                        educationDto.getStudyField(),
-                                        educationDto.getStartAt(),
-                                        educationDto.getEndAt(),
-                                        educationDto.getInstitut().getName())));
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"studyField\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"name\": \"%s\"}}",
+                                educationDto.getTitle(),
+                                educationDto.getStudyField(),
+                                educationDto.getStartAt(),
+                                educationDto.getEndAt(),
+                                educationDto.getInstitut().getName())));
 
         //assert
         test.andExpect(status().isOk())
@@ -147,10 +149,11 @@ class StudentProfileControllerIntegrationTests {
                     assert !content.isEmpty();
 
                     log.info("Response content: {}", content);
-                    // parse content to JSON
-                    Map<String, Object> profileJson = objectMapper.readValue(content, Map.class);
-                    List<Education> educations = (List<Education>) profileJson.get("educations");
+                    JsonNode jsonNode = objectMapper.readTree(content);
 
+                    Profile profile1 = objectMapper.convertValue(jsonNode, new TypeReference<>() {
+                    });
+                    List<Education> educations = profile1.getEducations();
                     assertFalse(educations.isEmpty());
                     assertEquals(1, educations.size());
                 });
@@ -177,21 +180,22 @@ class StudentProfileControllerIntegrationTests {
                                 educationDto.getInstitut().getId())));
 
         //assert
-        test.andExpect(status().isOk())
-                .andExpect(result -> {
+        test.andExpectAll(status().isOk(),
+                result -> {
                     String content = result.getResponse().getContentAsString();
                     assert !content.isEmpty();
 
                     log.info("Response content: {}", content);
-                    // parse content to JSON
-                    Map<String, Object> profileJson = objectMapper.readValue(content, Map.class);
-                    LinkedHashMap<String, Object> educationJson = (LinkedHashMap<String, Object>) ((List) profileJson.get("educations")).get(0);
-                    List<Education> educations = (List<Education>) profileJson.get("educations");
-                    Map<String, Object> institutJson = (Map<String, Object>) educationJson.get("institut");
-                    assertFalse(educations.isEmpty());
-                    assertEquals(1, educations.size());
-                    assertEquals(institut.getId(), institutJson.get("id"));
-                    assertEquals(institut.getName(), institutJson.get("name"));
+                    JsonNode jsonNode = objectMapper.readTree(content);
+
+                    Profile profile1 = objectMapper.convertValue(jsonNode, new TypeReference<>() {
+                    });
+
+
+                    assertFalse(profile1.getEducations().isEmpty());
+                    assertEquals(1, profile1.getEducations().size());
+                    assertEquals(institut.getId(), profile1.getEducations().get(0).getInstitut().getId());
+                    assertEquals(institut.getName(), profile1.getEducations().get(0).getInstitut().getName());
                 });
 
     }
@@ -226,6 +230,7 @@ class StudentProfileControllerIntegrationTests {
             assertEquals("PROFILE_NOT_FOUND", errorJson.get("errorCode"));
         });
     }
+
     @Test
     void addExperienceReturnsProfile() throws Exception {
 
