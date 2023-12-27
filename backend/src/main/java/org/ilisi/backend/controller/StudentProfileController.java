@@ -30,11 +30,10 @@ public class StudentProfileController {
     public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
-            log.error("Profile not found");
-            throw new EntityNotFoundException(String.format("Profile with id %s not found", profileId), "PROFILE_NOT_FOUND");
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
         }
-        log.info("Profile found");
-        log.info("EducationDto: {}", educationDto);
         return profileService.addEducation(profile, educationDto);
     }
 
@@ -42,8 +41,9 @@ public class StudentProfileController {
     public Profile addExperience(@PathVariable String profileId, @RequestBody @Valid ExperienceDto experienceDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
-            log.error("Profile not found");
-            throw new EntityNotFoundException(String.format("Profile with id %s not found", profileId), "PROFILE_NOT_FOUND");
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
         }
         return profileService.addExperience(profile, experienceDto);
     }

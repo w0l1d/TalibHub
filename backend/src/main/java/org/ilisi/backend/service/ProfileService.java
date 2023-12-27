@@ -50,7 +50,6 @@ public class ProfileService {
             });
         Education education = educationRepository.save(educationMapper.educationDtoToEducation(educationDto));
         profile.getEducations().add(education);
-        log.info("Profile: {}", profile);
         return profileRepository.save(profile);
     }
 
