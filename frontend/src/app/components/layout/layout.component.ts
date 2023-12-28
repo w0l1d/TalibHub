@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { DataTableComponent } from '../data-table/data-table.component';
-import { ProfileComponent } from '../profile/profile.component';
+import {Component, Input} from '@angular/core';
+import {DataTableComponent} from '../data-table/data-table.component';
+import {ProfileComponent} from '../profile/profile.component';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-layout',
@@ -13,6 +14,7 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
     NgForOf,
     NgIf
   ],
+  providers: [AuthService],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
@@ -21,5 +23,14 @@ export class LayoutComponent {
   @Input() navBarData!: any;
   toggleCollapsed(): void {
     this.collapsed = !this.collapsed;
+  }
+
+  constructor(
+    private authService: AuthService
+  ) {
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

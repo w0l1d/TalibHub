@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
 export class LoginComponent {
 
     loginForm!: FormGroup;
+  errorMessage: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +27,8 @@ export class LoginComponent {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      username: ['', [
+        Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
     });
   }
@@ -36,16 +38,13 @@ export class LoginComponent {
     if(this.loginForm.valid) {
 
       this.authService.login(this.loginForm.getRawValue())
-      .then((success: boolean) => {
-        if (success) {
-            console.log("Login successful");
-            this.router.navigate(['/home']).then(() => console.log("navigated to home"));
-        }else {
-            console.log("Login failed");
-        }
+        .then(() => {
+          console.log("Login successful");
+          this.router.navigate(['/home']).then(() => console.log("navigated to home"));
       })
       .catch((error: any) => {
           console.error("Login failed", error);
+        this.errorMessage = "Username or password incorrect";
       });
     }
   }

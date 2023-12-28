@@ -81,7 +81,7 @@ export class AuthService {
   private doLogoutUser() {
     this.loggedUser = null;
     this.removeTokens();
-      this.router.navigate(["/login"]).then(() => console.log("navigated to login"));
+    this.router.navigate(["/login"]).then(() => console.log("navigated to login"));
   }
 
   private getRefreshToken() {
