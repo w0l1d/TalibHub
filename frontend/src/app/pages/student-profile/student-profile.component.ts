@@ -3,6 +3,7 @@ import {LayoutComponent} from '../../components/layout/layout.component';
 import NavbarData from './navbar-data';
 import {StudentProfileService} from '../../services/student-profile.service';
 import {HttpClientModule} from '@angular/common/http';
+import Profile from '../../models/profile';
 
 @Component({
   selector: 'app-student-profile',
@@ -17,7 +18,7 @@ import {HttpClientModule} from '@angular/common/http';
 })
 export class StudentProfileComponent {
   navbarData = NavbarData;
-  studentProfile: any;
+  studentProfile?: Profile;
 
   constructor(
     private studentProfileService: StudentProfileService,
