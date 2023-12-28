@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.AuthRequestDTO;
-import org.ilisi.backend.services.AuthenticationService;
+import org.ilisi.backend.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, ?>> login(@RequestBody @Valid AuthRequestDTO appUser) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid AuthRequestDTO appUser) {
         log.info("Received login request for username: {}", appUser.getUsername());
         try {
             // Authentication logic
@@ -36,7 +36,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<Map<String, ?>> generateRefreshToken(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> generateRefreshToken(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refreshToken");
         log.info("Received refresh token request for token: {}", refreshToken);
         try {

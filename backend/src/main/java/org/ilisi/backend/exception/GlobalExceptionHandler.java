@@ -1,6 +1,7 @@
 package org.ilisi.backend.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.naming.AuthenticationException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -16,22 +18,34 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalExceptionHandler {
 
+
+    @ExceptionHandler(GlobalAppException.class)
+    public ResponseEntity<Map<String, Object>> handleGlobalAppException(GlobalAppException e) {
+        Map<String, Object> body = Map.of(
+                "message", e.getMessage(),
+                "errorCode", e.getErrorCode(),
+                "timestamp", e.getTimestamp()
+        );
+        log.error("Global app exception", e);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Map<String, ?>> handleAuthenticationException(AuthenticationException e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleAuthenticationException(AuthenticationException e) {
+        Map<String, Object> body = Map.of("message", e.getMessage());
         log.error("Authentication failed", e);
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, ?>> handleIllegalArgumentException(IllegalArgumentException e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException e) {
+        Map<String, Object> body = Map.of("message", e.getMessage());
         log.error("Illegal argument", e);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, ?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
 
         Map<String, String> errors = e.getBindingResult()
@@ -45,9 +59,20 @@ public class GlobalExceptionHandler {
         ), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, ?>> handleException(Exception e) {
-        Map<String, ?> body = Map.of("message", e.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", e.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
+        // add the cause of the exeption in the returned body
+        Map<String, Object> body = Map.of("message", e.getMessage());
+        log.error("Exception", e);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+
 }

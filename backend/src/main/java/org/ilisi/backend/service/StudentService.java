@@ -2,7 +2,6 @@ package org.ilisi.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -14,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class StudentService {
 
     private StudentRepository studentRepository;
     private ProfileRepository profileRepository;
 
+    @Transactional
     public List<Student> createStudents(@RequestBody List<Student> students) {
         List<Profile> profiles = new ArrayList<>();
 
@@ -31,8 +30,7 @@ public class StudentService {
 
         studentRepository.saveAll(students);
         profileRepository.saveAll(profiles);
-
         return students;
-
     }
+
 }

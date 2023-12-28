@@ -18,6 +18,7 @@ public class BackendApplication {
     }
 
 
+
     @Bean
     public CommandLineRunner commadnLineRunner(UserRepository userRepository,
                                                PasswordEncoder passwordEncoder) {

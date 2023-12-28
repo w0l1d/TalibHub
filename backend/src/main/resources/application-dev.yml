@@ -1,6 +1,6 @@
 jwt:
   key: "YourSecretKeyHereYourSecretKeyHereYourSecretKeyHereYourSecretKeyHere"
-  access-token-expiration-in-minutes: 10
+  access-token-expiration-in-minutes: 10000
   refresh-token-expiration-in-days: 30
 server:
   port: 8081
@@ -20,3 +20,22 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+logging:
+  level:
+    org:
+      apache:
+        tomcat: error
+        http: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+        descriptor:
+          sql:
+          BasicBinder: TRACE
+#    root: debug
+    web: trace

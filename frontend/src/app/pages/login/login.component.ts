@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { NgIf } from "@angular/common";
+import {Component} from "@angular/core";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
-import {HttpResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -16,11 +16,12 @@ import {HttpResponse} from "@angular/common/http";
 })
 export class LoginComponent {
 
-  loginForm: FormGroup | any;
+    loginForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -35,17 +36,17 @@ export class LoginComponent {
     if(this.loginForm.valid) {
 
       this.authService.login(this.loginForm.getRawValue())
-      .subscribe((res: HttpResponse<any>) => {
-        if(res.ok) {
-          console.log(res.body);
-          localStorage.setItem("accessToken", res.body.accessToken);
-          localStorage.setItem("refreshToken", res.body.refreshToken);
-          // TODO: redirect to home page
-
-        }else{
-          console.log("Login failed");
+      .then((success: boolean) => {
+        if (success) {
+            console.log("Login successful");
+            this.router.navigate(['/home']).then(() => console.log("navigated to home"));
+        }else {
+            console.log("Login failed");
         }
       })
+      .catch((error: any) => {
+          console.error("Login failed", error);
+      });
     }
   }
 

@@ -1,15 +1,18 @@
 package org.ilisi.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -70,5 +73,7 @@ public abstract class User implements UserDetails {
         return this.enabled;
     }
 
-
+    @Override
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public abstract Collection<? extends GrantedAuthority> getAuthorities();
 }
