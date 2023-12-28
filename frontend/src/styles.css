@@ -1,4 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('./assets/fonts/WEB/css/clash-display.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.bold-cd-font{
+    font-family: 'ClashDisplay-Bold';
+}
+
+.medium-cd-font{
+    font-family: 'ClashDisplay-Medium';
+}
+
+.semibold-cd-font{
+    font-family: 'ClashDisplay-Semibold';
+}
+
+.regular-cd-font{
+    font-family: 'ClashDisplay-Regular';
+}
+
+.light-cd-font{
+    font-family: 'ClashDisplay-Light';
+}
+
+.extralight-cd-font{
+    font-family: 'ClashDisplay-Extralight';
+}

@@ -1,0 +1,5 @@
+.show-aside {
+    display: block !important; /* Override media query */
+    position: fixed;
+    z-index: 30; /* Set a high z-index value to ensure it appears over other content */
+}
