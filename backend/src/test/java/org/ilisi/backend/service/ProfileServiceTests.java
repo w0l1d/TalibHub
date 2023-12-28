@@ -3,6 +3,7 @@ package org.ilisi.backend.service;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
+import org.ilisi.backend.exception.EntityNotFoundException;
 import org.ilisi.backend.mapper.EducationMapper;
 import org.ilisi.backend.mapper.ExperienceMapper;
 import org.ilisi.backend.model.Education;
@@ -26,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Slf4j
 class ProfileServiceTests {
@@ -91,17 +95,14 @@ class ProfileServiceTests {
                 .studyField("studyField")
                 .startAt(YearMonth.of(2019, 1))
                 .endAt(YearMonth.of(2020, 1))
-                .institut(Institut.builder().name("institut").build()).build();
-        Education education = Education.builder()
-                .title(educationDto.getTitle())
-                .studyField(educationDto.getStudyField())
-                .startAt(educationDto.getStartAt())
-                .endAt(educationDto.getEndAt())
-                .institut(educationDto.getInstitut()).build();
+                .institut(Institut.builder().id(UUID.randomUUID().toString()).name("institut").build()).build();
+
+        Mockito.when(educationMapper.educationDtoToEducation(educationDto)).thenCallRealMethod();
+
+        Education education = educationMapper.educationDtoToEducation(educationDto);
 
         //act
         Mockito.when(institutRepository.findById(educationDto.getInstitut().getId())).thenReturn(Optional.of(education.getInstitut()));
-        Mockito.when(educationMapper.educationDtoToEducation(educationDto)).thenReturn(education);
         Mockito.when(educationRepository.save(education)).thenReturn(education);
         Mockito.when(profileRepository.save(profile)).thenReturn(profile);
 
@@ -126,18 +127,14 @@ class ProfileServiceTests {
                 .description("description")
                 .startAt(YearMonth.of(2019, 1))
                 .endAt(YearMonth.of(2020, 1))
-                .institut(Institut.builder().name("institut").build()).build();
+                .institut(Institut.builder().id(UUID.randomUUID().toString()).name("institut").build()).build();
 
-        Experience experience = Experience.builder()
-                .title(experienceDto.getTitle())
-                .description(experienceDto.getDescription())
-                .startAt(experienceDto.getStartAt())
-                .endAt(experienceDto.getEndAt())
-                .institut(experienceDto.getInstitut()).build();
+        Mockito.when(experienceMapper.experienceDtoToExperience(experienceDto)).thenCallRealMethod();
+
+        Experience experience = experienceMapper.experienceDtoToExperience(experienceDto);
 
         //act
         Mockito.when(institutRepository.findById(experienceDto.getInstitut().getId())).thenReturn(Optional.of(experience.getInstitut()));
-        Mockito.when(experienceMapper.experienceDtoToExperience(experienceDto)).thenReturn(experience);
         Mockito.when(experienceRepository.save(experience)).thenReturn(experience);
         Mockito.when(profileRepository.save(profile)).thenReturn(profile);
 
@@ -159,5 +156,59 @@ class ProfileServiceTests {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(2020, result.getYear());
         Assertions.assertEquals(1, result.getMonthValue());
+    }
+
+    @Test
+    void addEducationThrowsExceptionWhenInstituteNotFound() {
+        //arrange
+        Profile profile = Profile.builder().
+                id(UUID.randomUUID().toString())
+                .educations(new ArrayList<>())
+                .build();
+
+        EducationDto educationDto = EducationDto.builder()
+                .title("title")
+                .studyField("studyField")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(Institut.builder().id(UUID.randomUUID().toString()).name("institut").build()).build();
+
+        //act
+        Mockito.when(institutRepository.findById(educationDto.getInstitut().getId())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> profileService.addEducation(profile, educationDto)
+        );
+
+        //assert
+        assertEquals(String.format("Institute with id %s not found", educationDto.getInstitut().getId()), exception.getMessage());
+    }
+
+    @Test
+    void addExperienceThrowsExceptionWhenInstituteNotFound() {
+        //arrange
+        Profile profile = Profile.builder().
+                id(UUID.randomUUID().toString())
+                .experiences(new ArrayList<>())
+                .build();
+
+        ExperienceDto experienceDto = ExperienceDto.builder()
+                .title("title")
+                .description("description")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(Institut.builder().id(UUID.randomUUID().toString()).name("institut").build()).build();
+
+        //act
+        Mockito.when(institutRepository.findById(experienceDto.getInstitut().getId())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> profileService.addExperience(profile, experienceDto)
+        );
+
+        //assert
+        assertEquals(String.format("Institute with id %s not found", experienceDto.getInstitut().getId()), exception.getMessage());
     }
 }
