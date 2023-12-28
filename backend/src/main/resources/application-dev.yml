@@ -4,13 +4,6 @@ jwt:
   refresh-token-expiration-in-days: 30
 server:
   port: 8081
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  docker:
-    compose:
-      lifecycle-management: start_only
 
 spring:
   docker:

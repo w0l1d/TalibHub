@@ -1,6 +1,8 @@
 package org.ilisi.backend;
 
+import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
+import org.ilisi.backend.repository.ProfileRepository;
 import org.ilisi.backend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +23,7 @@ public class BackendApplication {
 
     @Bean
     public CommandLineRunner commadnLineRunner(UserRepository userRepository,
+                                               ProfileRepository profileRepository,
                                                PasswordEncoder passwordEncoder) {
         // create user
         return args -> {
@@ -39,7 +42,11 @@ public class BackendApplication {
             student.setEnabled(true);
             // encode password with BCryptPasswordEncoder
             student.setPassword(passwordEncoder.encode("12345678"));
-            userRepository.save(student);
+
+            Profile profile = Profile.builder()
+                    .about("about")
+                    .student(userRepository.save(student)).build();
+            profileRepository.save(profile);
         };
     }
 }

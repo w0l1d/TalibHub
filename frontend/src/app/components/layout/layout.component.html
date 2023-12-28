@@ -16,7 +16,6 @@
                 </button>
             </div>
             <ul class="flex text-xl xl:text-lg 2xl:text-2xl flex-col mx-auto w-full text-textBlack cursor-pointer font-bold medium-cd-font">
-                
                 <li class=" py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md" *ngFor="let navData of navBarData">
                     <a [href]="navData.route" [class]="navData.highlight ? 'text-bodyLightPurple' : ''">
                         <i class="fa-lg" [class]="navData.icon"></i>

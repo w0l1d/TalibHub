@@ -9,8 +9,10 @@ import org.ilisi.backend.dto.ExperienceDto;
 import org.ilisi.backend.exception.EntityNotFoundException;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.service.ProfileService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -25,8 +27,15 @@ public class StudentProfileController {
         return profileService.getAll();
     }
 
+    // get authentified user profile
+    @GetMapping("/me")
+    public Profile getProfile(Authentication authentication) {
+        String email = authentication.getName();
+        return profileService.getProfile(email);
+    }
 
-    @PostMapping("/{profileId}/educations")
+
+                           @PostMapping("/{profileId}/educations")
     public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {
