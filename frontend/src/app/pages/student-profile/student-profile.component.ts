@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { LayoutComponent } from '../../components/layout/layout.component';
+import {Component} from '@angular/core';
+import {LayoutComponent} from '../../components/layout/layout.component';
 import NavbarData from './navbar-data';
-import { StudentProfileService } from '../../services/student-profile.service';
-import { HttpClientModule } from '@angular/common/http';
+import {StudentProfileService} from '../../services/student-profile.service';
+import {HttpClientModule} from '@angular/common/http';
 
 @Component({
   selector: 'app-student-profile',
@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
     LayoutComponent,
     HttpClientModule
   ],
+  providers: [StudentProfileService],
   templateUrl: './student-profile.component.html',
   styleUrl: './student-profile.component.css'
 })
@@ -19,7 +20,7 @@ export class StudentProfileComponent {
   studentProfile: any;
 
   constructor(
-    private studentProfileService: StudentProfileService
+    private studentProfileService: StudentProfileService,
   ) { }
 
   ngOnInit() {
@@ -27,6 +28,7 @@ export class StudentProfileComponent {
       this.studentProfile = data;
       console.log(this.studentProfile);
     });
+
   }
-   
+
 }

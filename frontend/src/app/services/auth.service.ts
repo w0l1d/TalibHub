@@ -10,7 +10,7 @@ import {Token} from "../models/token";
 })
 export class AuthService {
 
-  readonly baseUrl;
+  readonly baseUrl: string;
   private readonly JWT_TOKEN = "JWT_TOKEN";
   private readonly REFRESH_TOKEN = "REFRESH_TOKEN";
   private loggedUser: any;
