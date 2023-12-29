@@ -8,6 +8,7 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import Education from "../../models/education";
 import Institut from "../../models/institut";
+import {InstitutService} from "../../services/institut.service";
 
 @Component({
   selector: 'app-student-profile',
@@ -23,6 +24,7 @@ import Institut from "../../models/institut";
   ],
   providers: [
     StudentProfileService,
+    InstitutService,
     DatePipe
   ],
   templateUrl: './student-profile.component.html',
@@ -34,34 +36,25 @@ export class StudentProfileComponent {
   educationForm!: FormGroup;
   addExpModalCollapsed : boolean = true;
   addEducModalCollapsed : boolean = true;
+  instituts: Institut[] = [];
 
   constructor(
     private studentProfileService: StudentProfileService,
+    private institutService: InstitutService,
     private formBuilder: FormBuilder,
     private datePipe: DatePipe
   ) { }
 
-  formatDate(date: Date): string {
-    return this.datePipe.transform(date, 'yyyy-MM') || ''; // Format date to YYYY-MM
-  }
+
   ngOnInit() {
-    this.studentProfileService.getStudentProfile().subscribe(data => {
-      this.studentProfile = data;
-      console.log(this.studentProfile);
-    });
-    this.educationForm = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      studyField: ['', [Validators.required]],
-      startAt: ['', [Validators.required]],
-      endAt: ['', [Validators.required]],
-      institutname: ['', [Validators.required]],
-      institutwebsite: ['', [Validators.required]],
-      description: ['', [Validators.required]]
-    });
+    this.getStudentProfile();
+    this.buildEducationForm();
 
   }
 
-  onSubmit(): void {
+
+
+  public onSubmit(): void {
     console.warn('Your form has been submitted', this.educationForm);
     if(this.educationForm.valid) {
       // create institut object
@@ -87,11 +80,52 @@ export class StudentProfileComponent {
     }
   }
 
-  toggleAddExpModal() {
+  public toggleAddExpModal() {
+    if (this.addEducModalCollapsed) {
+      this.getInstituts();
+    }
     this.addExpModalCollapsed = !this.addExpModalCollapsed;
   }
-  toggleAddEducModal() {
+  public toggleAddEducModal() {
+    if (this.addEducModalCollapsed) {
+      this.getInstituts();
+    }
     this.addEducModalCollapsed = !this.addEducModalCollapsed;
+  }
+
+  private getStudentProfile(): void {
+    this.studentProfileService.getStudentProfile().subscribe(data => {
+      this.studentProfile = data;
+      console.log(this.studentProfile);
+    });
+  }
+
+  private buildEducationForm() {
+    this.educationForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      studyField: ['', [Validators.required]],
+      startAt: ['', [Validators.required]],
+      endAt: ['', [Validators.required]],
+      institutname: ['', [Validators.required]],
+      institutwebsite: ['', [Validators.required]],
+      description: ['', [Validators.required]]
+    });
+  }
+
+  private formatDate(date: Date): string {
+    return this.datePipe.transform(date, 'yyyy-MM') || ''; // Format date to YYYY-MM
+  }
+
+  private getInstituts(): void {
+    this.institutService.getInstituts().subscribe((data: any) => {
+      console.log('Received Data:', data); // Log the received data
+      if (data && data._embedded && data._embedded.instituts) {
+        this.instituts = data._embedded.instituts;
+        console.log('Institutes:', this.instituts); // Log the extracted institutes
+      } else {
+        console.error('Data structure mismatch or missing data');
+      }
+    });
   }
 
 }

@@ -17,12 +17,14 @@ export class StudentProfileService {
     this.baseUrl = env.api;
   }
 
-  getStudentProfile(): Observable<any> {
+  public getStudentProfile(): Observable<any> {
     return this.http.get(`${this.baseUrl}/profiles/me`);
   }
 
-  addEducation(profileId:string, education: Education): Observable<any> {
+  public addEducation(profileId:string, education: Education): Observable<any> {
     return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, education);
   }
+
+
 
 }
