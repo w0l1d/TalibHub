@@ -12,7 +12,6 @@ import org.ilisi.backend.service.ProfileService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -35,7 +34,7 @@ public class StudentProfileController {
     }
 
 
-                           @PostMapping("/{profileId}/educations")
+    @PostMapping("/{profileId}/educations")
     public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
         Profile profile = profileService.findById(profileId);
         if(profile == null) {

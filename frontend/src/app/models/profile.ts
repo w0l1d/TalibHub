@@ -3,17 +3,20 @@ import Experience from "./experience";
 import Student from "./student";
 
 class Profile {
+    id: string;
     about: string;
     student: Student;
     educations: Education[];
     experiences: Experience[];
 
     constructor(
-        about: string, 
+        id: string,
+        about: string,
         student: Student,
-        educations: Education[], 
+        educations: Education[],
         experiences: Experience[]
     ) {
+        this.id = id;
         this.about = about;
         this.student = student;
         this.educations = educations;

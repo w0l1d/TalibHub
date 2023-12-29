@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment as env} from '../../environments/environment.development';
+import Education from "../models/education";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class StudentProfileService {
 
   getStudentProfile(): Observable<any> {
     return this.http.get(`${this.baseUrl}/profiles/me`);
+  }
+
+  addEducation(profileId:string, education: Education): Observable<any> {
+    return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, education);
   }
 
 }

@@ -4,16 +4,16 @@ class Education {
     title: string;
     studyField: string;
     description: string;
-    startAt: Date;
-    endAt: Date;
+    startAt: string;
+    endAt: string;
     institut: Institut;
 
     constructor(
         title: string,
         studyField: string,
         description: string,
-        startAt: Date,
-        endAt: Date,
+        startAt: string,
+        endAt: string,
         institut: Institut
     ) {
         this.title = title;
