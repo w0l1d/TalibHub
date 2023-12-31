@@ -16,9 +16,13 @@
                 </button>
             </div>
             <ul class="flex text-xl xl:text-lg 2xl:text-2xl flex-col mx-auto w-full text-textBlack cursor-pointer font-bold medium-cd-font">
-                
                 <li class=" py-2 hover:bg-bodyWhite pl-12 m-2 rounded-md" *ngFor="let navData of navBarData">
-                    <a [href]="navData.route" [class]="navData.highlight ? 'text-bodyLightPurple' : ''">
+                  <a *ngIf="navData.label != 'Logout'" [class]="navData.highlight ? 'text-bodyLightPurple' : ''"
+                     [href]="navData.route">
+                    <i [class]="navData.icon" class="fa-lg"></i>
+                    <span class="ml-2">{{navData.label}}</span>
+                  </a>
+                  <a (click)="logout()" *ngIf="navData.label == 'Logout'">
                         <i class="fa-lg" [class]="navData.icon"></i>
                         <span class="ml-2">{{navData.label}}</span>
                     </a>
@@ -46,8 +50,8 @@
             </div>
         </div>
     </aside>
-    
 
-    <ng-content></ng-content>
-    
+
+  <ng-content></ng-content>
+
 </div>

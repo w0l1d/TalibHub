@@ -10,7 +10,7 @@ import {Token} from "../models/token";
 })
 export class AuthService {
 
-  readonly baseUrl;
+  readonly baseUrl: string;
   private readonly JWT_TOKEN = "JWT_TOKEN";
   private readonly REFRESH_TOKEN = "REFRESH_TOKEN";
   private loggedUser: any;
@@ -81,7 +81,7 @@ export class AuthService {
   private doLogoutUser() {
     this.loggedUser = null;
     this.removeTokens();
-      this.router.navigate(["/login"]).then(() => console.log("navigated to login"));
+    this.router.navigate(["/login"]).then(() => console.log("navigated to login"));
   }
 
   private getRefreshToken() {

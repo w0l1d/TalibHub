@@ -10,7 +10,7 @@ import {environment as env} from "../../../environments/environment.development"
   standalone: true,
   imports: [
     ProfileComponent,
-    LayoutComponent
+    LayoutComponent,
     HttpClientModule
   ],
   templateUrl: './home.component.html',

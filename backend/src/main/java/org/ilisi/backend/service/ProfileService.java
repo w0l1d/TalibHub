@@ -37,6 +37,10 @@ public class ProfileService {
         return profileRepository.findAll();
     }
 
+    public Profile getProfile(String email) {
+        return profileRepository.findByStudentEmail(email);
+    }
+
 
     public Profile addEducation(Profile profile, EducationDto educationDto) {
 

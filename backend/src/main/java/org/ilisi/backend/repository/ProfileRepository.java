@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ProfileRepository extends JpaRepository<Profile, String> {
+    Profile findByStudentEmail(String email);
 }

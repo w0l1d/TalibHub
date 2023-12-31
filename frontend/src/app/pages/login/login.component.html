@@ -13,13 +13,16 @@
                     <div class="flex flex-col items-center justify-center">
                         <input type="text"  formControlName="username" class="w-96 h-12 px-4 py-2 mt-4 text-lg text-gray-700 placeholder-gray-400 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500" placeholder="Enter email">
                         <div *ngIf="loginForm.controls['username'].invalid && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)" class="text-red-500 text-sm">
-                          <span *ngIf="loginForm.controls['username'].errors.required">
+                          <span *ngIf="loginForm.controls['username'].errors?.['required']">
                             Username is required.
+                          </span>
+                          <span *ngIf="loginForm.controls['username'].errors?.['pattern']">
+                            Username must be a valid email address.
                           </span>
                         </div>
                         <input type="password" formControlName="password" class="w-96 h-12 px-4 py-2 mt-4 text-lg text-gray-700 placeholder-gray-400 border border-gray-300 rounded-3xl focus:outline-none focus:border-blue-500" placeholder="Enter password">
                         <div *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="text-red-500 text-sm">
-                          <span *ngIf="loginForm.controls['password'].errors.required">
+                          <span *ngIf="loginForm.controls['password'].errors?.['required']">
                             Password is required.
                           </span>
                         </div>
@@ -28,6 +31,12 @@
                         <button type="submit" class="w-96 h-12 px-4 py-2 mt-4 text-lg bg-violet-950 text-white rounded-3xl hover:bg-violet-900 focus:outline-none focus:bg-violet-900">Login</button>
                     </div>
                 </form>
+              <!-- Login Error -->
+              <div *ngIf="errorMessage" class="text-red-500 text-sm">
+                <span *ngIf="errorMessage">
+                  {{ errorMessage }}
+                </span>
+              </div>
             </div>
         </div>
     </div>
