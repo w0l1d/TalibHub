@@ -30,10 +30,8 @@
                     Experience
                 </p>
                 <div class="flex gap-2">
+                  <app-experience-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [title]="'Create New Education'" [operation]="'create'" />
 
-                  <button class="bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-target="crud-modal" data-modal-toggle="crud-modal" type="button">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
                 </div>
             </div>
             <div class="flex gap-5" *ngFor="let experience of studentProfile?.experiences">
@@ -41,17 +39,19 @@
                 <img src="./assets/images/edinfo.jpeg" alt="" class="size-20">
 
                 </div>
-                <div class="" >
-                    <p class="font-bold">
-                      {{experience.institut?.name}}
-                    </p>
-                    <p class="regular-cd-font text-sm">
-                        {{experience.description}}
-                    </p>
-                </div>
-              <button>
-                <i class="fa-solid fa-pen"></i>
-              </button>
+              <div class=""  >
+                <p class="font-bold">
+                  {{experience.title}} - {{experience.institut?.name}}
+                </p>
+                <p class="light-cd-font text-sm">
+                  {{experience.startAt}} / {{experience.endAt}}
+                </p>
+                <p class="regular-cd-font text-lg">
+                  {{experience.description}}
+                </p>
+              </div>
+              <app-experience-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [experience]="experience" [title]="'Edit Education'" [operation]="'update'" />
+
 
             </div>
             <button class="regular-cd-font text-sm ml-auto" >
@@ -66,7 +66,7 @@
                 <div class="flex gap-2">
 
 
-                  <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [title]="educationModalTitle" [operation]="educationModalOperation" />
+                  <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [title]="'Create New Education'" [operation]="'create'" />
 
                 </div>
             </div>
@@ -85,9 +85,11 @@
                         {{education.description}}
                     </p>
                 </div>
-                <button class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center ">
-                  <i class="fa-solid fa-pen"></i>
-                </button>
+              <div class="ms-auto">
+
+                <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [education]="education" [title]="'Edit Education'" [operation]="'update'" />
+              </div>
+
             </div>
             <button class="regular-cd-font text-sm ml-auto">
                 ...see more

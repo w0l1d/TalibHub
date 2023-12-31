@@ -7,6 +7,7 @@ import Profile from '../../models/profile';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EducationModalComponent} from "../../components/education-modal/education-modal.component";
+import {ExperienceModalComponent} from "../../components/experience-modal/experience-modal.component";
 
 @Component({
   selector: 'app-student-profile',
@@ -19,6 +20,7 @@ import {EducationModalComponent} from "../../components/education-modal/educatio
     FormsModule,
     ReactiveFormsModule,
     EducationModalComponent,
+    ExperienceModalComponent
 
   ],
   providers: [
@@ -30,8 +32,6 @@ import {EducationModalComponent} from "../../components/education-modal/educatio
 export class StudentProfileComponent {
   navbarData = NavbarData;
   studentProfile?: Profile;
-  educationModalTitle: string = 'Create New Education';
-  educationModalOperation: string = 'Create';
 
 
 

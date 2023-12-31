@@ -31,8 +31,9 @@ export class EducationModalComponent {
   addInstitutCollapsed!: boolean;
   educationForm!: FormGroup;
   instituts: Institut[] = [];
-  @Input() title: string = 'Create New Education';
-  @Input() operation: string = 'Create';
+  @Input() title?: string;
+  @Input() operation?: string;
+  @Input() education?: Education;
 
 
   constructor(
@@ -46,12 +47,17 @@ export class EducationModalComponent {
 
   ngOnInit():void {
     this.buildEducationForm();
+
   }
 
   public toggleAddEducModal():void {
     if (this.educModalCollapsed) {
       this.getInstituts();
       this.resetForm();
+      if (this.education !== undefined) {
+        console.log('I am here');
+        this.fillForm();
+      }
     }
     this.educModalCollapsed = !this.educModalCollapsed;
   }
@@ -62,46 +68,83 @@ export class EducationModalComponent {
 
   public onCreate(): void {
     console.warn('Your form has been submitted', this.educationForm);
-    if(this.educationForm.valid) {
-      // create institut object
-      const institut :Institut = {
-        id: this.educationForm.get('institutId')?.value === '' ? null : this.educationForm.get('institutId')?.value,
+    if(this.educationForm.invalid) {
+      return;
+    }
+    var institut;
+    // create institut object
+    if (this.educationForm.get('institutId')?.value === '') {
+      institut  = {
         name: this.educationForm.get('institutname')?.value,
         website: this.educationForm.get('institutwebsite')?.value
       };
-      // create education object
-      const education :Education = {
-        title: this.educationForm.get('title')?.value,
-        studyField: this.educationForm.get('studyField')?.value,
-        description: this.educationForm.get('description')?.value,
-        startAt: this.formatDate(this.educationForm.get('startAt')?.value),
-        endAt: this.formatDate(this.educationForm.get('endAt')?.value),
-        institut: institut
+    } else {
+      institut  = {
+        id: this.educationForm.get('institutId')?.value,
+        name: this.educationForm.get('institutname')?.value,
+        website: this.educationForm.get('institutwebsite')?.value
       };
-      console.log(education);
-      this.studentProfileService.addEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
-        console.log(data);
-        // search for institut by id in the instituts array
-        education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-        this.studentProfile?.educations.push(education);
-        this.toggleAddEducModal();
-      });
     }
+    // create education object
+    const education :Education = {
+      title: this.educationForm.get('title')?.value,
+      studyField: this.educationForm.get('studyField')?.value,
+      description: this.educationForm.get('description')?.value,
+      startAt: this.formatDate(this.educationForm.get('startAt')?.value),
+      endAt: this.formatDate(this.educationForm.get('endAt')?.value),
+      institut: institut
+    };
+    console.log(education);
+    this.studentProfileService.addEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
+      console.log(data);
+      // search for institut by id in the instituts array
+      education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
+      this.studentProfile?.educations.push(education);
+      this.toggleAddEducModal();
+    });
   }
 
   public onUpdate(): void {
+    console.warn('Your form has been submitted', this.educationForm);
+    if(this.educationForm.invalid) {
+      return;
+    }
+    var institut;
+    // create institut object
+    if (this.educationForm.get('institutId')?.value === '') {
+      institut  = {
+        name: this.educationForm.get('institutname')?.value,
+        website: this.educationForm.get('institutwebsite')?.value
+      };
+    } else {
+      institut  = {
+        id: this.educationForm.get('institutId')?.value,
+        name: this.educationForm.get('institutname')?.value,
+        website: this.educationForm.get('institutwebsite')?.value
+      };
+    }
+    // create education object
+    const education :Education = {
+      title: this.educationForm.get('title')?.value,
+      studyField: this.educationForm.get('studyField')?.value,
+      description: this.educationForm.get('description')?.value,
+      startAt: this.formatDate(this.educationForm.get('startAt')?.value),
+      endAt: this.formatDate(this.educationForm.get('endAt')?.value),
+      institut: institut
+    };
+    console.log(education);
+    this.studentProfileService.updateEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
+      console.log(data);
+      // search for institut by id in the instituts array
+      education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
+      this.studentProfile?.educations.push(education);
+      this.toggleAddEducModal();
+    });
 
   }
 
   private formatDate(date: Date): string {
     return this.datePipe.transform(date, 'yyyy-MM') || ''; // Format date to YYYY-MM
-  }
-
-  public getInstituts(): void {
-    this.institutService.getInstituts().subscribe((data: Institut[]) => {
-      console.log('Received Data:', data); // Log the received data
-      this.instituts = data; // Assign the received data to the instituts property
-    });
   }
 
   private buildEducationForm():void {
@@ -117,10 +160,29 @@ export class EducationModalComponent {
     });
   }
 
+  public getInstituts(): void {
+    this.institutService.getInstituts().subscribe((data: Institut[]) => {
+      console.log('Received Data:', data); // Log the received data
+      this.instituts = data; // Assign the received data to the instituts property
+    });
+  }
+
   // empty the form
   public resetForm(): void {
     this.educationForm.reset();
   }
 
-
+  // fill the form with the education data
+  public fillForm(): void {
+    this.educationForm.patchValue({
+      title: this.education?.title,
+      studyField: this.education?.studyField,
+      startAt: this.education?.startAt,
+      endAt: this.education?.endAt,
+      institutId: this.education?.institut?.id,
+      institutname: this.education?.institut?.name,
+      institutwebsite: this.education?.institut?.website,
+      description: this.education?.description
+    });
+  }
 }

@@ -1,12 +1,10 @@
-import Institut from "./institut";
-
 class Education {
     title: string;
     studyField: string;
     description: string;
     startAt: string;
     endAt: string;
-    institut: Institut | undefined;
+    institut?: any;
 
     constructor(
         title: string,
@@ -14,7 +12,7 @@ class Education {
         description: string,
         startAt: string,
         endAt: string,
-        institut: Institut
+        institut: any
     ) {
         this.title = title;
         this.studyField = studyField;
