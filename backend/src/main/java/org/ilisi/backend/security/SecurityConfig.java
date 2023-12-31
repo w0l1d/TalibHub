@@ -35,6 +35,8 @@ public class SecurityConfig {
 
     private final UserRepository userDetailsService;
 
+    private final DelegatedAuthenticationEntryPoint authEntryPoint;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,6 +47,7 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))// we won't make the auth on server side using jwt
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPoint))
                 .build();
 
     }

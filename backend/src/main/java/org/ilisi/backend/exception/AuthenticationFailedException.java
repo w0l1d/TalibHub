@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class AuthenticationFailedException extends GlobalAppException {
     public AuthenticationFailedException(String message, String errorCode) {
-        super(message, errorCode);
+        super(message, errorCode, HttpStatus.BAD_REQUEST);
     }
 
     public AuthenticationFailedException(String message) {
-        super(message, "AUTHENTICATION_FAILED");
+        super(message, "AUTHENTICATION_FAILED", HttpStatus.BAD_REQUEST);
     }
 }

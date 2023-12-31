@@ -5,16 +5,9 @@ jwt:
 server:
   port: 8081
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
   docker:
     compose:
       lifecycle-management: start_only
-
-spring:
-  docker:
-    compose:
       file: ./backend/compose.yaml
   jpa:
     hibernate:

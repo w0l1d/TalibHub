@@ -2,6 +2,7 @@ package org.ilisi.backend.exception;
 
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +11,9 @@ import java.time.LocalDateTime;
 public class GlobalAppException extends RuntimeException {
     private final String errorCode;
     private final LocalDateTime timestamp;
+    private final HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    public GlobalAppException(String message, String errorCode) {
+    public GlobalAppException(String message, String errorCode, HttpStatus status) {
         this(message, errorCode, LocalDateTime.now());
     }
 
