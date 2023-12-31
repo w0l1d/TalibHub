@@ -22,7 +22,7 @@ public class BackendApplication {
 
 
     @Bean
-    public CommandLineRunner commadnLineRunner(UserRepository userRepository,
+    public CommandLineRunner commandLineRunner(UserRepository userRepository,
                                                ProfileRepository profileRepository,
                                                PasswordEncoder passwordEncoder) {
         // create user

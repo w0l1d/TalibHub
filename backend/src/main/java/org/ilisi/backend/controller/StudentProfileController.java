@@ -8,10 +8,12 @@ import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
 import org.ilisi.backend.exception.EntityNotFoundException;
 import org.ilisi.backend.model.Profile;
+import org.ilisi.backend.model.User;
 import org.ilisi.backend.service.ProfileService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,10 @@ public class StudentProfileController {
 
     // get authentified user profile
     @GetMapping("/me")
-    public Profile getProfile(Authentication authentication) {
-        String email = authentication.getName();
+    public Profile getProfile(Principal principal) {
+        User user = (User) ((Authentication) principal).getPrincipal();
+        String email = user.getEmail();
+        log.info("get profile for user with email {}", email);
         return profileService.getProfile(email);
     }
 
