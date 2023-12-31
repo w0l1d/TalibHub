@@ -1,0 +1,60 @@
+<!-- Modal toggle -->
+<button class="bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-target="crud-modal" data-modal-toggle="crud-modal" type="button" (click)="toggleAddEducModal()">
+  <i class="fa-solid fa-plus"></i>
+</button>
+<!-- Main modal -->
+<div id="crud-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" *ngIf="!educModalCollapsed">
+  <div class="relative p-4 w-full max-w-md max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow ">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+        <h3 class="text-lg font-semibold text-gray-900">
+          Create New Education
+        </h3>
+        <button  (click)="toggleAddEducModal()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-toggle="crud-modal" >
+          <i class="fa-solid fa-xmark fa-lg"></i>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <form class="p-4 md:p-5" [formGroup]="educationForm" (ngSubmit)="onSubmit()">
+        <div class="grid gap-4 mb-4 grid-cols-2">
+          <div class="col-span-2">
+            <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Education Title</label>
+            <input type="text" formControlName="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type education title" required>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label for="studyField" class="block mb-2 text-sm font-medium text-gray-900">Study field</label>
+            <input type="text" formControlName="studyField" id="studyField" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="Type study feild" required>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label for="startAt" class="block mb-2 text-sm font-medium text-gray-900">Start date</label>
+            <input type="date" formControlName="startAt" id="startAt" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " required>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label for="endAt" class="block mb-2 text-sm font-medium text-gray-900">End date</label>
+            <input type="date" formControlName="endAt" id="endAt" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " required>
+          </div>
+
+          <div class="col-span-2 sm:col-span-1">
+            <label for="institutname" class="block mb-2 text-sm font-medium text-gray-900">Institute name</label>
+            <input type="text" formControlName="institutname" id="institutname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="Type institut name" required>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label for="institutwebsite" class="block mb-2 text-sm font-medium text-gray-900">Institute website</label>
+            <input type="text" formControlName="institutwebsite" id="institutwebsite" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="Type institut website" required>
+          </div>
+          <div class="col-span-2">
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 ">Education Description</label>
+            <textarea id="description" formControlName="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Write education description here"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="text-white inline-flex items-center bg-bodyLightPurple hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+          Add new product
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
