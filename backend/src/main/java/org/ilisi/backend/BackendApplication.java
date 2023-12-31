@@ -22,6 +22,7 @@ public class BackendApplication {
 
 
     @Bean
+    @org.springframework.context.annotation.Profile("dev")
     public CommandLineRunner commandLineRunner(UserRepository userRepository,
                                                ProfileRepository profileRepository,
                                                PasswordEncoder passwordEncoder) {

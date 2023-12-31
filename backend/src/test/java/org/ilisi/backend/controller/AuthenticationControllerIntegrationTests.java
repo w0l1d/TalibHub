@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.Manager;
 import org.ilisi.backend.model.User;
-import org.ilisi.backend.repository.ProfileRepository;
 import org.ilisi.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -46,8 +45,6 @@ class AuthenticationControllerIntegrationTests {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private ProfileRepository profileRepository;
 
     @DynamicPropertySource
     static void databaseProperties(DynamicPropertyRegistry registry) {
@@ -57,7 +54,6 @@ class AuthenticationControllerIntegrationTests {
 
     @AfterEach
     void afterEachSetup() {
-        profileRepository.deleteAll();
         userRepository.deleteAll();
     }
 
