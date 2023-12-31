@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import Institut from "../../models/institut";
 import Education from "../../models/education";
 import Profile from "../../models/profile";
-import {DatePipe, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {InstitutService} from "../../services/institut.service";
 import {StudentProfileService} from "../../services/student-profile.service";
 
@@ -13,34 +13,42 @@ import {StudentProfileService} from "../../services/student-profile.service";
   imports: [
     DatePipe,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    InstitutService
   ],
   templateUrl: './education-modal.component.html',
   styleUrl: './education-modal.component.css'
 })
 export class EducationModalComponent {
 
-  @Input() educModalCollapsed!: boolean;
   @Input() studentProfile?: Profile;
   @Input() studentProfileService!: StudentProfileService;
+  educModalCollapsed!: boolean;
+  addInstitutCollapsed!: boolean;
   educationForm!: FormGroup;
   instituts: Institut[] = [];
+  @Input() title: string = 'Create New Education';
+  @Input() operation: string = 'Create';
+
+
   constructor(
     private formBuilder: FormBuilder,
     private institutService: InstitutService,
     private datePipe: DatePipe
   ) {
     this.educModalCollapsed = true;
+    this.addInstitutCollapsed = true;
   }
 
-  ngOnInit() {
+  ngOnInit():void {
     this.buildEducationForm();
   }
 
-  public toggleAddEducModal() {
+  public toggleAddEducModal():void {
     if (this.educModalCollapsed) {
       this.getInstituts();
       this.resetForm();
@@ -48,11 +56,16 @@ export class EducationModalComponent {
     this.educModalCollapsed = !this.educModalCollapsed;
   }
 
-  public onSubmit(): void {
+  public toggleAddInstitut():void {
+    this.addInstitutCollapsed = !this.addInstitutCollapsed;
+  }
+
+  public onCreate(): void {
     console.warn('Your form has been submitted', this.educationForm);
     if(this.educationForm.valid) {
       // create institut object
       const institut :Institut = {
+        id: this.educationForm.get('institutId')?.value === '' ? null : this.educationForm.get('institutId')?.value,
         name: this.educationForm.get('institutname')?.value,
         website: this.educationForm.get('institutwebsite')?.value
       };
@@ -68,10 +81,16 @@ export class EducationModalComponent {
       console.log(education);
       this.studentProfileService.addEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
         console.log(data);
+        // search for institut by id in the instituts array
+        education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
         this.studentProfile?.educations.push(education);
         this.toggleAddEducModal();
       });
     }
+  }
+
+  public onUpdate(): void {
+
   }
 
   private formatDate(date: Date): string {
@@ -79,25 +98,21 @@ export class EducationModalComponent {
   }
 
   public getInstituts(): void {
-    this.institutService.getInstituts().subscribe((data: any) => {
+    this.institutService.getInstituts().subscribe((data: Institut[]) => {
       console.log('Received Data:', data); // Log the received data
-      if (data && data._embedded && data._embedded.instituts) {
-        this.instituts = data._embedded.instituts;
-        console.log('Institutes:', this.instituts); // Log the extracted institutes
-      } else {
-        console.error('Data structure mismatch or missing data');
-      }
+      this.instituts = data; // Assign the received data to the instituts property
     });
   }
 
-  private buildEducationForm() {
+  private buildEducationForm():void {
     this.educationForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       studyField: ['', [Validators.required]],
       startAt: ['', [Validators.required]],
       endAt: ['', [Validators.required]],
-      institutname: ['', [Validators.required]],
-      institutwebsite: ['', [Validators.required]],
+      institutId: [''],
+      institutname: [''],
+      institutwebsite: [''],
       description: ['', [Validators.required]]
     });
   }

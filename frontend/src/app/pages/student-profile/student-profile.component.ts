@@ -30,6 +30,8 @@ import {EducationModalComponent} from "../../components/education-modal/educatio
 export class StudentProfileComponent {
   navbarData = NavbarData;
   studentProfile?: Profile;
+  educationModalTitle: string = 'Create New Education';
+  educationModalOperation: string = 'Create';
 
 
 

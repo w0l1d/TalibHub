@@ -66,7 +66,7 @@
                 <div class="flex gap-2">
 
 
-                  <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" />
+                  <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [title]="educationModalTitle" [operation]="educationModalOperation" />
 
                 </div>
             </div>
@@ -76,9 +76,12 @@
                 </div>
                 <div class=""  >
                     <p class="font-bold">
-                      {{education.institut?.name}}
+                      {{education.title}} - {{education.institut?.name}}
                     </p>
-                    <p class="regular-cd-font text-sm">
+                    <p class="light-cd-font text-sm">
+                      {{education.startAt}} / {{education.endAt}}
+                    </p>
+                    <p class="regular-cd-font text-lg">
                         {{education.description}}
                     </p>
                 </div>

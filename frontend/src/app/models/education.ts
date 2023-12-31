@@ -6,7 +6,7 @@ class Education {
     description: string;
     startAt: string;
     endAt: string;
-    institut: Institut;
+    institut: Institut | undefined;
 
     constructor(
         title: string,
