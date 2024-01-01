@@ -6,6 +6,8 @@ import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
 import org.ilisi.backend.repository.StudentRepository;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -33,4 +35,7 @@ public class StudentService {
         return students;
     }
 
+    public DataTablesOutput<Student> getDataTableStudents(DataTablesInput input) {
+        return studentRepository.findAll(input);
+    }
 }
