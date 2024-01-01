@@ -1,5 +1,7 @@
 package org.ilisi.backend;
 
+import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.model.Manager;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -13,12 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableConfigurationProperties(org.ilisi.backend.security.JwtProperties.class)
+@Slf4j
 public class BackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
-
 
 
     @Bean
@@ -28,26 +30,46 @@ public class BackendApplication {
                                                PasswordEncoder passwordEncoder) {
         // create user
         return args -> {
-            if (userRepository.findByEmail("simo@gmail.com").isPresent()) {
+            if (!userRepository.findByEmail("simo@gmail.com").isPresent()) {
+                Student student = new Student();
+                student.setFirstName("mohamed");
+                student.setLastName("mohamed");
+                student.setCne("CNE");
+                student.setCin("CIN");
+                student.setEmail("simo@gmail.com");
+                student.setPhone("0612345678");
+                student.setBirthDate(java.time.LocalDate.now());
+                student.setEnrollmentYear(java.time.Year.now());
+                student.setEnabled(true);
+                // encode password with BCryptPasswordEncoder
+                student.setPassword(passwordEncoder.encode("12345678"));
+
+                Profile profile = Profile
+                        .builder()
+                        .about("about")
+                        .student(userRepository.save(student))
+                        .build();
+                profileRepository.save(profile);
+            }
+
+
+            if (userRepository.findByEmail("manager@gmail.com").isPresent()) {
                 return;
             }
-            Student student = new Student();
-            student.setFirstName("mohamed");
-            student.setLastName("mohamed");
-            student.setCne("CNE");
-            student.setCin("CIN");
-            student.setEmail("simo@gmail.com");
-            student.setPhone("0612345678");
-            student.setBirthDate(java.time.LocalDate.now());
-            student.setEnrollmentYear(java.time.Year.now());
-            student.setEnabled(true);
-            // encode password with BCryptPasswordEncoder
-            student.setPassword(passwordEncoder.encode("12345678"));
 
-            Profile profile = Profile.builder()
-                    .about("about")
-                    .student(userRepository.save(student)).build();
-            profileRepository.save(profile);
+            //create a manager
+            Manager manager = new Manager();
+            manager.setFirstName("mohamed");
+            manager.setLastName("mohamed");
+            manager.setCin("CIN2");
+            manager.setEmail("manager@gmail.com");
+            manager.setPhone("06123456789");
+            manager.setEnabled(true);
+            // encode password with BCryptPasswordEncoder
+            manager.setPassword(passwordEncoder.encode("12345678"));
+            userRepository.save(manager);
+            log.info(String.format("User %s created", manager.getEmail()));
         };
     }
+
 }
