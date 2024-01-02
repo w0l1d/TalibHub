@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { NgForOf, NgIf } from "@angular/common";
 import { DataTablesModule } from "angular-datatables";
 import { HttpClient } from "@angular/common/http";
@@ -13,10 +13,10 @@ import { AuthService } from "../../services/auth.service";
     NgIf,
     DataTablesModule
   ],
-  templateUrl: "./data-table.component.html",
+  template: "<table datatable [dtOptions]=\"dtOptions\" class=\"table table-striped table-bordered table-hover\"></table>",
   styleUrl: "./data-table.component.css"
 })
-export class DataTableComponent {
+export class DataTableComponent implements OnInit {
 
   dtOptions: DataTables.Settings = {};
   private readonly baseUrl: string;
@@ -28,6 +28,8 @@ export class DataTableComponent {
 
   ngOnInit(): void {
     this.dtOptions = {
+      responsive: true,
+
       serverSide: true,  // Set the flag
       ajax: (dataTablesParameters: any, callback) => {
         this.http
@@ -52,18 +54,14 @@ export class DataTableComponent {
       }, {
         title: "Full Name",
         data: "firstName",
-        render: function(data: any, type: any, full: any) {
-          return data + " " + full.lastName;
-        }
+        render: (data: any, type: any, full: any) => data + " " + full.lastName
       }, {
         data: "lastName",
         visible: false
       }, {
         title: "Birth date",
         data: "birthDate",
-        render: function(data: any, type: any, full: any) {
-          return new Date(data).toLocaleDateString();
-        }
+        render: (data: any, type: any, full: any) => new Date(data).toLocaleDateString()
       }, {
         title: "Email",
         data: "email"
@@ -73,21 +71,19 @@ export class DataTableComponent {
       }, {
         title: "Promotion",
         data: "enrollmentYear",
-        render: function(data: any, type: any, full: any) {
-          return data + " - " + (+data + 1);
-        }
+        render: (data: any, type: any, full: any) => data + " - " + (+data + 1)
       }, {
         title: "Enabled",
         data: "enabled",
-        render: function(data: any, type: any, full: any) {
-          return `<span class="enabled-badge ${data ? "enabled" : "disabled"}">${data ? "Yes" : "No"}</span>`;
-        }
+        render: (data: any, type: any, full: any) =>
+          `<span class="inline-block text-white px-2 py-1 text-xs rounded bg-${data ? "green" : "red"}-500">${data ? "Yes" : "No"}</span>`
       }, {
         title: "Actions",
+        orderable: false,
+        className: "all",
         data: "id",
-        render: function(data: any, type: any, full: any) {
-          return `<a href="/students/${data}" class="action-btn">Edit</a>`;
-        }
+        render: (data: any, type: any, full: any) =>
+          `<a href="/students/${data}" class="px-2 py-1 bg-blue-500 text-white text-sm">Edit</a>`
       }]
 
     };
