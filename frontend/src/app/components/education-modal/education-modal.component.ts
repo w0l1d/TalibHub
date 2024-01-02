@@ -64,6 +64,15 @@ export class EducationModalComponent {
 
   public toggleAddInstitut():void {
     this.addInstitutCollapsed = !this.addInstitutCollapsed;
+    if (this.addInstitutCollapsed) {
+      this.educationForm.get('institutId')?.setValue(this.education?.institut?.id);
+    } else {
+      this.educationForm.patchValue({
+        institutId: '',
+        institutname: '',
+        institutwebsite: ''
+      });
+    }
   }
 
   public onCreate(): void {
@@ -71,7 +80,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    var institut;
+    let institut = {};
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
@@ -97,9 +106,9 @@ export class EducationModalComponent {
     console.log(education);
     this.studentProfileService.addEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
       console.log(data);
-      // search for institut by id in the instituts array
-      education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.educations.push(education);
+      if (this.studentProfile?.educations !== undefined) {
+        this.studentProfile.educations = data.educations;
+      }
       this.toggleAddEducModal();
     });
   }
@@ -109,7 +118,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    var institut;
+    let institut = {};
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
@@ -136,19 +145,9 @@ export class EducationModalComponent {
     console.log(education);
     this.studentProfileService.updateEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
       console.log(data);
-      // search for institut by id in the instituts array
-      education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      // update the education in the studentProfile
-      const index:number | undefined = this.studentProfile?.educations.findIndex((education) => education.id === this.education?.id);
-      if (index !== undefined && index !== -1) {
-
-        this.studentProfile!.educations[index] = education;
-        // Assuming 'education' is the object you want to assign to the array
-      } else {
-        // Handle the case where the index was not found
-        console.error('Education not found or index is undefined');
+      if (this.studentProfile?.educations !== undefined) {
+        this.studentProfile.educations = data.educations;
       }
-
       this.toggleAddEducModal();
     });
 
