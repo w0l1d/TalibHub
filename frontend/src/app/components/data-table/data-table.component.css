@@ -1,0 +1,20 @@
+@layer components {
+
+  .action-btn {
+    @apply px-2 py-1 bg-blue-500 text-white text-sm;
+  }
+
+  .enabled-badge {
+    @apply inline-block text-white px-2 py-1 text-xs rounded;
+  }
+
+  .enabled {
+    @apply bg-green-500;
+  }
+
+  .disabled {
+    @apply bg-red-500;
+  }
+
+
+}

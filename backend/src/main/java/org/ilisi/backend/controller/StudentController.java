@@ -24,13 +24,13 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping("/saveAll")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Student> createStudents(@RequestBody List<Student> students) {
         return studentService.createStudents(students);
     }
 
     @PostMapping("/data")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public DataTablesOutput<Student> getStudents(@Valid @RequestBody DataTablesInput input) {
         return studentService.getDataTableStudents(input);
     }
