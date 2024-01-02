@@ -74,7 +74,7 @@ export class DataTableComponent {
         title: "Promotion",
         data: "enrollmentYear",
         render: function(data: any, type: any, full: any) {
-          return data + " - " + (data + 1);
+          return data + " - " + (+data + 1);
         }
       }, {
         title: "Enabled",
