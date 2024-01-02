@@ -95,7 +95,7 @@ export class ExperienceModalComponent {
     this.studentProfileService.addExperience(this.studentProfile!.id ,experience).subscribe((data: Profile) => {
       console.log(data);
       // search for institut by id in the instituts array
-      experience.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
+      experience.institut = this.instituts.find((institut) => institut.id === data.experiences[data.experiences.length - 1].institut?.id);
       this.studentProfile?.experiences.push(experience);
       this.toggleAddExpModal();
     });
@@ -122,6 +122,7 @@ export class ExperienceModalComponent {
     }
     // create experience object
     const experience: Experience = {
+      id: this.experience?.id,
       title: this.experienceForm.get('title')?.value,
       description: this.experienceForm.get('description')?.value,
       startAt: this.formatDate(this.experienceForm.get('startAt')?.value),
@@ -129,12 +130,20 @@ export class ExperienceModalComponent {
       institut: institut
     };
     console.log(experience);
-    this.studentProfileService.updateExperience(this.studentProfile!.id ,experience).subscribe((data: Profile) => {
+    this.studentProfileService.updateExperience(this.studentProfile!.id,experience).subscribe((data: Profile) => {
       console.log(data);
       // search for institut by id in the instituts array
-      experience.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.experiences.push(experience);
-      this.toggleAddExpModal();
+      experience.institut = this.instituts.find((institut) => institut.id === data.experiences[data.experiences.length - 1].institut?.id);
+      // update the experience in the studentProfile
+      const index: number | undefined = this.studentProfile?.experiences.findIndex((experience) => experience.id === this.experience?.id);
+      if (index !== undefined && index !== -1) {
+
+        this.studentProfile!.experiences[index] = experience;
+        // Assuming 'experience' is the object you want to assign to the array
+      } else {
+        // Handle the case where the index was not found
+        console.error('Experience not found or index is undefined');
+      }
     });
   }
 

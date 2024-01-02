@@ -125,6 +125,7 @@ export class EducationModalComponent {
     }
     // create education object
     const education :Education = {
+      id: this.education?.id,
       title: this.educationForm.get('title')?.value,
       studyField: this.educationForm.get('studyField')?.value,
       description: this.educationForm.get('description')?.value,
@@ -137,7 +138,17 @@ export class EducationModalComponent {
       console.log(data);
       // search for institut by id in the instituts array
       education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.educations.push(education);
+      // update the education in the studentProfile
+      const index:number | undefined = this.studentProfile?.educations.findIndex((education) => education.id === this.education?.id);
+      if (index !== undefined && index !== -1) {
+
+        this.studentProfile!.educations[index] = education;
+        // Assuming 'education' is the object you want to assign to the array
+      } else {
+        // Handle the case where the index was not found
+        console.error('Education not found or index is undefined');
+      }
+
       this.toggleAddEducModal();
     });
 
