@@ -76,7 +76,7 @@ export class DataTableComponent implements OnInit {
         title: "Enabled",
         data: "enabled",
         render: (data: any, type: any, full: any) =>
-          `<span class="inline-block text-white px-2 py-1 text-xs rounded bg-${data ? "green" : "red"}-500">${data ? "Yes" : "No"}</span>`
+          `<span class="inline-block text-white px-2 py-1 text-xs rounded ${data ? "bg-green-500" : "bg-red-500"}">${data ? "Yes" : "No"}</span>`
       }, {
         title: "Actions",
         orderable: false,
