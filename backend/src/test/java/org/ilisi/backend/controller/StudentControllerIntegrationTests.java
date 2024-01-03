@@ -54,7 +54,7 @@ class StudentControllerIntegrationTests {
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
-    private UserRepository managerRepository;
+    private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -66,7 +66,7 @@ class StudentControllerIntegrationTests {
     @BeforeEach
     void beforeEachSetup() throws Exception {
         Manager manager = createManager("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
-        managerRepository.save(manager);
+        userRepository.save(manager);
         String tokens = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Map.of(
@@ -91,7 +91,7 @@ class StudentControllerIntegrationTests {
 
     void cleanDatabase() {
         profileRepository.deleteAll();
-        studentRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 
