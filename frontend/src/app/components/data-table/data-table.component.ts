@@ -13,7 +13,7 @@ import { AuthService } from "../../services/auth.service";
     NgIf,
     DataTablesModule
   ],
-  template: "<table datatable [dtOptions]=\"dtOptions\" class=\"table table-striped table-bordered table-hover\"></table>",
+  template: "<table datatable [dtOptions]=\"dtOptions\" class=\"table table-striped nowrap\" style=\"width:100%\"></table>",
   styleUrl: "./data-table.component.css"
 })
 export class DataTableComponent implements OnInit {
