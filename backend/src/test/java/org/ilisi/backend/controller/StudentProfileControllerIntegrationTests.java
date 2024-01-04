@@ -30,10 +30,8 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -232,6 +230,91 @@ class StudentProfileControllerIntegrationTests {
     }
 
     @Test
+    void updateEducationReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Institut institut = saveInstitut("institut");
+        Education education = educationRepository.save(Education.builder()
+                .title("title")
+                .studyField("studyField")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(institut)
+                .build());
+        profile.setEducations(List.of(education));
+        profileRepository.save(profile);
+
+        //act
+        ResultActions test = mockMvc.perform(put(String.format("/profiles/%s/educations/%s", profile.getId(), education.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"studyField\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"id\": \"%s\"}}",
+                                "title2",
+                                "studyField2",
+                                YearMonth.of(2019, 1),
+                                YearMonth.of(2020, 1),
+                                institut.getId())));
+
+        //assert
+        test.andExpectAll(status().isOk(),
+                result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    JsonNode jsonNode = objectMapper.readTree(content);
+
+                    Profile profile1 = objectMapper.convertValue(jsonNode, new TypeReference<>() {
+                    });
+
+                    assertFalse(profile1.getEducations().isEmpty());
+                    assertEquals(1, profile1.getEducations().size());
+                    assertEquals("title2", profile1.getEducations().get(0).getTitle());
+                    assertEquals("studyField2", profile1.getEducations().get(0).getStudyField());
+                });
+    }
+
+    @Test
+    void deleteEducationReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Institut institut = saveInstitut("institut");
+        Education education = educationRepository.save(Education.builder()
+                .title("title")
+                .studyField("studyField")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(institut)
+                .build());
+        profile.setEducations(List.of(education));
+        profileRepository.save(profile);
+
+        //act
+        ResultActions test = mockMvc.perform(delete(String.format("/profiles/%s/educations/%s", profile.getId(), education.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //assert
+        test.andExpectAll(status().isOk(),
+                result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    JsonNode jsonNode = objectMapper.readTree(content);
+
+                    Profile profile1 = objectMapper.convertValue(jsonNode, new TypeReference<>() {
+                    });
+
+                    assertTrue(profile1.getEducations().isEmpty());
+                });
+    }
+
+    @Test
     void addExperienceReturnsProfile() throws Exception {
 
         //arrange
@@ -335,6 +418,91 @@ class StudentProfileControllerIntegrationTests {
             Map<String, Object> errorJson = objectMapper.readValue(content, Map.class);
             assertEquals("PROFILE_NOT_FOUND", errorJson.get("errorCode"));
         });
+    }
+
+    @Test
+    void updateExperienceReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Institut institut = saveInstitut("institut");
+        Experience experience = experienceRepository.save(Experience.builder()
+                .title("title")
+                .location("location")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(institut)
+                .build());
+        profile.setExperiences(List.of(experience));
+        profileRepository.save(profile);
+
+        //act
+        ResultActions test = mockMvc.perform(put(String.format("/profiles/%s/experiences/%s", profile.getId(), experience.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                        String.format(
+                                "{\"title\": \"%s\", \"location\": \"%s\", \"startAt\": \"%s\", \"endAt\": \"%s\", \"institut\": {\"id\": \"%s\"}}",
+                                "title2",
+                                "location2",
+                                YearMonth.of(2019, 1),
+                                YearMonth.of(2020, 1),
+                                institut.getId())));
+
+        //assert
+        test.andExpectAll(status().isOk(),
+                result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    JsonNode jsonNode = objectMapper.readTree(content);
+
+                    Profile profile1 = objectMapper.convertValue(jsonNode, new TypeReference<>() {
+                    });
+
+                    assertFalse(profile1.getExperiences().isEmpty());
+                    assertEquals(1, profile1.getExperiences().size());
+                    assertEquals("title2", profile1.getExperiences().get(0).getTitle());
+                    assertEquals("location2", profile1.getExperiences().get(0).getLocation());
+                });
+    }
+
+    @Test
+    void deleteExperienceReturnsProfile() throws Exception {
+
+        //arrange
+        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Institut institut = saveInstitut("institut");
+        Experience experience = experienceRepository.save(Experience.builder()
+                .title("title")
+                .location("location")
+                .startAt(YearMonth.of(2019, 1))
+                .endAt(YearMonth.of(2020, 1))
+                .institut(institut)
+                .build());
+        profile.setExperiences(List.of(experience));
+        profileRepository.save(profile);
+
+        //act
+        ResultActions test = mockMvc.perform(delete(String.format("/profiles/%s/experiences/%s", profile.getId(), experience.getId()))
+                .header("Authorization", "Bearer " + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //assert
+        test.andExpectAll(status().isOk(),
+                result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assert !content.isEmpty();
+
+                    log.info("Response content: {}", content);
+                    JsonNode jsonNode = objectMapper.readTree(content);
+
+                    Profile profile1 = objectMapper.convertValue(jsonNode, new TypeReference<>() {
+                    });
+
+                    assertTrue(profile1.getExperiences().isEmpty());
+                });
     }
 
 
