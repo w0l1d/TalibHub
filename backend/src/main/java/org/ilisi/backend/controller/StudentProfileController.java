@@ -49,6 +49,28 @@ public class StudentProfileController {
         return profileService.addEducation(profile, educationDto);
     }
 
+    @PutMapping("/{profileId}/educations/{educationId}")
+    public Profile updateEducation(@PathVariable String profileId, @PathVariable String educationId, @RequestBody @Valid EducationDto educationDto) {
+        Profile profile = profileService.findById(profileId);
+        if (profile == null) {
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
+        }
+        return profileService.updateEducation(profile, educationId, educationDto);
+    }
+
+    @DeleteMapping("/{profileId}/educations/{educationId}")
+    public Profile deleteEducation(@PathVariable String profileId, @PathVariable String educationId) {
+        Profile profile = profileService.findById(profileId);
+        if (profile == null) {
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
+        }
+        return profileService.deleteEducation(profile, educationId);
+    }
+
     @PostMapping("/{profileId}/experiences")
     public Profile addExperience(@PathVariable String profileId, @RequestBody @Valid ExperienceDto experienceDto) {
         Profile profile = profileService.findById(profileId);
@@ -58,5 +80,27 @@ public class StudentProfileController {
             throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
         }
         return profileService.addExperience(profile, experienceDto);
+    }
+
+    @PutMapping("/{profileId}/experiences/{experienceId}")
+    public Profile updateExperience(@PathVariable String profileId, @PathVariable String experienceId, @RequestBody @Valid ExperienceDto experienceDto) {
+        Profile profile = profileService.findById(profileId);
+        if (profile == null) {
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
+        }
+        return profileService.updateExperience(profile, experienceId, experienceDto);
+    }
+
+    @DeleteMapping("/{profileId}/experiences/{experienceId}")
+    public Profile deleteExperience(@PathVariable String profileId, @PathVariable String experienceId) {
+        Profile profile = profileService.findById(profileId);
+        if (profile == null) {
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
+        }
+        return profileService.deleteExperience(profile, experienceId);
     }
 }

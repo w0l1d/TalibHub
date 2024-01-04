@@ -41,6 +41,10 @@ public class ProfileService {
         return profileRepository.findByStudentEmail(email);
     }
 
+    public Profile findById(String id) {
+        Optional<Profile> profile = profileRepository.findById(id);
+        return profile.orElse(null);
+    }
 
     public Profile addEducation(Profile profile, EducationDto educationDto) {
 
@@ -54,6 +58,39 @@ public class ProfileService {
             });
         Education education = educationRepository.save(educationMapper.educationDtoToEducation(educationDto));
         profile.getEducations().add(education);
+        return profileRepository.save(profile);
+    }
+
+    public Profile updateEducation(Profile profile, String educationId, EducationDto educationDto) {
+        Education education = educationRepository.findById(educationId).orElse(null);
+        if (education == null) {
+            String errorMessage = String.format("Education with id %s not found", educationId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "EDUCATION_NOT_FOUND");
+        }
+        String instituteId = educationDto.getInstitut().getId();
+        if (instituteId == null || instituteId.isBlank())
+            educationDto.setInstitut(institutRepository.save(educationDto.getInstitut()));
+        else
+            institutRepository.findById(instituteId).ifPresentOrElse(educationDto::setInstitut, () -> {
+                throw new EntityNotFoundException(String.format("Institute with id %s not found", instituteId), "INSTITUTE_NOT_FOUND");
+            });
+
+        education = educationMapper.educationDtoToEducation(educationDto);
+        education.setId(educationId);
+        educationRepository.save(education);
+        return profileRepository.save(profile);
+    }
+
+    public Profile deleteEducation(Profile profile, String educationId) {
+        Education education = educationRepository.findById(educationId).orElse(null);
+        if (education == null) {
+            String errorMessage = String.format("Education with id %s not found", educationId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "EDUCATION_NOT_FOUND");
+        }
+        profile.getEducations().remove(education);
+        educationRepository.delete(education);
         return profileRepository.save(profile);
     }
 
@@ -74,8 +111,36 @@ public class ProfileService {
 
     }
 
-    public Profile findById(String id) {
-        Optional<Profile> profile = profileRepository.findById(id);
-        return profile.orElse(null);
+    public Profile updateExperience(Profile profile, String experienceId, ExperienceDto experienceDto) {
+        Experience experience = experienceRepository.findById(experienceId).orElse(null);
+        if (experience == null) {
+            String errorMessage = String.format("Experience with id %s not found", experienceId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "EXPERIENCE_NOT_FOUND");
+        }
+        String instituteId = experienceDto.getInstitut().getId();
+        if (instituteId == null || instituteId.isBlank())
+            experienceDto.setInstitut(institutRepository.save(experienceDto.getInstitut()));
+        else
+            institutRepository.findById(instituteId).ifPresentOrElse(experienceDto::setInstitut, () -> {
+                throw new EntityNotFoundException(String.format("Institute with id %s not found", instituteId), "INSTITUTE_NOT_FOUND");
+            });
+
+        experience = experienceMapper.experienceDtoToExperience(experienceDto);
+        experience.setId(experienceId);
+        experienceRepository.save(experience);
+        return profileRepository.save(profile);
+    }
+
+    public Profile deleteExperience(Profile profile, String experienceId) {
+        Experience experience = experienceRepository.findById(experienceId).orElse(null);
+        if (experience == null) {
+            String errorMessage = String.format("Experience with id %s not found", experienceId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "EXPERIENCE_NOT_FOUND");
+        }
+        profile.getExperiences().remove(experience);
+        experienceRepository.delete(experience);
+        return profileRepository.save(profile);
     }
 }
