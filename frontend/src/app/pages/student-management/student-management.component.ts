@@ -3,6 +3,7 @@ import {LayoutComponent} from "../../components/layout/layout.component";
 import {DataTableComponent} from "../../components/data-table/data-table.component";
 import NavbarData from "./navbar-data";
 import Student from "../../models/student";
+import {StudentService} from "../../services/student.service";
 
 @Component({
   selector: "app-student-management",
@@ -11,11 +12,20 @@ import Student from "../../models/student";
     LayoutComponent,
     DataTableComponent
   ],
+  providers: [
+    StudentService
+  ],
   templateUrl: "./student-management.component.html",
   styleUrl: "./student-management.component.css"
 })
 export class StudentManagementComponent {
   navbarData = NavbarData;
+
+  constructor(
+    private studentService: StudentService
+  ) {
+  }
+
   saveStudentsAsCsv(): void {
     console.log("students saved as csv");
   }
@@ -64,7 +74,12 @@ export class StudentManagementComponent {
         }
 
         console.log(students);
-
+        //save students
+        this.studentService.saveAllStudents(students).subscribe(
+          (data:any):void => {
+            console.log(data);
+          }
+        );
       };
 
       reader.readAsText(file);
