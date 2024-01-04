@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment as env} from '../../environments/environment.development';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment as env } from "../../environments/environment.development";
 import Student from "../models/student";
-import {AuthService} from "./auth.service";
+import { AuthService } from "./auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class StudentService {
 
@@ -15,7 +15,7 @@ export class StudentService {
     private http: HttpClient,
     private authService: AuthService
   ) {
-    this.baseUrl = env.api
+    this.baseUrl = env.api;
   }
 
   // save all students

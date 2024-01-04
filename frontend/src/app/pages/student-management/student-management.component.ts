@@ -1,9 +1,9 @@
-import {Component} from "@angular/core";
-import {LayoutComponent} from "../../components/layout/layout.component";
-import {DataTableComponent} from "../../components/data-table/data-table.component";
+import { Component } from "@angular/core";
+import { LayoutComponent } from "../../components/layout/layout.component";
+import { DataTableComponent } from "../../components/data-table/data-table.component";
 import NavbarData from "./navbar-data";
 import Student from "../../models/student";
-import {StudentService} from "../../services/student.service";
+import { StudentService } from "../../services/student.service";
 
 @Component({
   selector: "app-student-management",
@@ -53,8 +53,11 @@ export class StudentManagementComponent {
         //create an array of students
         const students: Student[] = [];
         for (const line of lines) {
-          const values: string[] = line.split(";");
+          const values: string[] = line.split(",");
           //split values[6] into day, month and year
+          console.log("line values : ", values);
+          console.log("date : ", values[6]);
+
           const date: string[] = values[6].split("/");
           console.log(date);
           const student = new Student(
@@ -63,7 +66,6 @@ export class StudentManagementComponent {
             values[2],
             values[3],
             values[4],
-            "12345678",
             true,
             values[5],
             new Date(+date[2], +date[1], +date[0]),
@@ -78,6 +80,7 @@ export class StudentManagementComponent {
         this.studentService.saveAllStudents(students).subscribe(
           (data:any):void => {
             console.log(data);
+
           }
         );
       };

@@ -26,7 +26,10 @@ public class StudentController {
     @PostMapping("/saveAll")
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Student> createStudents(@RequestBody List<Student> students) {
-        return studentService.createStudents(students);
+        List<Student> savedStudents = studentService.createStudents(students);
+        log.info("Saved {} students", savedStudents.size());
+        log.info("Saved students: {}", savedStudents);
+        return savedStudents;
     }
 
     @PostMapping("/data")
@@ -34,4 +37,6 @@ public class StudentController {
     public DataTablesOutput<Student> getStudents(@Valid @RequestBody DataTablesInput input) {
         return studentService.getDataTableStudents(input);
     }
+
+
 }
