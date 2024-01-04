@@ -53,7 +53,8 @@ export class ExperienceModalComponent {
       this.resetForm();
       if (this.experience !== undefined) {
         console.log('I am here');
-        this.fillForm();
+        this.fillForm()
+        console.log(this.experienceForm.get('institutId')?.value);
       }
     }
     this.expModalCollapsed = !this.expModalCollapsed;
@@ -61,6 +62,15 @@ export class ExperienceModalComponent {
 
   public toggleAddInstitut(): void {
     this.addInstitutCollapsed = !this.addInstitutCollapsed;
+    if (this.addInstitutCollapsed) {
+      this.experienceForm.get('institutId')?.setValue(this.experience?.institut?.id);
+    } else {
+      this.experienceForm.patchValue({
+        institutId: '',
+        institutname: '',
+        institutwebsite: ''
+      });
+    }
   }
 
   onCreate():void{
@@ -69,7 +79,7 @@ export class ExperienceModalComponent {
       return;
     }
     console.log('form ' + this.experienceForm);
-    var institut: Institut;
+    let institut: Institut;
     // create institut object
     if (this.experienceForm.get('institutId')?.value === '') {
       institut  = {
@@ -94,9 +104,9 @@ export class ExperienceModalComponent {
     console.log(experience);
     this.studentProfileService.addExperience(this.studentProfile!.id ,experience).subscribe((data: Profile) => {
       console.log(data);
-      // search for institut by id in the instituts array
-      experience.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.experiences.push(experience);
+      if (this.studentProfile?.experiences !== undefined) {
+        this.studentProfile.experiences = data.experiences;
+      }
       this.toggleAddExpModal();
     });
 
@@ -106,7 +116,7 @@ export class ExperienceModalComponent {
     if (this.experienceForm.invalid) {
       return;
     }
-    var institut: Institut;
+    let institut: Institut;
     // create institut object
     if (this.experienceForm.get('institutId')?.value === '') {
       institut = {
@@ -122,6 +132,7 @@ export class ExperienceModalComponent {
     }
     // create experience object
     const experience: Experience = {
+      id: this.experience?.id,
       title: this.experienceForm.get('title')?.value,
       description: this.experienceForm.get('description')?.value,
       startAt: this.formatDate(this.experienceForm.get('startAt')?.value),
@@ -129,11 +140,11 @@ export class ExperienceModalComponent {
       institut: institut
     };
     console.log(experience);
-    this.studentProfileService.updateExperience(this.studentProfile!.id ,experience).subscribe((data: Profile) => {
+    this.studentProfileService.updateExperience(this.studentProfile!.id,experience).subscribe((data: Profile) => {
       console.log(data);
-      // search for institut by id in the instituts array
-      experience.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.experiences.push(experience);
+      if (this.studentProfile?.experiences !== undefined) {
+        this.studentProfile.experiences = data.experiences;
+      }
       this.toggleAddExpModal();
     });
   }
@@ -170,7 +181,9 @@ export class ExperienceModalComponent {
       description: this.experience?.description,
       startAt: this.datePipe.transform(this.experience?.startAt, 'yyyy-MM'),
       endAt: this.datePipe.transform(this.experience?.endAt, 'yyyy-MM'),
-      institut: this.experience?.institut
+      institutId: this.experience?.institut?.id,
+      institutname: this.experience?.institut?.name,
+      institutwebsite: this.experience?.institut?.website,
     });
   }
 }

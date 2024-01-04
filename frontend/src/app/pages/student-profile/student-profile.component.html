@@ -30,7 +30,10 @@
                     Experience
                 </p>
                 <div class="flex gap-2">
-                  <app-experience-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [title]="'Create New Education'" [operation]="'create'" />
+                  <app-experience-modal [operation]="'create'"
+                                        [studentProfileService]="studentProfileService"
+                                        [studentProfile]="studentProfile"
+                                        [title]="'Create New Experience'"/>
 
                 </div>
             </div>
@@ -50,8 +53,11 @@
                   {{experience.description}}
                 </p>
               </div>
-              <app-experience-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [experience]="experience" [title]="'Edit Education'" [operation]="'update'" />
-
+              <div class="ms-auto">
+                <app-experience-modal [experience]="experience" [operation]="'update'"
+                                      [studentProfileService]="studentProfileService" [studentProfile]="studentProfile"
+                                      [title]="'Edit Experience'"/>
+              </div>
 
             </div>
             <button class="regular-cd-font text-sm ml-auto" >

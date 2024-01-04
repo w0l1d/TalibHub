@@ -64,6 +64,15 @@ export class EducationModalComponent {
 
   public toggleAddInstitut():void {
     this.addInstitutCollapsed = !this.addInstitutCollapsed;
+    if (this.addInstitutCollapsed) {
+      this.educationForm.get('institutId')?.setValue(this.education?.institut?.id);
+    } else {
+      this.educationForm.patchValue({
+        institutId: '',
+        institutname: '',
+        institutwebsite: ''
+      });
+    }
   }
 
   public onCreate(): void {
@@ -71,7 +80,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    var institut;
+    let institut = {};
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
@@ -97,9 +106,9 @@ export class EducationModalComponent {
     console.log(education);
     this.studentProfileService.addEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
       console.log(data);
-      // search for institut by id in the instituts array
-      education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.educations.push(education);
+      if (this.studentProfile?.educations !== undefined) {
+        this.studentProfile.educations = data.educations;
+      }
       this.toggleAddEducModal();
     });
   }
@@ -109,7 +118,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    var institut;
+    let institut = {};
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
@@ -125,6 +134,7 @@ export class EducationModalComponent {
     }
     // create education object
     const education :Education = {
+      id: this.education?.id,
       title: this.educationForm.get('title')?.value,
       studyField: this.educationForm.get('studyField')?.value,
       description: this.educationForm.get('description')?.value,
@@ -135,9 +145,9 @@ export class EducationModalComponent {
     console.log(education);
     this.studentProfileService.updateEducation(this.studentProfile!.id ,education).subscribe((data: Profile) => {
       console.log(data);
-      // search for institut by id in the instituts array
-      education.institut = this.instituts.find((institut) => institut.id === data.educations[data.educations.length - 1].institut?.id);
-      this.studentProfile?.educations.push(education);
+      if (this.studentProfile?.educations !== undefined) {
+        this.studentProfile.educations = data.educations;
+      }
       this.toggleAddEducModal();
     });
 
