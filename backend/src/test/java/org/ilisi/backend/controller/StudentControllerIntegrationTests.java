@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.model.Manager;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
 import org.ilisi.backend.repository.StudentRepository;
+import org.ilisi.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,8 @@ class StudentControllerIntegrationTests {
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @DynamicPropertySource
@@ -61,13 +65,12 @@ class StudentControllerIntegrationTests {
 
     @BeforeEach
     void beforeEachSetup() throws Exception {
-        //studentRepository.deleteAll();
-        Student student = createStudent("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
-        studentRepository.save(student);
+        Manager manager = createManager("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
+        userRepository.save(manager);
         String tokens = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Map.of(
-                                "username", student.getEmail(),
+                                "username", manager.getEmail(),
                                 "password", "123456789"
                         ))))
                 .andExpect(status().isOk())
@@ -75,7 +78,9 @@ class StudentControllerIntegrationTests {
                 .getResponse()
                 .getContentAsString();
         log.info("Tokens: {}", tokens);
-        Map<String, Object> tokensMap = objectMapper.readValue(tokens, Map.class);
+        JsonNode tokensJson = objectMapper.readTree(tokens);
+        Map<String, Object> tokensMap = objectMapper.convertValue(tokensJson, new TypeReference<>() {
+        });
         JWT_TOKEN = (String) tokensMap.get("accessToken");
     }
 
@@ -86,7 +91,7 @@ class StudentControllerIntegrationTests {
 
     void cleanDatabase() {
         profileRepository.deleteAll();
-        studentRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 
@@ -152,6 +157,18 @@ class StudentControllerIntegrationTests {
         student.setEnabled(true);
         student.setPassword(passwordEncoder.encode("123456789"));
         return student;
+    }
+
+    private Manager createManager(String cne, String firstName, String lastName, String email, String phone, String cin) {
+        Manager manager = new Manager();
+        manager.setFirstName(firstName);
+        manager.setLastName(lastName);
+        manager.setEmail(email);
+        manager.setPhone(phone);
+        manager.setCin(cin);
+        manager.setEnabled(true);
+        manager.setPassword(passwordEncoder.encode("123456789"));
+        return manager;
     }
 
 }

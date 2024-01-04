@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
  * UserRepository is an interface that extends JpaRepository and UserDetailsService.
  * It provides CRUD operations and user details services for User entities.
  */
-@Service
+@Repository
 public interface UserRepository extends JpaRepository<User, String>, UserDetailsService {
 
     /**
