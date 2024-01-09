@@ -1,9 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { NgForOf, NgIf } from "@angular/common";
-import { DataTablesModule } from "angular-datatables";
-import { HttpClient } from "@angular/common/http";
-import { environment as env } from "../../../environments/environment.development";
-import { AuthService } from "../../services/auth.service";
+import {Component, OnInit} from "@angular/core";
+import {NgForOf, NgIf} from "@angular/common";
+import {DataTablesModule} from "angular-datatables";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {environment as env} from "../../../environments/environment.development";
 import studentTableColumns from "./student-table-columns";
 
 @Component({
@@ -12,7 +11,8 @@ import studentTableColumns from "./student-table-columns";
   imports: [
     NgForOf,
     NgIf,
-    DataTablesModule
+    DataTablesModule,
+    HttpClientModule
   ],
   template: "<table datatable [dtOptions]=\"dtOptions\" class=\"table table-striped nowrap\" style=\"width:100%\"></table>",
   styleUrl: "./data-table.component.css"
@@ -22,7 +22,7 @@ export class DataTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   private readonly baseUrl: string;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient) {
     this.baseUrl = env.api;
   }
 
@@ -35,11 +35,7 @@ export class DataTableComponent implements OnInit {
         this.http
           .post<any>(
             `${this.baseUrl}/students/data`,
-            dataTablesParameters, {
-              headers: {
-                Authorization: `Bearer ${this.authService.getJwtToken()}`
-              }
-            }
+            dataTablesParameters
           ).subscribe(resp => {
           callback({
             recordsTotal: resp.recordsTotal,

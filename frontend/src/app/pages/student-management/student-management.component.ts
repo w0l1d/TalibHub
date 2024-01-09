@@ -1,16 +1,18 @@
-import { Component } from "@angular/core";
-import { LayoutComponent } from "../../components/layout/layout.component";
-import { DataTableComponent } from "../../components/data-table/data-table.component";
+import {Component} from "@angular/core";
+import {LayoutComponent} from "../../components/layout/layout.component";
+import {DataTableComponent} from "../../components/data-table/data-table.component";
 import NavbarData from "./navbar-data";
 import Student from "../../models/student";
-import { StudentService } from "../../services/student.service";
+import {StudentService} from "../../services/student.service";
+import {HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: "app-student-management",
   standalone: true,
   imports: [
     LayoutComponent,
-    DataTableComponent
+    DataTableComponent,
+    HttpClientModule
   ],
   providers: [
     StudentService
@@ -80,7 +82,6 @@ export class StudentManagementComponent {
         this.studentService.saveAllStudents(students).subscribe(
           (data:any):void => {
             console.log(data);
-
           }
         );
       };
