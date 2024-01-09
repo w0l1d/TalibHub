@@ -6,6 +6,7 @@ import Student from "../../models/student";
 import {StudentService} from "../../services/student.service";
 import {HttpClientModule} from "@angular/common/http";
 
+
 @Component({
   selector: "app-student-management",
   standalone: true,

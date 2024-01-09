@@ -1,19 +1,20 @@
-import Institut from "./institut";
-
 class Experience {
+    id?: string;
     title: string;
     description: string;
-    startAt: Date;
-    endAt: Date;
-    institut: Institut;
+    startAt: string;
+    endAt: string;
+    institut?: any;
 
     constructor(
-        title: string, 
-        description: string, 
-        startAt: Date, 
-        endAt: Date, 
-        institut: Institut
+        id: string,
+        title: string,
+        description: string,
+        startAt: string,
+        endAt: string,
+        institut: any
     ) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.startAt = startAt;

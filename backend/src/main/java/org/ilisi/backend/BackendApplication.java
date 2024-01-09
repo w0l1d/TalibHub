@@ -71,6 +71,4 @@ public class BackendApplication {
             log.info(String.format("User %s created", manager.getEmail()));
         };
     }
-
-
 }

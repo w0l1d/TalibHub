@@ -1,21 +1,21 @@
-import Institut from "./institut";
-
 class Education {
+    id?:string;
     title: string;
     studyField: string;
     description: string;
     startAt: string;
     endAt: string;
-    institut: Institut;
-
+    institut?: any;
     constructor(
+        id: string,
         title: string,
         studyField: string,
         description: string,
         startAt: string,
         endAt: string,
-        institut: Institut
+        institut: any
     ) {
+        this.id = id;
         this.title = title;
         this.studyField = studyField;
         this.description = description;
