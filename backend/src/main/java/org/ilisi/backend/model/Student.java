@@ -21,6 +21,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 public class Student extends User {
 
     @Column(unique = true, nullable = false)
@@ -37,6 +38,7 @@ public class Student extends User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "student", orphanRemoval = true)
+    @ToString.Exclude
     private List<Profile> profiles;
 
     @Override
@@ -44,6 +46,18 @@ public class Student extends User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.createAuthorityList("ROLE_STUDENT");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Transient

@@ -44,7 +44,6 @@ public class StudentSpecifications {
                     builder.like(root.get(FIRST_NAME), pattern),
                     builder.like(root.get(LAST_NAME), pattern),
                     builder.like(root.get(EMAIL), pattern),
-
                     builder.equal(root.get(ENROLLMENT_YEAR).as(String.class), keyword),
                     builder.in(subquery)
             );
