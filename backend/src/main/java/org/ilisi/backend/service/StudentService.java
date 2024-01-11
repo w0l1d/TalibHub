@@ -24,7 +24,7 @@ public class StudentService {
     @Transactional
     public List<Student> createStudents(@RequestBody List<Student> students) {
         List<Profile> profiles = new ArrayList<>();
-        students.forEach(student -> student.setPassword(GenerateRandomPassword()));
+        students.forEach(student -> student.setPassword(generateRandomPassword()));
 
         students.forEach(student -> {
             Profile profile = Profile.builder().student(student).build();
@@ -44,17 +44,17 @@ public class StudentService {
     }
 
 
-    private String GenerateRandomPassword() {
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    private String generateRandomPassword() {
+        String alphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
                 + "abcdefghijklmnopqrstuvxyz";
         StringBuilder sb = new StringBuilder(8);
 
         for (int i = 0; i < 8; i++) {
             int index
-                    = (int) (AlphaNumericString.length()
+                    = (int) (alphaNumericString.length()
                     * Math.random());
-            sb.append(AlphaNumericString
+            sb.append(alphaNumericString
                     .charAt(index));
         }
 
