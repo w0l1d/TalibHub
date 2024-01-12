@@ -7,6 +7,10 @@ import org.ilisi.backend.model.Education;
 import org.ilisi.backend.model.Experience;
 import org.ilisi.backend.model.Institut;
 import org.ilisi.backend.model.Profile;
+import org.ilisi.backend.model.Profile_;
+import org.ilisi.backend.model.Education_;
+import org.ilisi.backend.model.Experience_;
+import org.ilisi.backend.model.Institut_;
 import org.springframework.data.jpa.domain.Specification;
 
 import static org.ilisi.backend.specs.SpecUtils.likePattern;
@@ -45,11 +49,5 @@ public class ProfileSpecifications {
         };
     }
 
-
-//    public static Specification<Profile> belownsTo(String studentId) {
-//        return (root, query, builder) -> {
-//            return builder.equal(root.get(Profile_.STUDENT).get(Student_.ID), studentId);
-//        };
-//    }
 
 }
