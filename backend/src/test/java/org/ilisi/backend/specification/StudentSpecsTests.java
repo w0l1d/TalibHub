@@ -40,7 +40,7 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesFirstName_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("yassin");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("yassin");
         List<Student> students = studentRepository.findAll(spec);
         log.info("students: {}", students);
         assertTrue(students.contains(studentYassin));
@@ -49,7 +49,7 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesLastName_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("Jrayfy");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("Jrayfy");
         List<Student> students = studentRepository.findAll(Specification.where(spec));
         log.info("students: {}", students);
         Assertions.assertAll(
@@ -60,7 +60,7 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesEmail_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("ilisi.com");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("ilisi.com");
         List<Student> students = studentRepository.findAll(spec);
         log.info("students: {}", students);
         assertTrue(students.contains(studentYassin));
@@ -69,16 +69,18 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesEnrollmentYear_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("2022");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("2022");
         List<Student> students = studentRepository.findAll(spec);
+        log.info("*********************************************");
         log.info("students: {}", students);
+        log.info("*********************************************");
         assertFalse(students.contains(studentYassin));
         assertTrue(students.contains(studentAnass));
     }
 
     @Test
     void searchByString_whenKeywordDoesNotMatchAnyField_returnsEmptyList() {
-        Specification<Student> spec = StudentSpecifications.searchByString("nonexistent keyword");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("nonexistent keyword");
         List<Student> students = studentRepository.findAll(spec);
         log.info("students: {}", students);
         assertTrue(students.isEmpty());
@@ -87,7 +89,7 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesAboutInProfile_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("software engineer");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("software engineer");
         List<Student> students = studentRepository.findAll(spec);
         log.info("students: {}", students);
         assertTrue(students.contains(studentYassin));
@@ -96,25 +98,29 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesEducationField_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("information technology");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("information technology");
         List<Student> students = studentRepository.findAll(spec);
+        log.info("*********************************************");
         log.info("students: {}", students);
+        log.info("*********************************************");
         assertTrue(students.contains(studentYassin));
         assertFalse(students.contains(studentAnass));
     }
 
     @Test
     void searchByString_whenKeywordMatchesExperienceField_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("developed features");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("Developed features");
         List<Student> students = studentRepository.findAll(spec);
+        log.info("*********************************************");
         log.info("students: {}", students);
+        log.info("*********************************************");
         assertTrue(students.contains(studentAnass));
         assertFalse(students.contains(studentYassin));
     }
 
     @Test
     void searchByString_whenKeywordMatchesMultipleFields_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("computer science");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("computer science");
         List<Student> students = studentRepository.findAll(spec);
         log.info("students: {}", students);
         assertTrue(students.contains(studentAnass));
@@ -123,7 +129,7 @@ class StudentSpecsTests {
 
     @Test
     void searchByString_whenKeywordMatchesPartialEmail_returnsStudents() {
-        Specification<Student> spec = StudentSpecifications.searchByString("ilisi");
+        Specification<Student> spec = StudentSpecifications.hasKeyword("ilisi");
         List<Student> students = studentRepository.findAll(spec);
         log.info("students: {}", students);
         assertTrue(students.contains(studentYassin));
@@ -178,7 +184,8 @@ class StudentSpecsTests {
         student1.setPhone("0612345678");
         Profile e1 = new Profile();
         e1.setAbout("I am a software engineer.");
-        student1.setProfiles(List.of(e1));
+        e1.setStudent(student1);
+        student1.setProfile(e1);
 
 
         var education1 = new Education();
@@ -212,7 +219,7 @@ class StudentSpecsTests {
         student2.setPhone("0612348898");
         Profile e2 = new Profile();
         e2.setAbout("I am a computer science student.");
-        student2.setProfiles(List.of(e2));
+        student2.setProfile(e2);
 
         var education2 = new Education();
         education2.setInstitut(institutC);
