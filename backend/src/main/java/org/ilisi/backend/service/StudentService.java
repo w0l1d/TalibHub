@@ -1,14 +1,17 @@
 package org.ilisi.backend.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
 import org.ilisi.backend.repository.StudentRepository;
+import org.ilisi.backend.specs.StudentSpecifications;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Validated
 public class StudentService {
 
     private StudentRepository studentRepository;
@@ -54,7 +58,10 @@ public class StudentService {
             sb.append(alphaNumericString
                     .charAt(index));
         }
-
         return sb.toString();
+    }
+
+    public List<Student> searchStudents(@Min(3) String query) {
+        return studentRepository.findAll(StudentSpecifications.hasKeyword(query));
     }
 }
