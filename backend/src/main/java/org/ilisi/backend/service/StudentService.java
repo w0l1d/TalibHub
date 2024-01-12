@@ -26,10 +26,7 @@ public class StudentService {
         List<Profile> profiles = new ArrayList<>();
         students.forEach(student -> student.setPassword(generateRandomPassword()));
 
-        students.forEach(student -> {
-            Profile profile = Profile.builder().student(student).build();
-            profiles.add(profile);
-        });
+        students.forEach(student -> student.setProfile(new Profile()));
 
         studentRepository.saveAll(students);
         profileRepository.saveAll(profiles);
