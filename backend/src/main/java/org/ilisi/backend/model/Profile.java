@@ -21,13 +21,12 @@ public class Profile {
 
     private String about;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Education> educations;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Experience> experiences;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Student student;
 }

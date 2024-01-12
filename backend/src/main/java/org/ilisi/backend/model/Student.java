@@ -1,11 +1,7 @@
 package org.ilisi.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -13,9 +9,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.Collection;
-import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
@@ -36,10 +30,10 @@ public class Student extends User {
     @Column
     private Year graduationYear;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id")
     @ToString.Exclude
-    private List<Profile> profiles;
+    private Profile profile;
 
     @Override
     @Transient

@@ -25,7 +25,7 @@ public class Education {
     private YearMonth endAt;
     private String location;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "institu_id", nullable = false)
     private Institut institut;
 }
