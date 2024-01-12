@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
+import org.ilisi.backend.model.Student_;
 import org.springframework.data.jpa.domain.Specification;
 
 import static org.ilisi.backend.model.Student_.ENROLLMENT_YEAR;
@@ -28,25 +29,30 @@ public class StudentSpecifications {
      * @param keyword the keyword to search for
      * @return a Specification for Students that matches the given keyword
      */
-    public static Specification<Student> searchByString(String keyword) {
+    public static Specification<Student> hasKeyword(String keyword) {
         return (root, query, builder) -> {
             // Convert the keyword to a like pattern
-            String pattern = likePattern(keyword);
+            String pattern = likePattern(keyword.toLowerCase());
 
             // Create a subquery to match Profiles that deeply contain the keyword
             Subquery<Profile> subquery = query.subquery(Profile.class);
-            Root<Profile> fromProfile = subquery.from(Profile.class);
-            subquery.select(fromProfile);
-            subquery.where(profileDeeplyHasKeyword(keyword).toPredicate(fromProfile, query, builder));
+            Root<Profile> subqueryRoot = subquery.from(Profile.class);
+            subquery.select(subqueryRoot).distinct(true).where(profileDeeplyHasKeyword(keyword).toPredicate(subqueryRoot, query, builder));
+
+
+//            subquery.select(subqueryRoot).where(profileDeeplyHasKeyword(keyword).toPredicate(subqueryRoot, query, builder));
+//            subquery.where(profileDeeplyHasKeyword(keyword).toPredicate(subqueryRoot, query, builder));
 
             // Return a predicate that matches Students based on the like pattern and the subquery
             return builder.or(
-                    builder.like(root.get(FIRST_NAME), pattern),
-                    builder.like(root.get(LAST_NAME), pattern),
-                    builder.like(root.get(EMAIL), pattern),
-                    builder.equal(root.get(ENROLLMENT_YEAR).as(String.class), keyword),
-                    builder.in(subquery)
+                    builder.like(builder.lower(root.get(FIRST_NAME)), pattern),
+                    builder.like(builder.lower(root.get(LAST_NAME)), pattern),
+                    builder.like(builder.lower(root.get(EMAIL)), pattern),
+                    builder.like(root.get(ENROLLMENT_YEAR).as(String.class), keyword),
+                    builder.in(root.get(Student_.PROFILE)).value(subquery)
             );
         };
     }
+
+
 }
