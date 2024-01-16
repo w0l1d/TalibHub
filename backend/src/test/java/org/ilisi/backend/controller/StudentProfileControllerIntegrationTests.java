@@ -70,7 +70,8 @@ class StudentProfileControllerIntegrationTests {
     @BeforeEach
     void beforeEachSetup() throws Exception {
         //studentRepository.deleteAll();
-        Student student = saveStudent("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
+        Student student = getSampleStudent("test-cne", "test-first-name", "test-last-name", "testemail@gmail.com", "test-phone", "test-cin");
+        student = studentRepository.save(student);
         String tokens = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Map.of(
@@ -124,7 +125,7 @@ class StudentProfileControllerIntegrationTests {
     void addEducationReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailed@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemailed@gmail.com", "test-phone-2", "test-cin-2"));
         EducationDto educationDto = createEducationDto("title", "studyField", YearMonth.of(2019, 1), YearMonth.of(2020, 1), Institut.builder().name("institut").build());
 
         //act
@@ -161,7 +162,7 @@ class StudentProfileControllerIntegrationTests {
     void addEducationWithExistingInstitutReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
         EducationDto educationDto = createEducationDto("title", "studyField", YearMonth.of(2019, 1), YearMonth.of(2020, 1), institut);
         //act
@@ -233,7 +234,7 @@ class StudentProfileControllerIntegrationTests {
     void updateEducationReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
         Education education = Education.builder()
                 .title("title")
@@ -281,7 +282,7 @@ class StudentProfileControllerIntegrationTests {
     void deleteEducationReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
         Education education = educationRepository.save(Education.builder()
                 .title("title")
@@ -318,7 +319,7 @@ class StudentProfileControllerIntegrationTests {
     void addExperienceReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         ExperienceDto experienceDto = createExperienceDto("title", "location", YearMonth.of(2019, 1), YearMonth.of(2020, 1), Institut.builder().name("institut").build());
 
         //act
@@ -354,7 +355,7 @@ class StudentProfileControllerIntegrationTests {
     void addExperienceWithExistingInstitutReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
         ExperienceDto experienceDto = createExperienceDto("title", "location", YearMonth.of(2019, 1), YearMonth.of(2020, 1), institut);
         //act
@@ -424,7 +425,7 @@ class StudentProfileControllerIntegrationTests {
     void updateExperienceReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
         Experience experience = experienceRepository.save(Experience.builder()
                 .title("title")
@@ -472,7 +473,7 @@ class StudentProfileControllerIntegrationTests {
     void deleteExperienceReturnsProfile() throws Exception {
 
         //arrange
-        Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
+        Profile profile = saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
         Experience experience = experienceRepository.save(Experience.builder()
                 .title("title")
@@ -509,8 +510,8 @@ class StudentProfileControllerIntegrationTests {
     private List<Profile> saveListOfValidTestProfiles() {
 
         return List.of(
-                saveProfile(saveStudent("test-cne-1", "test-first-name-1", "test-last-name-1", "testemail1@gmail.com", "test-phone-1", "test-cin-1")),
-                saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
+                saveProfile(getSampleStudent("test-cne-1", "test-first-name-1", "test-last-name-1", "testemail1@gmail.com", "test-phone-1", "test-cin-1")),
+                saveProfile(getSampleStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
         );
     }
 
@@ -524,7 +525,7 @@ class StudentProfileControllerIntegrationTests {
         return institutRepository.save(Institut.builder().name(name).build());
     }
 
-    private Student saveStudent(String cne, String firstName, String lastName, String email, String phone, String cin) {
+    private Student getSampleStudent(String cne, String firstName, String lastName, String email, String phone, String cin) {
         Student student = new Student();
         student.setCne(cne);
         student.setFirstName(firstName);
@@ -536,7 +537,7 @@ class StudentProfileControllerIntegrationTests {
         student.setBirthDate(LocalDate.now());
         student.setEnabled(true);
         student.setPassword(passwordEncoder.encode("123456789"));
-        return studentRepository.save(student);
+        return student;
     }
 
     private EducationDto createEducationDto(String title, String studyField, YearMonth startAt, YearMonth endAt, Institut institut) {

@@ -27,6 +27,6 @@ public class Profile {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     private List<Experience> experiences;
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private Student student;
 }

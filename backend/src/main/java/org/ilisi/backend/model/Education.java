@@ -25,7 +25,6 @@ public class Education {
     private YearMonth endAt;
     private String location;
 
-    @ManyToOne
-    @JoinColumn(name = "institu_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Institut institut;
 }

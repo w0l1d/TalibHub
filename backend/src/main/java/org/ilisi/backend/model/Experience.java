@@ -25,7 +25,7 @@ public class Experience {
     private YearMonth endAt;
     private String location;
 
-    @ManyToOne
-    @JoinColumn(name = "institu_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "institut_id")
     private Institut institut;
 }

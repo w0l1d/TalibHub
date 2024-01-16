@@ -31,7 +31,7 @@ public class Student extends User {
     private Year graduationYear;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     @ToString.Exclude
     private Profile profile;
 

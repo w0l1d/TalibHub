@@ -2,6 +2,7 @@ package org.ilisi.backend.specification;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.*;
+import org.ilisi.backend.repository.InstitutRepository;
 import org.ilisi.backend.repository.StudentRepository;
 import org.ilisi.backend.specs.StudentSpecifications;
 import org.junit.jupiter.api.AfterEach;
@@ -36,6 +37,8 @@ class StudentSpecsTests {
     private static Student studentAnass;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private InstitutRepository institutRepository;
 
 
     @Test
@@ -112,6 +115,7 @@ class StudentSpecsTests {
         Specification<Student> spec = StudentSpecifications.hasKeyword("Developed features");
         List<Student> students = studentRepository.findAll(spec);
         log.info("*********************************************");
+        log.info("ALL students: {}", studentRepository.findAll());
         log.info("students: {}", students);
         log.info("*********************************************");
         assertTrue(students.contains(studentAnass));
@@ -146,30 +150,29 @@ class StudentSpecsTests {
      */
     @BeforeEach
     public void initTestData() {
-
         // create Institut A
         var institutA = new Institut();
         institutA.setName("Tech University");
         institutA.setWebsite("https://techuniversity.edu");
-//        institutA = institutRepository.save(institutA);
+        institutA = institutRepository.save(institutA);
 
         // create Institut B
         var institutB = new Institut();
         institutB.setName("Science Institute");
         institutB.setWebsite("https://scienceinstitute.org");
-//        institutB = institutRepository.save(institutB);
+        institutB = institutRepository.save(institutB);
 
         // create Institut C
         var institutC = new Institut();
         institutC.setName("Engineering College");
         institutC.setWebsite("https://engineeringcollege.com");
-//        institutC = institutRepository.save(institutC);
+        institutC = institutRepository.save(institutC);
 
         // create Institut D
         var institutD = new Institut();
         institutD.setName("Art and Design School");
         institutD.setWebsite("https://artanddesignschool.edu");
-//        institutD = institutRepository.save(institutD);
+        institutD = institutRepository.save(institutD);
 
 
         // create Yassine student and his education and experience
@@ -241,8 +244,6 @@ class StudentSpecsTests {
         e2.setExperiences(List.of(experience2));
 
         studentAnass = studentRepository.save(student2);
-
-
     }
 
     @AfterEach
