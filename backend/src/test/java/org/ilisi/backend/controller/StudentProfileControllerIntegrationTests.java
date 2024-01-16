@@ -235,13 +235,13 @@ class StudentProfileControllerIntegrationTests {
         //arrange
         Profile profile = saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"));
         Institut institut = saveInstitut("institut");
-        Education education = educationRepository.save(Education.builder()
+        Education education = Education.builder()
                 .title("title")
                 .studyField("studyField")
                 .startAt(YearMonth.of(2019, 1))
                 .endAt(YearMonth.of(2020, 1))
                 .institut(institut)
-                .build());
+                .build();
         profile.setEducations(List.of(education));
         profileRepository.save(profile);
 
@@ -508,21 +508,20 @@ class StudentProfileControllerIntegrationTests {
 
     private List<Profile> saveListOfValidTestProfiles() {
 
-        return profileRepository.saveAll(List.of(
+        return List.of(
                 saveProfile(saveStudent("test-cne-1", "test-first-name-1", "test-last-name-1", "testemail1@gmail.com", "test-phone-1", "test-cin-1")),
                 saveProfile(saveStudent("test-cne-2", "test-first-name-2", "test-last-name-2", "testemail2@gmail.com", "test-phone-2", "test-cin-2"))
-        ));
+        );
     }
 
     private Profile saveProfile(Student student) {
         return profileRepository.save(Profile.builder()
-                .id(UUID.randomUUID().toString())
                 .student(student)
                 .build());
     }
 
     private Institut saveInstitut(String name) {
-        return institutRepository.save(Institut.builder().id(UUID.randomUUID().toString()).name(name).build());
+        return institutRepository.save(Institut.builder().name(name).build());
     }
 
     private Student saveStudent(String cne, String firstName, String lastName, String email, String phone, String cin) {

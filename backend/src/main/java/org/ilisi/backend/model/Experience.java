@@ -25,7 +25,7 @@ public class Experience {
     private YearMonth endAt;
     private String location;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "institu_id", nullable = false)
     private Institut institut;
 }
