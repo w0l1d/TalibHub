@@ -10,6 +10,7 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class StudentController {
 
     @GetMapping("/search")
     public List<Student> searchStudents(@RequestParam @Length(min = 3) String query) {
+
         return studentService.searchStudents(query);
     }
 
