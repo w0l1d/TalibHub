@@ -51,10 +51,10 @@ export class ExperienceModalComponent {
     if (this.expModalCollapsed) {
       this.getInstituts();
       this.resetForm();
+      this.addInstitutCollapsed = true;
       if (this.experience !== undefined) {
         console.log('I am here');
         this.fillForm()
-        console.log(this.experienceForm.get('institutId')?.value);
       }
     }
     this.expModalCollapsed = !this.expModalCollapsed;

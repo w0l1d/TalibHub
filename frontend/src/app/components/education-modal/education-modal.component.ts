@@ -54,6 +54,7 @@ export class EducationModalComponent {
     if (this.educModalCollapsed) {
       this.getInstituts();
       this.resetForm();
+      this.addInstitutCollapsed = true;
       if (this.education !== undefined) {
         console.log('I am here');
         this.fillForm();
