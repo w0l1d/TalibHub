@@ -81,7 +81,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    let institut = {};
+    let institut: {};
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
@@ -119,7 +119,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    let institut = {};
+    let institut: {};
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
