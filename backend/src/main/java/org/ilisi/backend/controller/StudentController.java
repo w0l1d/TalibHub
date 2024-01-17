@@ -3,11 +3,14 @@ package org.ilisi.backend.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.service.StudentService;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/students")
 @Slf4j
+@Validated
 public class StudentController {
 
     private StudentService studentService;
@@ -36,7 +40,8 @@ public class StudentController {
     }
 
     @GetMapping("/search")
-    public List<Student> searchStudents(@RequestParam String query) {
+    public List<Student> searchStudents(@RequestParam @Length(min = 3) String query) {
+
         return studentService.searchStudents(query);
     }
 
