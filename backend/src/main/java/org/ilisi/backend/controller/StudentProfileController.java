@@ -4,6 +4,7 @@ package org.ilisi.backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
 import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
 import org.ilisi.backend.exception.EntityNotFoundException;
@@ -13,6 +14,7 @@ import org.ilisi.backend.model.User;
 import org.ilisi.backend.service.ProfileService;
 import org.ilisi.backend.service.StudentService;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequestMapping("/profiles")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class StudentProfileController {
 
     private final ProfileService profileService;
@@ -45,7 +48,7 @@ public class StudentProfileController {
     @PostMapping("/{profileId}/educations")
     public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {
         Profile profile = profileService.findById(profileId);
-        if(profile == null) {
+        if (profile == null) {
             String errorMessage = String.format("Profile with id %s not found", profileId);
             log.error(errorMessage);
             throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
@@ -78,7 +81,7 @@ public class StudentProfileController {
     @PostMapping("/{profileId}/experiences")
     public Profile addExperience(@PathVariable String profileId, @RequestBody @Valid ExperienceDto experienceDto) {
         Profile profile = profileService.findById(profileId);
-        if(profile == null) {
+        if (profile == null) {
             String errorMessage = String.format("Profile with id %s not found", profileId);
             log.error(errorMessage);
             throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
@@ -110,7 +113,7 @@ public class StudentProfileController {
 
 
     @GetMapping("/search")
-    public List<Profile> searchProfilesByKeyword(@RequestParam("query") String keyword) {
+    public List<Profile> searchProfilesByKeyword(@RequestParam("query") @Length(min = 3) String keyword) {
         return studentService.searchStudents(keyword).stream().map(Student::getProfile).toList();
     }
 
