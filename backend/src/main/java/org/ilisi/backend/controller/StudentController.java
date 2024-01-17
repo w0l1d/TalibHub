@@ -8,10 +8,7 @@ import org.ilisi.backend.service.StudentService;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +33,11 @@ public class StudentController {
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     public DataTablesOutput<Student> getStudents(@Valid @RequestBody DataTablesInput input) {
         return studentService.getDataTableStudents(input);
+    }
+
+    @GetMapping("/search")
+    public List<Student> searchStudents(@RequestParam String query) {
+        return studentService.searchStudents(query);
     }
 
 
