@@ -46,6 +46,10 @@ export class StudentProfileService {
     return this.http.delete(`${this.baseUrl}/profiles/${profileId}/experiences/${experienceId}`);
   }
 
+  public updateProfile(profileId:string, profile: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}`, profile);
+  }
+
 
 
 }
