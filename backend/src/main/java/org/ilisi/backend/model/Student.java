@@ -1,5 +1,6 @@
 package org.ilisi.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,7 @@ public class Student extends User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     @ToString.Exclude
+    @JsonIgnore
     private Profile profile;
 
     @Override

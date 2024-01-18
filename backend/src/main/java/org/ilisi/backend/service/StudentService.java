@@ -3,6 +3,7 @@ package org.ilisi.backend.service;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -61,7 +62,7 @@ public class StudentService {
         return sb.toString();
     }
 
-    public List<Student> searchStudents(@Min(3) String query) {
+    public List<Student> searchStudents(@Length(min = 3) String query) {
         return studentRepository.findAll(StudentSpecifications.hasKeyword(query));
     }
 }
