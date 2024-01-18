@@ -4,8 +4,8 @@
 </button>
 
 <!-- Main modal -->
-<div id="crud-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" *ngIf="!expModalCollapsed">
-  <div class="relative p-4 w-full max-w-md max-h-full">
+<div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-[calc(50%-16rem)] z-50 justify-center items-center md:inset-0 h-[calc(100%-1rem)] " *ngIf="!expModalCollapsed">
+  <div class="relative p-4 w-full max-w-lg max-h-full">
     <!-- Modal content -->
     <div class="relative bg-white rounded-lg shadow ">
       <!-- Modal header -->
@@ -20,25 +20,46 @@
       </div>
       <!-- Modal body -->
       <form class="p-4 md:p-5" [formGroup]="experienceForm" (ngSubmit)="operation === 'create' ?  onCreate() : onUpdate()">
-        <div class="grid gap-4 mb-4 grid-cols-2">
-          <div class="col-span-2">
+        <div class="grid gap-4 mb-4 grid-cols-4 overflow-y-auto max-h-96">
+          <div class="col-span-4">
             <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Job Title</label>
             <input type="text" formControlName="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type experience title" required>
           </div>
-          <div class="col-span-2 sm:col-span-1">
-            <label for="startAt" class="block mb-2 text-sm font-medium text-gray-900">Start date</label>
-            <input type="date" formControlName="startAt" id="startAt" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " required>
+          <div class="col-span-2">
+            <label for="startAtMonth" class="block mb-2 text-sm font-medium text-gray-900">Start month</label>
+            <select formControlName="startAtMonth" id="startAtMonth" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " >
+              <option value="" selected>Select Month</option>
+              <option  *ngFor="let month of myMonths" value="{{month.value}}">{{month.name}}</option>
+            </select>
           </div>
-          <div class="col-span-2 sm:col-span-1">
-            <label for="endAt" class="block mb-2 text-sm font-medium text-gray-900">End date</label>
-            <input type="date" formControlName="endAt" id="endAt" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " required>
+          <div class="col-span-2">
+            <label for="startAtYear" class="block mb-2 text-sm font-medium text-gray-900">Start year</label>
+            <select formControlName="startAtYear" id="startAtYear" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " >
+              <option value="" selected>Select Year</option>
+              <option  *ngFor="let year of myStartYears" value="{{year}}">{{year}}</option>
+            </select>
           </div>
-          <div class="flex items-center mb-4">
+
+          <div class="col-span-2">
+            <label for="endAtMonth" class="block mb-2 text-sm font-medium text-gray-900">End month</label>
+            <select formControlName="endAtMonth" id="endAtMonth" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " >
+              <option value="" selected>Select Month</option>
+              <option  *ngFor="let month of myMonths" value="{{month.value}}">{{month.name}}</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label for="endAtYear" class="block mb-2 text-sm font-medium text-gray-900">End year</label>
+            <select formControlName="endAtYear" id="endAtYear" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " >
+              <option value="" selected>Select Year</option>
+              <option  *ngFor="let year of myEndYears" [value]="year">{{year}}</option>
+            </select>
+          </div>
+          <div class="w-40 flex items-center mb-4">
             <input (click)="toggleAddInstitut()" id="add-institut-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" >
             <label for="add-institut-checkbox" class="ms-2 text-sm font-medium text-gray-900">Add New Institut</label>
           </div>
 
-          <div class="col-span-2 sm:col-span-1" *ngIf="addInstitutCollapsed">
+          <div class="col-span-4 " *ngIf="addInstitutCollapsed">
             <label for="institutId" class="block mb-2 text-sm font-medium text-gray-900">Institute name</label>
             <select formControlName="institutId" id="institutId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " >
               <option value="" selected>Select institute</option>
@@ -47,18 +68,18 @@
           </div>
 
 
-          <div class="col-span-2" *ngIf="!addInstitutCollapsed">
-            <div class="col-span-2 sm:col-span-1">
+          <div class="col-span-4" *ngIf="!addInstitutCollapsed">
+            <div class="">
               <label for="institutname" class="block mb-2 text-sm font-medium text-gray-900">Institute name</label>
               <input type="text" formControlName="institutname" id="institutname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="Type institut name">
             </div>
-            <div class="col-span-2 sm:col-span-1" >
+            <div class="" >
               <label for="institutwebsite" class="block mb-2 text-sm font-medium text-gray-900">Institute website</label>
               <input type="text" formControlName="institutwebsite" id="institutwebsite" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="Type institut website">
             </div>
           </div>
 
-          <div class="col-span-2">
+          <div class="col-span-4">
             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 ">Job Description</label>
             <textarea id="description" formControlName="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Write experience description here"></textarea>
           </div>
