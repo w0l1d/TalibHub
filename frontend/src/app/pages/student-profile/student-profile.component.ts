@@ -4,10 +4,11 @@ import NavbarData from './navbar-data';
 import {StudentProfileService} from '../../services/student-profile.service';
 import {HttpClientModule} from '@angular/common/http';
 import Profile from '../../models/profile';
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EducationModalComponent} from "../../components/education-modal/education-modal.component";
 import {ExperienceModalComponent} from "../../components/experience-modal/experience-modal.component";
+import {ProfileForm, ProfileFormModalComponent} from "../../components/profile-form-modal/profile-form-modal.component";
 
 @Component({
   selector: 'app-student-profile',
@@ -20,7 +21,9 @@ import {ExperienceModalComponent} from "../../components/experience-modal/experi
     FormsModule,
     ReactiveFormsModule,
     EducationModalComponent,
-    ExperienceModalComponent
+    ExperienceModalComponent,
+    NgOptimizedImage,
+    ProfileFormModalComponent
 
   ],
   providers: [
@@ -53,5 +56,11 @@ export class StudentProfileComponent {
   }
 
 
+  handleProfileCreation(profileForm: ProfileForm) {
+    console.log(profileForm);
+  }
 
+  handleProfileUpdate(profileForm: ProfileForm) {
+    console.log(profileForm);
+  }
 }
