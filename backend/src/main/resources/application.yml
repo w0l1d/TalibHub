@@ -1,9 +1,8 @@
 jwt:
-  key: "YourSecretKeyHereYourSecretKeyHereYourSecretKeyHereYourSecretKeyHere"
+  key: ${JWT_SECRET}
   access-token-expiration-in-minutes: 10
   refresh-token-expiration-in-days: 30
 spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
