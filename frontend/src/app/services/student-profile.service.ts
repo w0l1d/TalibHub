@@ -46,6 +46,13 @@ export class StudentProfileService {
     return this.http.delete(`${this.baseUrl}/profiles/${profileId}/experiences/${experienceId}`);
   }
 
+  public searchStudents(searchTerm: string): any {
+    return this.http.get(`${this.baseUrl}/profiles/search`, {
+      params: {
+        query: searchTerm
+      }
+    });
+  }
 
 
 }

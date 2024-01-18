@@ -4,12 +4,15 @@ package org.ilisi.backend.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
 import org.ilisi.backend.dto.EducationDto;
 import org.ilisi.backend.dto.ExperienceDto;
 import org.ilisi.backend.exception.EntityNotFoundException;
 import org.ilisi.backend.model.Profile;
+import org.ilisi.backend.model.Student;
 import org.ilisi.backend.model.User;
 import org.ilisi.backend.service.ProfileService;
+import org.ilisi.backend.service.StudentService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,7 @@ import java.util.List;
 public class StudentProfileController {
 
     private final ProfileService profileService;
+    private final StudentService studentService;
     @GetMapping("")
     public List<Profile> getProfiles() {
         return profileService.getAll();
@@ -102,5 +106,10 @@ public class StudentProfileController {
             throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
         }
         return profileService.deleteExperience(profile, experienceId);
+    }
+
+    @GetMapping("/search")
+    public List<Profile> searchProfilesByKeyword(@RequestParam("query") @Length(min = 3) String keyword) {
+        return studentService.searchStudents(keyword).stream().map(Student::getProfile).toList();
     }
 }
