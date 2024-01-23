@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="flex flex-col gap-5 mx-10 medium-cd-font mt-5 border border-opacity-15 bg-white rounded-md p-5" *ngFor="let studentProfile of studentProfiles">
-        <div class="flex gap-5">
+        <div class="flex gap-5 cursor-pointer" (click)="navigateToProfile(studentProfile.id)">
             <div class="">
                 <img src="./assets/images/user.png" alt="" class="size-20 border border-opacity-15 rounded-full">
             </div>
