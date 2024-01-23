@@ -44,6 +44,11 @@ public class StudentProfileController {
         return profileService.getProfile(email);
     }
 
+    @GetMapping("/{profileId}")
+    public Profile getProfileById(@PathVariable String profileId) {
+        return profileService.findById(profileId);
+    }
+
 
     @PostMapping("/{profileId}/educations")
     public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {

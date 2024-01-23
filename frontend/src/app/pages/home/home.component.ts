@@ -7,6 +7,7 @@ import {environment as env} from "../../../environments/environment.development"
 import { StudentProfileService } from '../../services/student-profile.service';
 import Profile from '../../models/profile';
 import { NgFor } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +31,8 @@ export class HomeComponent {
   studentProfiles!: Profile[];
 
   constructor(
-    private studentProfileService: StudentProfileService
+    private studentProfileService: StudentProfileService,
+    private router: Router
   ) {
   }
 
@@ -44,5 +46,10 @@ export class HomeComponent {
 
   onKey(event: any): void {
     this.searchTerm = event.target.value;
+  }
+
+  navigateToProfile(profileId: string): void {
+    console.log("Navigating to profile: " + profileId);
+    this.router.navigate(['/talib', profileId]).then(() => console.log("navigated to profile"));
   }
 }
