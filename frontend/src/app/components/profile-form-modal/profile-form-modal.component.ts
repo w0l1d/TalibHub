@@ -56,6 +56,7 @@ export class ProfileFormModalComponent {
     this.profileForm = this.formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
       phone: ['', Validators.required],
+      picture: [null],
       about: [''],
     });
   }
@@ -69,6 +70,7 @@ export class ProfileFormModalComponent {
     this.profileForm.patchValue({
       email: this.profile?.student.email,
       phone: this.profile?.student.phone,
+      picture: this.profile?.picture,
       about: this.profile?.about
     });
   }
@@ -79,5 +81,17 @@ export class ProfileFormModalComponent {
 
   onUpdate(): void {
     this.updateProfile.emit(this.profileForm.value);
+  }
+
+  onImagePicked(event: Event): void {
+    const file:File = (event.target as HTMLInputElement).files?.[0]!; // Here we use only the first file (single file)
+    const maxFileSize = 1024 * 1024 * 5; // 5MB
+    console.log(file);
+    if (file.size > maxFileSize) {
+      alert('File size exceeds 5MB');
+      return;
+    }
+    this.profileForm.patchValue({ picture: file});
+    console.log(this.profileForm.get('picture')?.value);
   }
 }

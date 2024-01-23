@@ -192,7 +192,12 @@ export class ExperienceModalComponent {
 
   onImagePicked(event: Event): void {
     const file:File = (event.target as HTMLInputElement).files?.[0]!; // Here we use only the first file (single file)
+    const maxFileSize = 1024 * 1024 * 5; // 5MB
     console.log(file);
+    if (file.size > maxFileSize) {
+      alert('File size exceeds 5MB');
+      return;
+    }
     this.experienceForm.patchValue({ institutimage: file});
     console.log(this.experienceForm.get('institutimage')?.value);
   }
