@@ -4,6 +4,7 @@ import {ProfileComponent} from '../profile/profile.component';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import { RouterLink } from '@angular/router';
+import {SideNavBarComponent} from "../side-nav-bar/side-nav-bar.component";
 
 @Component({
   selector: 'app-layout',
@@ -14,7 +15,8 @@ import { RouterLink } from '@angular/router';
     NgOptimizedImage,
     NgForOf,
     NgIf,
-    RouterLink
+    RouterLink,
+    SideNavBarComponent
   ],
   providers: [AuthService],
   templateUrl: './layout.component.html',
@@ -25,14 +27,5 @@ export class LayoutComponent {
   @Input() navBarData!: any;
   toggleCollapsed(): void {
     this.collapsed = !this.collapsed;
-  }
-
-  constructor(
-    private authService: AuthService
-  ) {
-  }
-
-  logout(): void {
-    this.authService.logout();
   }
 }
