@@ -7,7 +7,7 @@
             </div>
             <div class="ml-10 flex z-20 -mt-10 w-full">
                 <div class="relative">
-                    <img ngSrc="./assets/images/profilePic2.png" alt="" class="size-20" height="128" width="128">
+                    <img ngSrc="./assets/images/{{ studentProfile?.picture?.name ?? 'Default_pfp.svg.png'}}" alt="" class="size-20" height="128" width="128">
                     <i class="fa-solid fa-circle text-green-400 absolute right-1 bottom-1"></i>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="flex gap-5" *ngFor="let experience of studentProfile?.experiences">
                 <div class="">
-                <img ngSrc="./assets/images/edinfo.jpeg" alt="" class="size-20" height="200" width="200">
+                <img ngSrc="/assets/images/{{ experience.institut.image.name ?? '.edinfo.jpeg' }}" alt="" class="size-20" height="200" width="200">
 
                 </div>
               <div class=""  >
@@ -79,7 +79,7 @@
             </div>
             <div class="flex gap-5" *ngFor="let education of studentProfile?.educations">
                 <div class="">
-                  <img ngSrc="./assets/images/fstm_logo.jpeg" alt="" class="size-20" height="200" width="200">
+                  <img ngSrc="./assets/images/{{ education.institut.image.name ?? 'fstm_logo.jpeg' }}" alt="" class="size-20" height="200" width="200">
                 </div>
                 <div class=""  >
                     <p class="font-bold">
