@@ -88,7 +88,8 @@ export class ExperienceModalComponent {
     if (this.experienceForm.get('institutId')?.value === '') {
       institut  = {
         name: this.experienceForm.get('institutname')?.value,
-        website: this.experienceForm.get('institutwebsite')?.value
+        website: this.experienceForm.get('institutwebsite')?.value,
+        image: this.experienceForm.get('institutimage')?.value
       };
     } else {
       institut  = {
@@ -127,7 +128,8 @@ export class ExperienceModalComponent {
     if (this.experienceForm.get('institutId')?.value === '') {
       institut = {
         name: this.experienceForm.get('institutname')?.value,
-        website: this.experienceForm.get('institutwebsite')?.value
+        website: this.experienceForm.get('institutwebsite')?.value,
+        image: this.experienceForm.get('institutimage')?.value
       };
     } else {
       institut  = {
@@ -183,8 +185,16 @@ export class ExperienceModalComponent {
       institutId: [''],
       institutname: [''],
       institutwebsite: [''],
+      institutimage: [null],
       description: ['', Validators.required]
     });
+  }
+
+  onImagePicked(event: Event): void {
+    const file:File = (event.target as HTMLInputElement).files?.[0]!; // Here we use only the first file (single file)
+    console.log(file);
+    this.experienceForm.patchValue({ institutimage: file});
+    console.log(this.experienceForm.get('institutimage')?.value);
   }
 
   private getInstituts():void {
@@ -208,6 +218,7 @@ export class ExperienceModalComponent {
       institutId: this.experience?.institut?.id,
       institutname: this.experience?.institut?.name,
       institutwebsite: this.experience?.institut?.website,
+      institutimage: this.experience?.institut?.image
     });
   }
 }

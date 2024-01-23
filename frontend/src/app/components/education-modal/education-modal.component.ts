@@ -89,7 +89,8 @@ export class EducationModalComponent {
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
         name: this.educationForm.get('institutname')?.value,
-        website: this.educationForm.get('institutwebsite')?.value
+        website: this.educationForm.get('institutwebsite')?.value,
+        image: this.educationForm.get('institutimage')?.value
       };
     } else {
       institut  = {
@@ -129,7 +130,8 @@ export class EducationModalComponent {
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
         name: this.educationForm.get('institutname')?.value,
-        website: this.educationForm.get('institutwebsite')?.value
+        website: this.educationForm.get('institutwebsite')?.value,
+        image: this.educationForm.get('institutimage')?.value
       };
     } else {
       institut  = {
@@ -188,8 +190,14 @@ export class EducationModalComponent {
       institutId: [''],
       institutname: [''],
       institutwebsite: [''],
-      description: ['', [Validators.required]]
+      institutimage: [null],
+      description: ['', [Validators.required]],
     });
+  }
+
+  onImagePicked(event: Event): void {
+    const file:File = (event.target as HTMLInputElement).files?.[0]!; // Here we use only the first file (single file)
+    this.educationForm.patchValue({ institutimage: file});
   }
 
   public getInstituts(): void {
@@ -216,6 +224,7 @@ export class EducationModalComponent {
       institutId: this.education?.institut?.id,
       institutname: this.education?.institut?.name,
       institutwebsite: this.education?.institut?.website,
+      institutimage: this.education?.institut?.image,
       description: this.education?.description
     });
   }

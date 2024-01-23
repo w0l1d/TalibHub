@@ -23,11 +23,45 @@ export class StudentProfileService {
   }
 
   public addEducation(profileId:string, education: Education): Observable<any> {
-    return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, education);
+    const formData: FormData = new FormData();
+
+    // Append Education properties
+    formData.append('title', education.title);
+    formData.append('studyField', education.studyField);
+    formData.append('description', education.description);
+    formData.append('startAt', education.startAt);
+    formData.append('endAt', education.endAt);
+
+    // Append Institut properties
+    formData.append('institut.name', education.institut.name);
+    formData.append('institut.website', education.institut.website);
+
+    // Append Image (if available)
+    if (education.institut.image) {
+      formData.append('institut.image', education.institut.image as Blob);
+    }
+    return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, formData);
   }
 
   public updateEducation(profileId:string, education: Education): Observable<any> {
-    return this.http.put(`${this.baseUrl}/profiles/${profileId}/educations/${education.id}`, education);
+    const formData: FormData = new FormData();
+
+    // Append Education properties
+    formData.append('title', education.title);
+    formData.append('studyField', education.studyField);
+    formData.append('description', education.description);
+    formData.append('startAt', education.startAt);
+    formData.append('endAt', education.endAt);
+
+    // Append Institut properties
+    formData.append('institut.name', education.institut.name);
+    formData.append('institut.website', education.institut.website);
+
+    // Append Image (if available)
+    if (education.institut.image) {
+      formData.append('institut.image', education.institut.image as Blob);
+    }
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}/educations/${education.id}`, formData);
   }
 
   public deleteEducation(profileId:string, educationId: string): Observable<any> {
@@ -35,11 +69,45 @@ export class StudentProfileService {
   }
 
   public addExperience(profileId:string, experience: Experience): Observable<any> {
-    return this.http.post(`${this.baseUrl}/profiles/${profileId}/experiences`, experience);
+    const formData: FormData = new FormData();
+
+    // Append Experience properties
+    formData.append('title', experience.title);
+    formData.append('description', experience.description);
+    formData.append('startAt', experience.startAt);
+    formData.append('endAt', experience.endAt);
+
+    // Append Institut properties
+    formData.append('institut.name', experience.institut.name);
+    formData.append('institut.website', experience.institut.website);
+
+    // Append Image (if available)
+    if (experience.institut.image) {
+      formData.append('institut.image', experience.institut.image as Blob);
+    }
+
+
+    return this.http.post(`${this.baseUrl}/profiles/${profileId}/experiences`, formData);
   }
 
   public updateExperience(profileId:string, experience: Experience): Observable<any> {
-    return this.http.put(`${this.baseUrl}/profiles/${profileId}/experiences/${experience.id}`, experience);
+    const formData: FormData = new FormData();
+
+    // Append Experience properties
+    formData.append('title', experience.title);
+    formData.append('description', experience.description);
+    formData.append('startAt', experience.startAt);
+    formData.append('endAt', experience.endAt);
+
+    // Append Institut properties
+    formData.append('institut.name', experience.institut.name);
+    formData.append('institut.website', experience.institut.website);
+
+    // Append Image (if available)
+    if (experience.institut.image) {
+      formData.append('institut.image', experience.institut.image as Blob);
+    }
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}/experiences/${experience.id}`, formData);
   }
 
   public deleteExperience(profileId:string, experienceId: string): Observable<any> {
