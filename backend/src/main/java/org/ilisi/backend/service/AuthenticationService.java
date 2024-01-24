@@ -48,7 +48,8 @@ public class AuthenticationService {
         // return tokens
         return Map.of(
                 "accessToken", jwtService.generateAccessToken(user),
-                "refreshToken", refreshToken
+                "refreshToken", refreshToken,
+                "user", user
         );
     }
 
