@@ -1,5 +1,6 @@
 package org.ilisi.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "institut_id", referencedColumnName = "id")
+    @JsonIgnore
     private Institut institut;
 
     private String review;
