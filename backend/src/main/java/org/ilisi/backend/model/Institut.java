@@ -3,6 +3,8 @@ package org.ilisi.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -16,4 +18,7 @@ public class Institut {
 
     private String name;
     private String website;
+
+    @OneToMany(mappedBy = "institut", cascade = CascadeType.ALL)
+    private List<Review> reviews;
 }

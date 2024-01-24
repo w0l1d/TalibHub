@@ -7,3 +7,21 @@ services:
       - 'POSTGRES_USER=ilisi2023-2024'
     ports:
       - '5432'
+    networks:
+      - pg-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ilisi@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: ilisi
+    ports:
+      - "15050:80"
+    depends_on:
+      - postgres
+    networks:
+      - pg-network
+
+networks:
+  pg-network:
