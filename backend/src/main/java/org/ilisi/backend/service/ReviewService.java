@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.dto.ReviewDto;
+import org.ilisi.backend.exception.EntityNotFoundException;
 import org.ilisi.backend.mapper.ReviewMapper;
 import org.ilisi.backend.model.Institut;
 import org.ilisi.backend.model.Review;
@@ -28,14 +29,14 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
-    public Review updateReview(String id, ReviewDto reviewDto) {
-        Institut institut = institutRepository.findById(reviewDto.getInstitut().getId()).orElse(null);
-        reviewDto.setInstitut(institut);
+    public Review updateReview(String reviewId, ReviewDto reviewDto) {
+        reviewRepository.findById(reviewId).orElseThrow(() -> new EntityNotFoundException(String.format("Institute with id %s not found", reviewId), "INSTITUTE_NOT_FOUND"));
         Review review = reviewMapper.reviewDtoToReview(reviewDto);
+        review.setId(reviewId);
         return reviewRepository.save(review);
     }
 
-    public void deleteReview(String id) {
-        reviewRepository.deleteById(id);
+    public void deleteReview(String reviewId) {
+        reviewRepository.deleteById(reviewId);
     }
 }

@@ -23,15 +23,15 @@ public class ReviewController {
         return reviewService.addNewReview(reviewDto);
     }
 
-    @PutMapping("/{id}")
-    public Review updateReview(@PathVariable String id, @RequestBody ReviewDto reviewDto, Principal principal) {
+    @PutMapping("/{reviewId}")
+    public Review updateReview(@PathVariable String reviewId, @RequestBody ReviewDto reviewDto, Principal principal) {
         Student student = ((Student) ((Authentication) principal).getPrincipal());
         reviewDto.setStudent(student);
-        return reviewService.updateReview(id, reviewDto);
+        return reviewService.updateReview(reviewId, reviewDto);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable String id) {
-        reviewService.deleteReview(id);
+    @DeleteMapping("/{reviewId}")
+    public void deleteReview(@PathVariable String reviewId) {
+        reviewService.deleteReview(reviewId);
     }
 }
