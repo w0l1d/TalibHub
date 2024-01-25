@@ -8,6 +8,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EducationModalComponent} from "../../components/education-modal/education-modal.component";
 import {ExperienceModalComponent} from "../../components/experience-modal/experience-modal.component";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-student-profile',
@@ -32,17 +33,22 @@ import {ExperienceModalComponent} from "../../components/experience-modal/experi
 export class StudentProfileComponent {
   navbarData = NavbarData;
   studentProfile?: Profile;
+  profileId: string = '';
 
 
 
   constructor(
     protected studentProfileService: StudentProfileService,
+    private route: ActivatedRoute,
   ) { }
 
 
   ngOnInit() {
-    this.getStudentProfile();
-
+    this.route.params.subscribe(params => {
+      this.profileId = params['id'] || '';
+    });
+    console.log("Profile id: " + this.profileId);
+    this.profileId == '' ? this.getStudentProfile() : this.getStudentProfileById(this.profileId);
   }
 
   private getStudentProfile(): void {
@@ -52,6 +58,15 @@ export class StudentProfileComponent {
     });
   }
 
+  private getStudentProfileById(profileId: string): void {
+    this.studentProfileService.getStudentProfileById(profileId).subscribe(data => {
+      this.studentProfile = data;
+      console.log(this.studentProfile);
+    });
+  }
 
+  isMyProfile(): boolean {
+    return this.profileId == '';
+  }
 
 }

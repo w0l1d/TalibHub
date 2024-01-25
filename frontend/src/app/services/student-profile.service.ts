@@ -22,6 +22,10 @@ export class StudentProfileService {
     return this.http.get(`${this.baseUrl}/profiles/me`);
   }
 
+  public getStudentProfileById(profileId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/profiles/${profileId}`);
+  }
+
   public addEducation(profileId:string, education: Education): Observable<any> {
     return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, education);
   }
@@ -46,6 +50,13 @@ export class StudentProfileService {
     return this.http.delete(`${this.baseUrl}/profiles/${profileId}/experiences/${experienceId}`);
   }
 
+  public searchStudents(searchTerm: string): any {
+    return this.http.get(`${this.baseUrl}/profiles/search`, {
+      params: {
+        query: searchTerm
+      }
+    });
+  }
 
 
 }

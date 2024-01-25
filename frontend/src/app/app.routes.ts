@@ -9,5 +9,6 @@ export const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'studentManagement', component: StudentManagementComponent},
   {path: 'studentProfile', component: StudentProfileComponent},
+  {path: 'talib/:id', component: StudentProfileComponent},
   {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];

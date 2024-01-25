@@ -49,9 +49,9 @@ public class BackendApplication {
                 Profile profile = Profile
                         .builder()
                         .about("about")
-                        .student(userRepository.save(student))
                         .build();
-                profileRepository.save(profile);
+                student.setProfile(profile);
+                userRepository.save(student);
             }
 
 
