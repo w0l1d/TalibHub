@@ -17,7 +17,6 @@ import org.ilisi.backend.repository.PosteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -45,9 +44,10 @@ public class PosteService {
     }
 
     public Poste updatePoste(String posteId, PosteDto posteDto) {
-        findPosteById(posteId);
+        Poste posteToUpdate = findPosteById(posteId);
         Poste poste = posteMapper.posteDtoToPoste(posteDto);
         poste.setId(posteId);
+        poste.setComments(posteToUpdate.getComments());
         return posteRepository.save(poste);
     }
 
@@ -70,7 +70,7 @@ public class PosteService {
         Poste poste = findPosteById(posteId);
         comment.setUser(user);
         Comment commentToAdd = commentMapper.commentDtoToComment(comment);
-        poste.setComments(Stream.concat(poste.getComments().stream(), Stream.of(commentToAdd)).toList());
+        poste.addComment(commentToAdd);
         return posteRepository.save(poste);
     }
 
@@ -80,7 +80,7 @@ public class PosteService {
         findCommentById(posteId, commentId);
         Comment commentToUpdate = commentMapper.commentDtoToComment(comment);
         commentToUpdate.setId(commentId);
-        poste.setComments(poste.getComments().stream().map(c -> c.getId().equals(commentId) ? commentToUpdate : c).toList());
+        poste.updateComment(commentId, commentToUpdate);
         return posteRepository.save(poste);
     }
 
@@ -93,7 +93,7 @@ public class PosteService {
         findPosteById(posteId);
         Comment commentToReply = findCommentById(posteId, commentId);
         comment.setUser(user);
-        commentToReply.setReplies(Stream.concat(commentToReply.getReplies().stream(), Stream.of(commentMapper.commentDtoToComment(comment))).toList());
+        commentToReply.addReply(commentMapper.commentDtoToComment(comment));
         return commentRepository.save(commentToReply);
     }
 
@@ -104,12 +104,7 @@ public class PosteService {
         findCommentById(posteId, commentId);
         Comment replyToUpdate = commentMapper.commentDtoToComment(comment);
         replyToUpdate.setId(replyId);
-        commentToReply.setReplies(
-                commentToReply.getReplies()
-                        .stream()
-                        .map(c -> c.getId().equals(replyId) ? replyToUpdate : c)
-                        .toList()
-        );
+        commentToReply.updateComment(replyId, replyToUpdate);
         return commentRepository.save(commentToReply);
     }
 

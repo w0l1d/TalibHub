@@ -46,7 +46,6 @@ public abstract class User implements UserDetails {
     private Instant createdAt;
     @UpdateTimestamp
     private Instant updatedAt;
-
     @Override
     @Transient
     public String getUsername() {

@@ -30,6 +30,12 @@ public class PosteController {
         return posteService.getAllPostes();
     }
 
+    @GetMapping("/{posteId}")
+    public Poste findPosteById(@PathVariable String posteId) {
+        log.info("findPosteById");
+        return posteService.findPosteById(posteId);
+    }
+
     @PostMapping("")
     public Poste addNewPoste(@RequestBody PosteDto posteDto, Principal principal) {
         log.info("addNewPoste");

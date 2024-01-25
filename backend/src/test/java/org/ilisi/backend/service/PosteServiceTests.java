@@ -20,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -179,7 +180,8 @@ class PosteServiceTests {
     void addCommentReturnsPoste() {
         //arrange
         User student = sampleStudent("CNE1", "firstName1", "lastName1", "email1", "phone1", "CIN1");
-        Poste poste = samplePoste("titre1", "description1", "image1", student, List.of(sampleComment("content1", student), sampleComment("content2", student)));
+        List<Comment> comments = new ArrayList<>(List.of(sampleComment("content1", student), sampleComment("content2", student)));
+        Poste poste = samplePoste("titre1", "description1", "image1", student, comments);
         int sizeBefore = poste.getComments().size();
         CommentDto commentDto = sampleCommentDto("content3", student);
         //act
@@ -228,6 +230,7 @@ class PosteServiceTests {
         //arrange
         User student = sampleStudent("CNE1", "firstName1", "lastName1", "email1", "phone1", "CIN1");
         Comment commentToReply = sampleComment("content1", student);
+        commentToReply.setReplies(new ArrayList<>());
         int sizeBefore = commentToReply.getReplies().size();
         Poste poste = samplePoste("titre1", "description1", "image1", student, List.of(commentToReply, sampleComment("content2", student)));
         CommentDto replyDto = sampleCommentDto("content3", student);

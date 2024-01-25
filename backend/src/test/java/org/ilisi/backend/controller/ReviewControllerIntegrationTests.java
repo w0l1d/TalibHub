@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 @Slf4j
-public class ReviewControllerIntegrationTests {
+class ReviewControllerIntegrationTests {
 
     @ServiceConnection
     @Container

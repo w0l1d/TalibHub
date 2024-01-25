@@ -35,7 +35,6 @@ public class Comment {
     private Instant lastUpdatedOn;
 
     @ManyToOne
-    @JoinColumn(name = "poste_id", referencedColumnName = "id")
     @JsonIgnore
     private Poste poste;
 
@@ -46,4 +45,13 @@ public class Comment {
     //List of replies as comments
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     private List<Comment> replies;
+
+    public void addReply(Comment comment) {
+        this.replies.add(comment);
+    }
+
+    public void updateComment(String replyId, Comment replyToUpdate) {
+        Comment reply = this.replies.stream().filter(r -> r.getId().equals(replyId)).findFirst().orElseThrow(() -> new RuntimeException("Reply not found"));
+        reply.setContent(replyToUpdate.getContent());
+    }
 }

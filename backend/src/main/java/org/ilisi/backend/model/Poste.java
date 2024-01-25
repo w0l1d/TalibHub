@@ -39,11 +39,19 @@ public class Poste {
     @UpdateTimestamp
     private Instant lastUpdatedOn;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH}, mappedBy = "poste")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "poste_id", referencedColumnName = "id")
     private List<Comment> comments;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    public void addComment(Comment commentToAdd) {
+        this.comments.add(commentToAdd);
+    }
+
+    public void updateComment(String commentId, Comment commentToUpdate) {
+        Comment comment = this.comments.stream().filter(c -> c.getId().equals(commentId)).findFirst().orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.setContent(commentToUpdate.getContent());
+    }
 }
