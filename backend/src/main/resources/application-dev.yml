@@ -1,34 +1,59 @@
+# JWT configuration
 jwt:
+  # The secret key used for signing the JWT
   key: "YourSecretKeyHereYourSecretKeyHereYourSecretKeyHereYourSecretKeyHere"
+  # The expiration time for the access token in minutes
   access-token-expiration-in-minutes: 10000
+  # The expiration time for the refresh token in days
   refresh-token-expiration-in-days: 30
+
+# Server configuration
 server:
+  # The port on which the server will run
   port: 8081
 
+# Spring configuration
 spring:
+  # Docker configuration
   docker:
     compose:
+      # The path to the Docker Compose file
       file: ./backend/compose.yaml
+
+  # JPA configuration
   jpa:
     hibernate:
+      # The strategy for schema generation
       ddl-auto: update
+    # Whether to show SQL queries in the console
     show-sql: true
-  mvc:
-    throw-exception-if-no-handler-found: true
+
+  # Web configuration
   web:
     resources:
+      # Whether to add resource handlers for serving static resources
       add-mappings: false
+  config:
+    import: optional:file:.env.yml
+
+# Logging configuration
 logging:
   level:
     org:
       apache:
+        # Logging level for Apache Tomcat
         tomcat: error
+        # Logging level for Apache HTTP
         http: DEBUG
       hibernate:
+        # Logging level for Hibernate SQL
         SQL: DEBUG
         type:
         descriptor:
           sql:
+          # Logging level for Hibernate BasicBinder
           BasicBinder: TRACE
-#    root: debug
+    #    root: debug
+    # Logging level for web
     web: trace
+

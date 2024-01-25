@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.email.EmailService;
 import org.ilisi.backend.model.Manager;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -12,9 +13,13 @@ import org.ilisi.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,6 +63,9 @@ class StudentControllerIntegrationTests {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @MockBean
+    private EmailService emailService;
+
     @DynamicPropertySource
     static void databaseProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
@@ -82,6 +90,7 @@ class StudentControllerIntegrationTests {
         Map<String, Object> tokensMap = objectMapper.convertValue(tokensJson, new TypeReference<>() {
         });
         JWT_TOKEN = (String) tokensMap.get("accessToken");
+
     }
 
     @AfterEach
