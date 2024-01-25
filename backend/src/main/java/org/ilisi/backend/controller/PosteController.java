@@ -84,4 +84,24 @@ public class PosteController {
         posteService.deleteComment(posteId, commentId);
     }
 
+    @PostMapping("/{posteId}/comments/{commentId}/replies")
+    public Comment addReply(@PathVariable String posteId, @PathVariable String commentId, @RequestBody CommentDto comment, Principal principal) {
+        log.info("addReply");
+        User user = (User) ((Authentication) principal).getPrincipal();
+        return posteService.addReply(posteId, commentId, comment, user);
+    }
+
+    @PutMapping("/{posteId}/comments/{commentId}/replies/{replyId}")
+    public Comment updateReply(@PathVariable String posteId, @PathVariable String commentId, @PathVariable String replyId, @RequestBody CommentDto comment, Principal principal) {
+        log.info("updateReply");
+        User user = (User) ((Authentication) principal).getPrincipal();
+        return posteService.updateReply(posteId, commentId, replyId, comment, user);
+    }
+
+    @DeleteMapping("/{posteId}/comments/{commentId}/replies/{replyId}")
+    public void deleteReply(@PathVariable String posteId, @PathVariable String commentId, @PathVariable String replyId) {
+        log.info("deleteReply");
+        posteService.deleteReply(posteId, commentId, replyId);
+    }
+
 }
