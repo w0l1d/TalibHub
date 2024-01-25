@@ -61,6 +61,10 @@ export class StudentProfileComponent {
   }
 
   handleProfileUpdate(profileForm: ProfileForm) {
+
     console.log(profileForm);
+    this.studentProfileService.updateProfile(this.studentProfile?.id!,profileForm).subscribe(data => {
+      console.log(data);
+    });
   }
 }

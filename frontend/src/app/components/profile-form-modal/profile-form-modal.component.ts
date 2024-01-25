@@ -4,9 +4,12 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import Profile from "../../models/profile";
 
 export interface ProfileForm{
-  email: string;
-  phone: string;
   about: string;
+  student: {
+    email: string;
+    phone: string;
+    picture: File;
+  }
 }
 
 @Component({
@@ -27,7 +30,7 @@ export class ProfileFormModalComponent {
   @Input() profile?: Profile;
   @Output() createProfile: EventEmitter<ProfileForm> = new EventEmitter();
   @Output() updateProfile: EventEmitter<ProfileForm> = new EventEmitter();
-  profileForm!: FormGroup;
+  profileFormGroup!: FormGroup;
   profileModalCollapsed: boolean = true;
 
 
@@ -53,31 +56,61 @@ export class ProfileFormModalComponent {
   }
 
   private buildProfileForm(): void {
-    this.profileForm = this.formBuilder.group({
+    this.profileFormGroup = this.formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
       phone: ['', Validators.required],
+      picture: [null],
       about: [''],
     });
   }
 
 
   private resetForm():void {
-    this.profileForm.reset();
+    this.profileFormGroup.reset();
   }
 
   private fillForm():void {
-    this.profileForm.patchValue({
+    this.profileFormGroup.patchValue({
+      about: this.profile?.about,
       email: this.profile?.student.email,
       phone: this.profile?.student.phone,
-      about: this.profile?.about
+      picture: this.profile?.student.picture
     });
   }
 
   onCreate(): void {
-    this.createProfile.emit(this.profileForm.value);
+    const profileForm: ProfileForm = {
+      about: this.profileFormGroup.get('about')?.value,
+      student: {
+        email: this.profileFormGroup.get('email')?.value,
+        phone: this.profileFormGroup.get('phone')?.value,
+        picture: this.profileFormGroup.get('picture')?.value
+      }
+    }
+    this.createProfile.emit(profileForm);
   }
 
   onUpdate(): void {
-    this.updateProfile.emit(this.profileForm.value);
+    const profileForm: ProfileForm = {
+      about: this.profileFormGroup.get('about')?.value,
+      student: {
+        email: this.profileFormGroup.get('email')?.value,
+        phone: this.profileFormGroup.get('phone')?.value,
+        picture: this.profileFormGroup.get('picture')?.value
+      }
+    }
+    this.updateProfile.emit(profileForm);
+  }
+
+  onImagePicked(event: Event): void {
+    const file:File = (event.target as HTMLInputElement).files?.[0]!; // Here we use only the first file (single file)
+    const maxFileSize = 1024 * 1024 * 5; // 5MB
+    console.log(file);
+    if (file.size > maxFileSize) {
+      alert('File size exceeds 5MB');
+      return;
+    }
+    this.profileFormGroup.patchValue({ picture: file});
+    console.log(this.profileFormGroup.get('picture')?.value);
   }
 }
