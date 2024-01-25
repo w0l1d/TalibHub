@@ -25,8 +25,6 @@ public class Session {
     private Instant lastRefreshedAt;
     @Column(nullable = false, updatable = false)
     private Instant expiresAt;
-
-    // relation with user
     @ManyToOne
     private User user;
 }
