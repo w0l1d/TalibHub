@@ -30,7 +30,7 @@ public class ReviewService {
     }
 
     public Review updateReview(String reviewId, ReviewDto reviewDto) {
-        reviewRepository.findById(reviewId).orElseThrow(() -> new EntityNotFoundException(String.format("Institute with id %s not found", reviewId), "INSTITUTE_NOT_FOUND"));
+        reviewRepository.findById(reviewId).orElseThrow(() -> new EntityNotFoundException(String.format("Review with id %s not found", reviewId), "REVIEW_NOT_FOUND"));
         Review review = reviewMapper.reviewDtoToReview(reviewDto);
         review.setId(reviewId);
         return reviewRepository.save(review);
