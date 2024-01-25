@@ -33,19 +33,4 @@ public class EmailConfig {
 
         return javaMailSender;
     }
-
-    @Bean
-    CommandLineRunner emailTestingCommandLineRunner(JavaMailSender javaMailSender) {
-        return args -> {
-            log.info("Sending Email...");
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo("w0l1d.dev@gmail.com");
-            message.setSubject("Testing from Spring Boot");
-            message.setText("Hello World \n Spring Boot Email");
-            javaMailSender.send(message);
-            log.info("Email Sent!");
-
-        };
-
-    }
 }
