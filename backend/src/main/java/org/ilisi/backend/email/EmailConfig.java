@@ -1,5 +1,6 @@
 package org.ilisi.backend.email;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -12,22 +13,26 @@ import java.util.Properties;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class EmailConfig {
+
+    private final EmailProperties emailProperties;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
-
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        javaMailSender.setHost("sandbox.smtp.mailtrap.io"); // smtp server
+        javaMailSender.setHost(emailProperties.host()); // smtp server
         javaMailSender.setPort(587); // port
-        javaMailSender.setUsername("34ad65830ec669"); // email
-        javaMailSender.setPassword("26657233f844b4"); // password
+        javaMailSender.setUsername(emailProperties.username()); // email
+        javaMailSender.setPassword(emailProperties.password()); // password
         Properties javaMailProperties = javaMailSender.getJavaMailProperties();
         javaMailProperties.setProperty("mail.smtp.auth", "true");
+        javaMailProperties.setProperty("mail.smtp.starttls.enable", "true");
+//        javaMailProperties.setProperty("mail.transport.protocol", "smtp");
+//        javaMailProperties.setProperty("mail.debug", "true");
 
         return javaMailSender;
     }
-
 
     @Bean
     CommandLineRunner emailTestingCommandLineRunner(JavaMailSender javaMailSender) {

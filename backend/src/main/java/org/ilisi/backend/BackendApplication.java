@@ -1,11 +1,13 @@
 package org.ilisi.backend;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilisi.backend.email.EmailProperties;
 import org.ilisi.backend.model.Manager;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
 import org.ilisi.backend.repository.UserRepository;
+import org.ilisi.backend.security.JwtProperties;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-@EnableConfigurationProperties(org.ilisi.backend.security.JwtProperties.class)
+@EnableConfigurationProperties({JwtProperties.class, EmailProperties.class})
 @Slf4j
 public class BackendApplication {
 

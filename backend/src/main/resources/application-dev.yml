@@ -14,19 +14,6 @@ server:
 
 # Spring configuration
 spring:
-  # Mail configuration
-  mail:
-    # The host of the mail server
-    host: sandbox.smtp.mailtrap.io
-    # The port of the mail server
-    port: 587
-    # The username for the mail server
-    username: 34ad65830ec669
-    # The password for the mail server
-    password: 26657233f844b4
-    # Whether to test the mail server connection on startup
-    test-connection: true
-
   # Docker configuration
   docker:
     compose:
@@ -51,6 +38,8 @@ spring:
     resources:
       # Whether to add resource handlers for serving static resources
       add-mappings: false
+  config:
+    import: optional:file:.env.yml
 
 # Logging configuration
 logging:
@@ -72,3 +61,4 @@ logging:
     #    root: debug
     # Logging level for web
     web: trace
+

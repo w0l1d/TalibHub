@@ -2,6 +2,7 @@ package org.ilisi.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.ilisi.backend.email.EmailService;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -20,6 +21,7 @@ public class StudentService {
 
     private StudentRepository studentRepository;
     private ProfileRepository profileRepository;
+    private EmailService emailService;
 
     @Transactional
     public List<Student> createStudents(@RequestBody List<Student> students) {
@@ -33,8 +35,17 @@ public class StudentService {
 
         studentRepository.saveAll(students);
         profileRepository.saveAll(profiles);
-        //TODO: Send email to students with their passwords
 
+        // Send email to students with their passwords
+        students.forEach(student -> {
+            emailService.sendSimpleMessage(
+                    student.getEmail(),
+                    "Welcome to ILISI",
+                    """
+                            <h1>Welcome to ILISI</h1>
+                            <p>Your password is: """ + student.getPassword()
+            );
+        });
 
         return students;
     }
