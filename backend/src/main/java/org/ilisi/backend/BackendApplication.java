@@ -32,7 +32,7 @@ public class BackendApplication {
                                                PasswordEncoder passwordEncoder) {
         // create user
         return args -> {
-            if (!userRepository.findByEmail("simo@gmail.com").isPresent()) {
+            if (userRepository.findByEmail("simo@gmail.com").isEmpty()) {
                 Student student = new Student();
                 student.setFirstName("mohamed");
                 student.setLastName("mohamed");

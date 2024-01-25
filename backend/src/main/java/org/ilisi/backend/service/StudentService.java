@@ -37,15 +37,15 @@ public class StudentService {
         profileRepository.saveAll(profiles);
 
         // Send email to students with their passwords
-        students.forEach(student -> {
+        students.forEach(student ->
             emailService.sendSimpleMessage(
                     student.getEmail(),
                     "Welcome to ILISI",
                     """
                             <h1>Welcome to ILISI</h1>
                             <p>Your password is: """ + student.getPassword()
-            );
-        });
+            )
+        );
 
         return students;
     }
