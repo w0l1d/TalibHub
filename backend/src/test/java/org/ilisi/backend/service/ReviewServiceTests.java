@@ -76,9 +76,11 @@ public class ReviewServiceTests {
         Mockito.when(reviewMapper.reviewDtoToReview(reviewDto)).thenCallRealMethod();
 
         Review review = reviewMapper.reviewDtoToReview(reviewDto);
+        review.setId("id");
+        Mockito.when(reviewRepository.findById(review.getId())).thenReturn(Optional.of(review));
         Mockito.when(reviewRepository.save(review)).thenReturn(review);
 
-        Review result = reviewService.updateReview("id", reviewDto);
+        Review result = reviewService.updateReview(review.getId(), reviewDto);
 
         //assert
         Assertions.assertNotNull(result);

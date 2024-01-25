@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class AuthRequestDTO {
 
-    @Email
+    @Email(message = "must be a well-formed email address")
     private String username;
     @NotBlank @Length(min = 8, message = "Password must be at least 8 characters long")
     private String password;
