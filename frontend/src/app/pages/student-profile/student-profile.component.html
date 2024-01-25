@@ -20,7 +20,7 @@
                         {{studentProfile?.about}}
                     </p>
                 </div>
-                <div class="m-5 ">
+                <div class="m-5 " *ngIf="this.isMyProfile()">
                     <app-profile-form-modal [profile]="studentProfile" (createProfile)="handleProfileCreation($event)" (updateProfile)="handleProfileUpdate($event)"  />
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 <p class="">
                     Experience
                 </p>
-                <div class="flex gap-2">
+                <div class="flex gap-2" *ngIf="this.isMyProfile()">
                   <app-experience-modal [operation]="'create'"
                                         [studentProfileService]="studentProfileService"
                                         [studentProfile]="studentProfile"
@@ -54,7 +54,7 @@
                   {{experience.description}}
                 </p>
               </div>
-              <div class="ms-auto">
+              <div class="ms-auto" *ngIf="this.isMyProfile()">
                 <app-experience-modal [experience]="experience" [operation]="'update'"
                                       [studentProfileService]="studentProfileService" [studentProfile]="studentProfile"
                                       [title]="'Edit Experience'"/>
@@ -70,7 +70,7 @@
                 <p class="font-bold">
                     Education
                 </p>
-                <div class="flex gap-2">
+                <div class="flex gap-2" *ngIf="this.isMyProfile()">
 
 
                   <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [title]="'Create New Education'" [operation]="'create'" />
@@ -92,7 +92,7 @@
                         {{education.description}}
                     </p>
                 </div>
-              <div class="ms-auto">
+              <div class="ms-auto" *ngIf="this.isMyProfile()">
 
                 <app-education-modal [studentProfileService]="studentProfileService" [studentProfile]="studentProfile" [education]="education" [title]="'Edit Education'" [operation]="'update'" />
               </div>

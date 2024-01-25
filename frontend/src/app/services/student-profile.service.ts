@@ -23,6 +23,10 @@ export class StudentProfileService {
     return this.http.get(`${this.baseUrl}/profiles/me`);
   }
 
+  public getStudentProfileById(profileId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/profiles/${profileId}`);
+  }
+
   public addEducation(profileId:string, education: Education): Observable<any> {
     const formData: FormData = new FormData();
 
@@ -128,6 +132,13 @@ export class StudentProfileService {
     return this.http.put(`${this.baseUrl}/profiles/${profileId}`, formData);
   }
 
+  public searchStudents(searchTerm: string): any {
+    return this.http.get(`${this.baseUrl}/profiles/search`, {
+      params: {
+        query: searchTerm
+      }
+    });
+  }
 
 
 }
