@@ -19,7 +19,7 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form class="p-4 md:p-5" [formGroup]="profileForm" (ngSubmit)="operation === 'create' ?  onCreate() : onUpdate()">
+      <form class="p-4 md:p-5" [formGroup]="profileFormGroup" (ngSubmit)="operation === 'create' ?  onCreate() : onUpdate()">
         <div class="grid gap-4 mb-4 grid-cols-4 overflow-y-auto max-h-96">
           <div class="col-span-4">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>

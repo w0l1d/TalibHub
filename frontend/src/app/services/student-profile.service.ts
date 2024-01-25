@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {environment as env} from '../../environments/environment.development';
 import Education from "../models/education";
 import Experience from "../models/experience";
+import {ProfileForm} from "../components/profile-form-modal/profile-form-modal.component";
 
 @Injectable({
   providedIn: 'root'
@@ -114,8 +115,17 @@ export class StudentProfileService {
     return this.http.delete(`${this.baseUrl}/profiles/${profileId}/experiences/${experienceId}`);
   }
 
-  public updateProfile(profileId:string, profile: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/profiles/${profileId}`, profile);
+  public updateProfile(profileId:string,profileForm: ProfileForm): Observable<any> {
+
+    const formData:FormData = new FormData();
+    formData.append('about', profileForm.about);
+    formData.append('student.email', profileForm.student.email);
+    formData.append('student.phone', profileForm.student.phone);
+    if (profileForm.student.picture) {
+      formData.append('student.picture', profileForm.student.picture as Blob);
+    }
+
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}`, formData);
   }
 
 
