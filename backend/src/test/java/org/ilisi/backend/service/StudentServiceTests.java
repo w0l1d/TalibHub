@@ -6,6 +6,7 @@ import jakarta.validation.Path;
 import jakarta.validation.metadata.ConstraintDescriptor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.ilisi.backend.email.EmailService;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -30,6 +31,9 @@ class StudentServiceTests {
     private StudentRepository studentRepository;
     @Mock
     private ProfileRepository profileRepository;
+
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private StudentService studentService;
