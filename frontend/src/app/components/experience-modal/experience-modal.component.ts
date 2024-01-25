@@ -6,6 +6,7 @@ import {StudentProfileService} from "../../services/student-profile.service";
 import Institut from "../../models/institut";
 import Experience from "../../models/experience";
 import {InstitutService} from "../../services/institut.service";
+import {endYears, Month, months, startYears} from "../../models/DateTypes";
 
 @Component({
   selector: 'app-experience-modal',
@@ -34,10 +35,13 @@ export class ExperienceModalComponent {
   @Input() title?: string;
   @Input() operation?: string;
   @Input() experience?: Experience;
+  myMonths: Month[] = months;
+  myStartYears: number[] = startYears;
+  myEndYears: number[] = endYears;
+
   constructor(
     private formBuilder: FormBuilder,
-    private institutService: InstitutService,
-    private datePipe: DatePipe
+    private institutService: InstitutService
   ) {
     this.expModalCollapsed = true;
     this.addInstitutCollapsed = true;
@@ -51,10 +55,10 @@ export class ExperienceModalComponent {
     if (this.expModalCollapsed) {
       this.getInstituts();
       this.resetForm();
+      this.addInstitutCollapsed = true;
       if (this.experience !== undefined) {
         console.log('I am here');
         this.fillForm()
-        console.log(this.experienceForm.get('institutId')?.value);
       }
     }
     this.expModalCollapsed = !this.expModalCollapsed;
@@ -84,7 +88,8 @@ export class ExperienceModalComponent {
     if (this.experienceForm.get('institutId')?.value === '') {
       institut  = {
         name: this.experienceForm.get('institutname')?.value,
-        website: this.experienceForm.get('institutwebsite')?.value
+        website: this.experienceForm.get('institutwebsite')?.value,
+        image: this.experienceForm.get('institutimage')?.value
       };
     } else {
       institut  = {
@@ -97,8 +102,10 @@ export class ExperienceModalComponent {
     const experience: Experience = {
       title: this.experienceForm.get('title')?.value,
       description: this.experienceForm.get('description')?.value,
-      startAt: this.formatDate(this.experienceForm.get('startAt')?.value),
-      endAt: this.formatDate(this.experienceForm.get('endAt')?.value),
+      startAt: this.formatDate(this.experienceForm.get('startAtMonth')?.value,
+        this.experienceForm.get('startAtYear')?.value),
+      endAt: this.formatDate(this.experienceForm.get('endAtMonth')?.value,
+        this.experienceForm.get('endAtYear')?.value),
       institut: institut
     };
     console.log(experience);
@@ -121,7 +128,8 @@ export class ExperienceModalComponent {
     if (this.experienceForm.get('institutId')?.value === '') {
       institut = {
         name: this.experienceForm.get('institutname')?.value,
-        website: this.experienceForm.get('institutwebsite')?.value
+        website: this.experienceForm.get('institutwebsite')?.value,
+        image: this.experienceForm.get('institutimage')?.value
       };
     } else {
       institut  = {
@@ -135,8 +143,10 @@ export class ExperienceModalComponent {
       id: this.experience?.id,
       title: this.experienceForm.get('title')?.value,
       description: this.experienceForm.get('description')?.value,
-      startAt: this.formatDate(this.experienceForm.get('startAt')?.value),
-      endAt: this.formatDate(this.experienceForm.get('endAt')?.value),
+      startAt: this.formatDate(this.experienceForm.get('startAtMonth')?.value,
+        this.experienceForm.get('startAtYear')?.value),
+      endAt: this.formatDate(this.experienceForm.get('endAtMonth')?.value,
+        this.experienceForm.get('endAtYear')?.value),
       institut: institut
     };
     console.log(experience);
@@ -149,20 +159,47 @@ export class ExperienceModalComponent {
     });
   }
 
-  private formatDate(date: Date): string {
-    return this.datePipe.transform(date, 'yyyy-MM') || ''; // Format date to YYYY-MM
+  private formatDate(month:number, year:number): string {
+    if (month < 10)
+      return (year + '-0' + month) as string;
+    return (year + '-' + month) as string;
+  }
+
+  // get month from yyyy-MM date
+  private getMonth(date: string): number {
+    return +date.split('-')[1];
+  }
+
+  // get year from yyyy-MM date
+  private getYear(date: string): number {
+    return +date.split('-')[0];
   }
 
   private buildExperienceForm():void {
     this.experienceForm = this.formBuilder.group({
       title: ['', Validators.required],
-      startAt: ['', Validators.required],
-      endAt: ['', Validators.required],
+      startAtMonth: ['', Validators.required],
+      startAtYear: ['', Validators.required],
+      endAtMonth: ['', Validators.required],
+      endAtYear: ['', Validators.required],
       institutId: [''],
       institutname: [''],
       institutwebsite: [''],
+      institutimage: [null],
       description: ['', Validators.required]
     });
+  }
+
+  onImagePicked(event: Event): void {
+    const file:File = (event.target as HTMLInputElement).files?.[0]!; // Here we use only the first file (single file)
+    const maxFileSize = 1024 * 1024 * 5; // 5MB
+    console.log(file);
+    if (file.size > maxFileSize) {
+      alert('File size exceeds 5MB');
+      return;
+    }
+    this.experienceForm.patchValue({ institutimage: file});
+    console.log(this.experienceForm.get('institutimage')?.value);
   }
 
   private getInstituts():void {
@@ -179,11 +216,14 @@ export class ExperienceModalComponent {
     this.experienceForm.patchValue({
       title: this.experience?.title,
       description: this.experience?.description,
-      startAt: this.datePipe.transform(this.experience?.startAt, 'yyyy-MM'),
-      endAt: this.datePipe.transform(this.experience?.endAt, 'yyyy-MM'),
+      startAtMonth: this.getMonth(this.experience?.startAt as string),
+      startAtYear: this.getYear(this.experience?.startAt as string),
+      endAtMonth: this.getMonth(this.experience?.endAt as string),
+      endAtYear: this.getYear(this.experience?.endAt as string),
       institutId: this.experience?.institut?.id,
       institutname: this.experience?.institut?.name,
       institutwebsite: this.experience?.institut?.website,
+      institutimage: this.experience?.institut?.image
     });
   }
 }

@@ -3,7 +3,7 @@ import {DataTableComponent} from '../data-table/data-table.component';
 import {ProfileComponent} from '../profile/profile.component';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
-import { RouterLink } from '@angular/router';
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-layout',

@@ -5,6 +5,7 @@ class User {
   phone: string;
   cin: string;
   enabled: boolean;
+  picture?: File;
 
   constructor(
     firstName: string,
@@ -12,7 +13,8 @@ class User {
     email: string,
     phone: string,
     cin: string,
-    enabled: boolean
+    enabled: boolean,
+    picture?: File
   ) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -20,6 +22,7 @@ class User {
     this.phone = phone;
     this.cin = cin;
     this.enabled = enabled;
+    this.picture = picture;
   }
 }
 
