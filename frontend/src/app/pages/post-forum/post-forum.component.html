@@ -1,0 +1,118 @@
+<app-layout [navBarData]="navbarData">
+   <div class="flex flex-col gap-10">
+    <div class="mx-16 medium-cd-font border border-opacity-15 pb-10 bg-white rounded-xl shadow-md text-textBlack">
+        <!-- head post -->
+        <div class="flex justify-between px-5 py-2">
+            
+            <div class="flex rounded-md p-1">
+                <img src="./assets/images/profilePic1.png" class="size-12" alt="">
+                <div class="flex flex-col font-bold ">
+                    <span class="">
+                        Yassine Zawarudo
+                    </span>
+                    <span class="text-bodyGray text-left">
+                        3rd Ilisi
+                    </span>
+                </div>
+            </div>
+            <button>
+                <i class="fa-regular fa-bookmark text-2xl text-bodyLightPurple"></i>
+            </button>
+        </div>
+        <!-- body post -->
+        <div class="flex flex-col gap-4">
+            <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit placeat impedit sapiente quos. Tempora dolorem optio fugit facilis, quas perferendis nesciunt, temporibus placeat fuga autem dignissimos aut ducimus voluptate esse.</pre>
+            <div class="">
+                <img src="./assets/images/post1.png" class="w-full h-96" alt="">
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
+        <!-- head post -->
+        <div class="flex justify-between px-5 py-2">
+            
+            <div class="flex rounded-md p-1 w-full">
+                <img src="./assets/images/profilePic1.png" class="size-12" alt="">
+                <div class="flex flex-col font-bold w-full">
+                    <textarea id="" formControlName="" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Reply with your thoughts here ..."></textarea>
+
+                </div>
+            </div>
+            
+        </div>
+    
+        <!-- footer post -->
+        <div class="px-5 pb-2 flex justify-end">
+            <div>
+                <button class="bg-bodyLightPurple text-white px-4 h-8 rounded-2xl mt-3">
+                    Comment
+                </button>
+            </div>
+        </div>
+
+        <hr/>
+        <!-- comments -->
+        <div>
+            <div class="border-b-2 py-5">
+            
+                <div class="flex rounded-md px-6 py-3">
+                    <img src="./assets/images/profilePic1.png" class="size-12" alt="">
+                    <div class="flex flex-col font-bold ">
+                        <span class="">
+                            Yassine Zawarudo
+                        </span>
+                        <span class="text-bodyGray text-left">
+                            just now
+                        </span>
+                    </div>
+                </div>
+                    
+                <!-- body comment -->
+                <div class="flex flex-col gap-4">
+                    <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit placeat impedit sapiente quos. Tempora dolorem optio fugit facilis, quas perferendis nesciunt, temporibus placeat fuga autem dignissimos aut ducimus voluptate esse.</pre>
+                    
+                </div>
+                <!-- foot comment -->
+                <div class="flex justify-end" >
+                    <div class="mx-5">
+                        <button>
+                            <i class="fa-solid fa-reply text-2xl text-bodyLightPurple"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-b-2 py-5">
+                <!-- head comment -->
+                <div class="flex rounded-md px-6 py-3">
+                    <img src="./assets/images/profilePic1.png" class="size-12" alt="">
+                    <div class="flex flex-col font-bold ">
+                        <span class="">
+                            Yassine Zawarudo
+                        </span>
+                        <span class="text-bodyGray text-left">
+                            just now
+                        </span>
+                    </div>
+                </div>        
+                
+                <!-- body post -->
+                <div class="flex flex-col gap-4">
+                    <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit placeat impedit sapiente quos. Tempora dolorem optio fugit facilis, quas perferendis nesciunt, temporibus placeat fuga autem dignissimos aut ducimus voluptate esse.</pre>
+                    
+                </div>
+                <!-- foot comment -->
+                <div class="flex justify-end" >
+                    <div class="mx-5">
+                        <button>
+                            <i class="fa-solid fa-reply text-2xl text-bodyLightPurple"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+   </div>
+</app-layout>

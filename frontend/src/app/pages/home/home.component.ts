@@ -3,11 +3,11 @@ import { ProfileComponent } from '../../components/profile/profile.component';
 import { LayoutComponent } from '../../components/layout/layout.component';
 import NavbarData from './navbar-data';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {environment as env} from "../../../environments/environment.development";
 import { StudentProfileService } from '../../services/student-profile.service';
 import Profile from '../../models/profile';
 import { NgFor } from '@angular/common';
 import { Router } from '@angular/router';
+import { PostComponent } from '../../components/post/post.component';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +16,8 @@ import { Router } from '@angular/router';
     ProfileComponent,
     LayoutComponent,
     HttpClientModule,
-    NgFor
+    NgFor,
+    PostComponent
   ],
   providers: [
     HttpClient,
