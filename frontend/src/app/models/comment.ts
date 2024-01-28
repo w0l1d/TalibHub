@@ -2,15 +2,15 @@ import User from "./user";
 import Poste from "./poste";
 
 class Comment {
-  id?: number;
+  id?: string;
   content: string;
   post?: Poste;
-  user: User;
+  user?: User;
   replies?: Comment[];
   createdOn?: Date;
   lastUpdatedOn?: Date;
 
-    constructor(id: number, content: string, user: User, post?: Poste, replies?: Comment[], createdOn?: Date, lastUpdatedOn?: Date) {
+  constructor(content: string, id?: string, user?: User, post?: Poste, replies?: Comment[], createdOn?: Date, lastUpdatedOn?: Date) {
         this.id = id;
         this.content = content;
         this.post = post;
@@ -22,3 +22,5 @@ class Comment {
 }
 
 export default Comment;
+
+

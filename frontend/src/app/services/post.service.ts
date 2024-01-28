@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment as env} from "../../environments/environment.development";
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -19,6 +19,16 @@ export class PostService {
   // get all posts
   public getAllPosts(): Observable<any> {
     return this.http.get(`${this.baseUrl}/postes`);
+  }
+
+  // get post by id
+  public getPostById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/postes/${id}`);
+  }
+
+  // add comment to post
+  public addCommentToPost(id: string, comment: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/postes/${id}/comments`, {"content": comment});
   }
 
 

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { PostModalComponent } from '../post-modal/post-modal.component';
-import { PostService } from '../../services/post.service';
+import {Component} from '@angular/core';
+import {PostModalComponent} from '../post-modal/post-modal.component';
+import {PostService} from '../../services/post.service';
 import Poste from '../../models/poste';
 
 @Component({
@@ -38,7 +38,7 @@ export class PostComponent {
       return this.posts[0];
     }
     return {
-      id: 1,
+      id: 'id',
       titre: 'titre',
       description: 'description',
     }
