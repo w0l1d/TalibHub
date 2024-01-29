@@ -4,6 +4,7 @@ import {PostService} from '../../services/post.service';
 import Poste from '../../models/poste';
 import {NgForOf} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-post',
@@ -24,7 +25,8 @@ export class PostComponent {
   posts?: Poste[];
 
   constructor(
-    private postService: PostService
+    private postService: PostService,
+    private router: Router
   ) {
 
   }
@@ -66,4 +68,8 @@ export class PostComponent {
     }
   }
 
+  navigateToPost(id: string | undefined) {
+    this.router.navigate(['/post', id]).then(() => console.log("navigated to reviews"));
+
+  }
 }

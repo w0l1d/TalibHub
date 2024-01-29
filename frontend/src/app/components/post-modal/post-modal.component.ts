@@ -58,6 +58,7 @@ export class PostModalComponent {
       image: this.posteFormGroup.get('image')?.value
     }
     this.createPoste.emit(posteForm);
+    this.posteModalCollapsed = true;
   }
 
 
@@ -72,6 +73,7 @@ export class PostModalComponent {
       image: this.posteFormGroup.get('image')?.value
     }
     this.updatePoste.emit(posteForm);
+    this.posteModalCollapsed = true;
   }
 
   onImagePicked(event: Event): void {

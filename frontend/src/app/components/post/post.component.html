@@ -49,8 +49,8 @@
             <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
               {{post.description}}
             </pre>
-            <div class="">
-                <img src="./assets/images/post1.png" class="w-full h-96" alt="">
+          <div class="hover:cursor-pointer">
+            <img (click)="navigateToPost(post.id)" alt="" class="w-full h-96" src="./assets/images/post1.png">
             </div>
         </div>
 
