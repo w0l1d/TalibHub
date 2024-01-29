@@ -152,15 +152,66 @@
             <div class="row">
                 <!-- Add Review -->
                 <div *ngIf="addReviewClicked">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="col-span-1">
+                            <div class="flex justify-start items-center">
+                                <div class="flex justify-start items-center">
+                                    <img src="https://i.pravatar.cc/150?img=12" alt="" class="rounded-xl h-20 w-20">
+                                </div>
+                                <div class="flex justify-start items-center">
+                                    <p class="text-xl font-bold mx-2">
+                                        John Doe
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-2">
+                            <div class="flex justify-start items-center">
+                                <div>
+                                    <div class="flex justify-start items-center">
+                                        <i
+                                            *ngFor="let star of stars; let i = index"
+                                            [class]="starClass(i)"
+                                            (click)="handleRateChange(i + 1)"
+                                            (mouseenter)="handleHover(i + 1)"
+                                            (mouseleave)="handleHover(0)"
+                                        ></i>
+                                    </div>
+                                </div>
+                                <div class="flex justify-start items-center">
+                                    <p class="text-base font-medium text-gray-500 mx-1">
+                                        {{currentDate | date: 'dd-MM-yyyy'}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex justify-start items-center mb-1">
+                                <div class="flex justify-start items-center w-full">
+                                    <textarea cols="30" rows="5" (input)="onReviewTextChanged($event)" [value]="currentReviewText" class="border-2 border-gray-200 rounded-xl p-1 w-full">
+
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="flex justify-start items-center">
+                                <button class="bg-bodyLightPurple text-black rounded-xl px-3 py-1" (click)="submitReview()">
+                                    <i class="fas fa-plus"></i>
+                                    Add Review
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-7 bg-gray-200 border-2 rounded-xl">
+                </div>
+                <!-- Review -->
+                <div *ngFor="let review of reviews">
                 <div class="grid grid-cols-3 gap-2">
                     <div class="col-span-1">
                         <div class="flex justify-start items-center">
                             <div class="flex justify-start items-center">
-                                <img src="https://i.pravatar.cc/150?img=12" alt="" class="rounded-xl h-20 w-20">
+                                <img src="https://i.pravatar.cc/150?img=5" alt="" class="rounded-xl h-20 w-20">
                             </div>
                             <div class="flex justify-start items-center">
                                 <p class="text-xl font-bold mx-2">
-                                    John Doe
+                                    {{review.student?.firstName}} {{review.student?.lastName}}
                                 </p>
                             </div>
                         </div>
@@ -170,117 +221,25 @@
                             <div>
                                 <div class="flex justify-start items-center">
                                     <i
-                                        *ngFor="let star of stars; let i = index"
-                                        [class]="starClass(i)"
-                                        (click)="handleRateChange(i + 1)"
-                                        (mouseenter)="handleHover(i + 1)"
-                                        (mouseleave)="handleHover(0)"
-                                    ></i>
+                                        *ngFor="let index of [1, 2, 3, 4, 5]"
+                                        [class]="getStarClassByIndexAndRate(review.rating, index)"
+                                    >
+                                    </i>
                                 </div>
                             </div>
                             <div class="flex justify-start items-center">
                                 <p class="text-base font-medium text-gray-500 mx-1">
-                                    24-10-2022
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex justify-start items-center mb-1">
-                            <div class="flex justify-start items-center w-full">
-                                <textarea name="" id="" cols="30" rows="5" class="border-2 border-gray-200 rounded-xl p-1 w-full"></textarea>
-                            </div>
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <button class="bg-bodyLightPurple text-black rounded-xl px-3 py-1" (click)="submitReview()">
-                                <i class="fas fa-plus"></i>
-                                Add Review
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <hr class="my-7 bg-gray-200 border-2 rounded-xl">
-                </div>
-                <!-- Review -->
-                <div class="grid grid-cols-3 gap-2">
-                    <div class="col-span-1">
-                        <div class="flex justify-start items-center">
-                            <div class="flex justify-start items-center">
-                                <img src="https://i.pravatar.cc/150?img=5" alt="" class="rounded-xl h-20 w-20">
-                            </div>
-                            <div class="flex justify-start items-center">
-                                <p class="text-xl font-bold mx-2">
-                                    John Doe
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="flex justify-start items-center">
-                            <div>
-                                <div class="flex justify-start items-center">
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-gray-300 p-1" ></i>
-                                </div>
-                            </div>
-                            <div class="flex justify-start items-center">
-                                <p class="text-base font-medium text-gray-500 mx-1">
-                                    24-10-2022
+                                    {{review.createdOn | date: 'dd-MM-yyyy'}}
                                 </p>
                             </div>
                         </div>
                         <p class="text-base text-justify font-medium text-gray-500 my-2 p-1">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                            {{review.review}}
                         </p>
                     </div>
                 </div>
                 <hr class="my-7 bg-gray-200 border-2 rounded-xl">
-                <!-- Review -->
-                <div class="grid grid-cols-3 gap-2">
-                    <div class="col-span-1">
-                        <div class="flex justify-start items-center">
-                            <div class="flex justify-start items-center">
-                                <img src="https://i.pravatar.cc/150?img=8" alt="" class="rounded-xl h-20 w-20">
-                            </div>
-                            <div class="flex justify-start items-center">
-                                <p class="text-xl font-bold mx-2">
-                                    John Doe
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="flex justify-start items-center">
-                            <div>
-                                <div class="flex justify-start items-center">
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
-                                    <i class="fas fa-star text-gray-300 p-1" ></i>
-                                </div>
-                            </div>
-                            <div class="flex justify-start items-center">
-                                <p class="text-base font-medium text-gray-500 mx-1">
-                                    24-10-2022
-                                </p>
-                            </div>
-                        </div>
-                        <p class="text-base text-justify font-medium text-gray-500 my-2 p-1">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.
-                        </p>
-                    </div>
                 </div>
-                <hr class="my-7 bg-gray-200 border-2 rounded-xl">
             </div>
         </div>
     </div>
