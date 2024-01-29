@@ -40,7 +40,10 @@ export class LoginComponent {
       this.authService.login(this.loginForm.getRawValue())
         .then(() => {
           console.log("Login successful");
-          this.router.navigate(['/home']).then(() => console.log("navigated to home"));
+          if (this.authService.isStudent())
+            this.router.navigate(['/home']).then(() => console.log("navigated to home"));
+          else
+            this.router.navigate(['/studentManagement']).then(() => console.log("navigated to studentManagement"));
       })
       .catch((error: any) => {
           console.error("Login failed", error);
