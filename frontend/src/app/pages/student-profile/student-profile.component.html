@@ -2,8 +2,7 @@
     <div class="text-textBlack ">
         <div class="mx-10 medium-cd-font border border-opacity-15 bg-white rounded-md pb-10">
             <div class="z-10">
-                <img ngSrc="./assets/images/coverPic.jpg" alt="" class=" h-32 w-full rounded-t-md" height="190"
-                     width="1335">
+                <img src="./assets/images/coverPic.jpg" alt="" class=" h-32 w-full rounded-t-md" >
             </div>
             <div class="ml-10 flex z-20 -mt-10 w-full">
                 <div class="relative">
@@ -40,12 +39,13 @@
                 </div>
             </div>
             <div class="flex gap-5" *ngFor="let experience of studentProfile?.experiences">
-                <div class="">
+                <div class="hover:cursor-pointer">
                   <img alt="" class="size-20"
-                       height="200"
                        ngSrc="{{baseUrl}}/public/files/{{ experience.institut.imageUri ?? '.edinfo.jpeg' }}"
-                       width="200">
-
+                       height="200"
+                       width="200"
+                       (click)="navigateToReviews(experience.institut.id)"
+                       >
                 </div>
               <div class=""  >
                 <p class="font-bold">
@@ -83,7 +83,7 @@
             </div>
             <div class="flex gap-5" *ngFor="let education of studentProfile?.educations">
                 <div class="">
-                  <img ngSrc="./assets/images/{{ education.institut.image.name ?? 'fstm_logo.jpeg' }}" alt="" class="size-20" height="200" width="200">
+                  <img ngSrc="./assets/images/{{ education.institut.image ?? 'fstm_logo.jpeg' }}" alt="" class="size-20" height="200" width="200">
                 </div>
                 <div class=""  >
                     <p class="font-bold">

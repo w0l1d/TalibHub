@@ -9,8 +9,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EducationModalComponent} from "../../components/education-modal/education-modal.component";
 import {ExperienceModalComponent} from "../../components/experience-modal/experience-modal.component";
 import {ProfileForm, ProfileFormModalComponent} from "../../components/profile-form-modal/profile-form-modal.component";
-import {ActivatedRoute} from '@angular/router';
 import {environment as env} from "../../../environments/environment.development";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-profile',
@@ -44,14 +44,16 @@ export class StudentProfileComponent {
 
   constructor(
     protected studentProfileService: StudentProfileService,
-    private route: ActivatedRoute,
-  ) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) 
+  {
     this.baseUrl = env.api;
   }
 
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       this.profileId = params['id'] || '';
     });
     console.log("Profile id: " + this.profileId);
@@ -86,5 +88,10 @@ export class StudentProfileComponent {
       console.log(data)
       this.studentProfile = data;
     });
+  }
+
+  navigateToReviews(intitutId: string): void {
+    //console.log("Navigating to reviews: " + intitutId);
+    this.router.navigate(['/companyReviews', intitutId]).then(() => console.log("navigated to reviews"));
   }
 }

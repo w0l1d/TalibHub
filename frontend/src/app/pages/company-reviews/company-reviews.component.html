@@ -1,0 +1,246 @@
+<app-layout [navBarData]="navbarData">
+    <div class="container">
+        <div class="row mb-8">
+            <div class="flex justify-start items-center">
+                <div class="flex justify-start items-center">
+                    <img src="/assets/images/edinfo.jpeg" alt="" class="rounded-xl h-20 w-20">
+                </div>
+                <div class="flex justify-start items-center">
+                    <p class="text-3xl font-bold mx-2">
+                        EdInfo
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <div class="flex flex-wrap">
+                <div class="flex justify-center items-center w-1/3 border-r-2 border-gray-200 md:w-full">
+                    <div>
+                        <p class="text-lg font-medium">
+                            Total Reviews
+                        </p>
+                        <p class="text-3xl font-bold">
+                            10.0K
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-center items-center w-1/3 border-l-2 border-r-2 border-gray-200 md:w-full">
+                    <div>
+                        <p class="text-lg font-medium">
+                            Average Rating
+                        </p>
+                        <div class="flex justify-center items-center">
+                            <p class="text-3xl font-bold">
+                                4.0
+                            </p>
+                            <div class="flex justify-center items-center mx-3">
+                                <div class="flex justify-start items-center">
+                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
+                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
+                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
+                                    <i class="fas fa-star text-yellow-400 p-1" ></i>
+                                    <i class="fas fa-star text-gray-300 p-1" ></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center items-center w-1/3 border-l-2 md:w-full">
+                    <div>
+                        <div class="flex justify-start items-center">
+                            <div class="flex justify-start items-center">
+                                    <i class="fas fa-star text-gray-300 text-ss" ></i>
+                                    <p class="text-sm font-bold mx-1">
+                                        5
+                                    </p>
+                                    <div class="w-40 h-2 bg-gray-300 rounded-full mx-2">
+                                        <div class="w-full h-full bg-green-600 rounded-full"></div>
+                                    </div>
+                                    <p class="text-sm font-bold mx-1">
+                                        2.0k
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <div class="flex justify-start items-center">
+                                    <i class="fas fa-star text-gray-300 text-ss" ></i>
+                                    <p class="text-sm font-bold mx-1">
+                                        4
+                                    </p>
+                                    <div class="w-32 h-2 bg-gray-300 rounded-full mx-2">
+                                        <div class="w-full h-full bg-purple-400 rounded-full"></div>
+                                    </div>
+                                    <p class="text-sm font-bold mx-1">
+                                        1.0k
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <div class="flex justify-start items-center">
+                                    <i class="fas fa-star text-gray-300 text-ss" ></i>
+                                    <p class="text-sm font-bold mx-1">
+                                        3
+                                    </p>
+                                    <div class="w-16 h-2 bg-gray-300 rounded-full mx-2">
+                                        <div class="w-full h-full bg-yellow-400 rounded-full"></div>
+                                    </div>
+                                    <p class="text-sm font-bold mx-1">
+                                        500
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <div class="flex justify-start items-center">
+                                    <i class="fas fa-star text-gray-300 text-ss" ></i>
+                                    <p class="text-sm font-bold mx-1">
+                                        2
+                                    </p>
+                                    <div class="w-5 h-2 bg-gray-300 rounded-full mx-2">
+                                        <div class="w-full h-full bg-blue-400 rounded-full"></div>
+                                    </div>
+                                    <p class="text-sm font-bold mx-1">
+                                        200
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="flex justify-start items-center">
+                            <div class="flex justify-start items-center">
+                                    <i class="fas fa-star text-gray-300 text-ss" ></i>
+                                    <p class="text-sm font-bold mx-1">
+                                        1
+                                    </p>
+                                    <div class="w-2 h-2 bg-gray-300 rounded-full mx-2">
+                                        <div class="w-full h-full bg-red-500 rounded-full"></div>
+                                    </div>
+                                    <p class="text-sm font-bold mx-1">
+                                        0
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-7 bg-gray-200 border-2 rounded-xl">
+            <div class="flex justify-end items-center">
+                <div class="flex justify-start items-center mx-2" *ngIf="!addReviewClicked">
+                    <div class="flex justify-start items-center">
+                        <p class="text-base font-medium text-gray-500 mx-1">
+                            Sort By
+                        </p>
+                        <div class="flex justify-start items-center">
+                            <select name="" id="" class="border-2 border-gray-200 rounded-xl p-1">
+                                <option value="">Most Recent</option>
+                                <option value="">Most Recent</option>
+                                <option value="">Most Recent</option>
+                                <option value="">Most Recent</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center">
+                    <button class="bg-bodyLightPurple text-black rounded-xl px-3 py-1" (click)="addReview()" *ngIf="!addReviewClicked">
+                        <i class="fas fa-plus"></i>
+                        Add Review
+                    </button>
+                    <button class="bg-bodyLightPurple text-black rounded-xl px-3 py-1" (click)="cancelAddReview()" *ngIf="addReviewClicked">
+                        <i class="fas fa-times"></i>
+                        Cancel Review
+                    </button>
+                </div>
+            </div>
+            <!-- All Reviews -->
+            <div class="row">
+                <!-- Add Review -->
+                <div *ngIf="addReviewClicked">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="col-span-1">
+                            <div class="flex justify-start items-center">
+                                <div class="flex justify-start items-center">
+                                    <img src="https://i.pravatar.cc/150?img=12" alt="" class="rounded-xl h-20 w-20">
+                                </div>
+                                <div class="flex justify-start items-center">
+                                    <p class="text-xl font-bold mx-2">
+                                        John Doe
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-2">
+                            <div class="flex justify-start items-center">
+                                <div>
+                                    <div class="flex justify-start items-center">
+                                        <i
+                                            *ngFor="let star of stars; let i = index"
+                                            [class]="starClass(i)"
+                                            (click)="handleRateChange(i + 1)"
+                                            (mouseenter)="handleHover(i + 1)"
+                                            (mouseleave)="handleHover(0)"
+                                        ></i>
+                                    </div>
+                                </div>
+                                <div class="flex justify-start items-center">
+                                    <p class="text-base font-medium text-gray-500 mx-1">
+                                        {{currentDate | date: 'dd-MM-yyyy'}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex justify-start items-center mb-1">
+                                <div class="flex justify-start items-center w-full">
+                                    <textarea cols="30" rows="5" (input)="onReviewTextChanged($event)" [value]="currentReviewText" class="border-2 border-gray-200 rounded-xl p-1 w-full">
+
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="flex justify-start items-center">
+                                <button class="bg-bodyLightPurple text-black rounded-xl px-3 py-1" (click)="submitReview()">
+                                    <i class="fas fa-plus"></i>
+                                    Add Review
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-7 bg-gray-200 border-2 rounded-xl">
+                </div>
+                <!-- Review -->
+                <div *ngFor="let review of reviews">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="col-span-1">
+                        <div class="flex justify-start items-center">
+                            <div class="flex justify-start items-center">
+                                <img src="https://i.pravatar.cc/150?img=5" alt="" class="rounded-xl h-20 w-20">
+                            </div>
+                            <div class="flex justify-start items-center">
+                                <p class="text-xl font-bold mx-2">
+                                    {{review.student?.firstName}} {{review.student?.lastName}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="flex justify-start items-center">
+                            <div>
+                                <div class="flex justify-start items-center">
+                                    <i
+                                        *ngFor="let index of [1, 2, 3, 4, 5]"
+                                        [class]="getStarClassByIndexAndRate(review.rating, index)"
+                                    >
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="flex justify-start items-center">
+                                <p class="text-base font-medium text-gray-500 mx-1">
+                                    {{review.createdOn | date: 'dd-MM-yyyy'}}
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-base text-justify font-medium text-gray-500 my-2 p-1">
+                            {{review.review}}
+                        </p>
+                    </div>
+                </div>
+                <hr class="my-7 bg-gray-200 border-2 rounded-xl">
+                </div>
+            </div>
+        </div>
+    </div>
+</app-layout>

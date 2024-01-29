@@ -4,6 +4,7 @@ import {ProfileComponent} from '../profile/profile.component';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import {RouterLink} from "@angular/router";
+import User from "../../models/user";
 
 @Component({
   selector: 'app-layout',
@@ -27,11 +28,17 @@ export class LayoutComponent {
     this.collapsed = !this.collapsed;
   }
 
+  user?: User;
+
   constructor(
     private authService: AuthService
   ) {
   }
 
+  ngOnInit(): void {
+    this.user = this.authService.getLoggedUser();
+    console.log("user", this.user);
+  }
   logout(): void {
     this.authService.logout();
   }
