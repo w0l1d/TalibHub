@@ -2,7 +2,7 @@
     <div class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
         <!-- publish post -->
         <div class="flex justify-between px-5 py-2">
-            
+
             <div class="flex rounded-md p-1">
                 <img src="./assets/images/profilePic1.png" class="size-12" alt="">
                 <div class="flex flex-col font-bold ">
@@ -15,23 +15,25 @@
                 </div>
             </div>
             <div>
-            <app-post-modal [poste]="post()" [title]="'Create New Post'" [operation]="'create'" />
+              <app-post-modal (createPoste)="handlePosteCreation($event) " [operation]="'create'" [poste]="post()"
+                              [title]="'Create New Post'"/>
 
             </div>
         </div>
-       
-        
+
+
     </div>
 
-    <div class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
+  <div *ngFor="let post of posts"
+       class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
         <!-- head post -->
         <div class="flex justify-between px-5 py-2">
-            
+
             <div class="flex rounded-md p-1">
                 <img src="./assets/images/profilePic1.png" class="size-12" alt="">
                 <div class="flex flex-col font-bold ">
                     <span class="">
-                        Yassine Zawarudo
+                        {{post.user!.firstName}} {{post.user!.lastName}}
                     </span>
                     <span class="text-bodyGray text-left">
                         3rd Ilisi
@@ -44,13 +46,15 @@
         </div>
         <!-- body post -->
         <div class="flex flex-col gap-4">
-            <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit placeat impedit sapiente quos. Tempora dolorem optio fugit facilis, quas perferendis nesciunt, temporibus placeat fuga autem dignissimos aut ducimus voluptate esse.</pre>
+            <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
+              {{post.description}}
+            </pre>
             <div class="">
                 <img src="./assets/images/post1.png" class="w-full h-96" alt="">
             </div>
         </div>
-    
-        <!-- footer post -->
+
+    <!-- footer post -->
         <div class="px-5 py-2 flex justify-end">
             <div>
                 <button>
@@ -58,43 +62,6 @@
                 </button>
             </div>
         </div>
-        
-    </div>
-    <div class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
-        <!-- head post -->
-        <div class="flex justify-between px-5 py-2">
-            
-            <div class="flex rounded-md p-1">
-                <img src="./assets/images/profilePic1.png" class="size-12" alt="">
-                <div class="flex flex-col font-bold ">
-                    <span class="">
-                        Yassine Zawarudo
-                    </span>
-                    <span class="text-bodyGray text-left">
-                        3rd Ilisi
-                    </span>
-                </div>
-            </div>
-            <button>
-                <i class="fa-regular fa-bookmark text-2xl text-bodyLightPurple"></i>
-            </button>
-        </div>
-        <!-- body post -->
-        <div class="flex flex-col gap-4">
-            <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit placeat impedit sapiente quos. Tempora dolorem optio fugit facilis, quas perferendis nesciunt, temporibus placeat fuga autem dignissimos aut ducimus voluptate esse.</pre>
-            <div class="">
-                <img src="./assets/images/post1.png" class="w-full h-96" alt="">
-            </div>
-        </div>
-    
-        <!-- footer post -->
-        <div class="px-5 py-2 flex justify-end">
-            <div>
-                <button>
-                    <i class="fa-regular fa-comment text-2xl text-bodyLightPurple"></i>
-                </button>
-            </div>
-        </div>
-        
-    </div>
+
+  </div>
 </div>

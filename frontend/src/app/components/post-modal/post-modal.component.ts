@@ -1,6 +1,6 @@
-import { NgForOf, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {NgForOf, NgIf} from '@angular/common';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import Poste from '../../models/poste';
 
 export interface PostForm{
@@ -51,13 +51,13 @@ export class PostModalComponent {
     this.posteModalCollapsed = !this.posteModalCollapsed;
   }
 
-  private buildPosteForm(): void {
-    this.posteFormGroup = this.formBuilder.group({
-      email: ['', [Validators.email, Validators.required]],
-      phone: ['', Validators.required],
-      picture: [null],
-      about: [''],
-    });
+  onCreate(): void {
+    const posteForm: PostForm = {
+      titre: this.posteFormGroup.get('titre')?.value,
+      description: this.posteFormGroup.get('description')?.value,
+      image: this.posteFormGroup.get('image')?.value
+    }
+    this.createPoste.emit(posteForm);
   }
 
 
@@ -65,27 +65,10 @@ export class PostModalComponent {
     this.posteFormGroup.reset();
   }
 
-  private fillForm():void {
-    this.posteFormGroup.patchValue({
-      description: this.poste?.description,
-      titre: this.poste?.titre,
-      image: this.poste?.image
-    });
-  }
-
-  onCreate(): void {
-    const posteForm: PostForm = {
-      description: this.posteFormGroup.get('description')?.value,
-      titre: this.posteFormGroup.get('titre')?.value,
-      image: this.posteFormGroup.get('image')?.value
-    }
-    this.createPoste.emit(posteForm);
-  }
-
   onUpdate(): void {
     const posteForm: PostForm = {
-      description: this.posteFormGroup.get('description')?.value,
       titre: this.posteFormGroup.get('titre')?.value,
+      description: this.posteFormGroup.get('description')?.value,
       image: this.posteFormGroup.get('image')?.value
     }
     this.updatePoste.emit(posteForm);
@@ -99,8 +82,25 @@ export class PostModalComponent {
       alert('File size exceeds 5MB');
       return;
     }
-    this.posteFormGroup.patchValue({ picture: file});
+    // after merging with file management, should uncomment this line
+    // this.posteFormGroup.patchValue({ image: file});
     console.log(this.posteFormGroup.get('image')?.value);
+  }
+
+  private buildPosteForm(): void {
+    this.posteFormGroup = this.formBuilder.group({
+      titre: ['', Validators.required],
+      description: ['', Validators.required],
+      image: [null]
+    });
+  }
+
+  private fillForm():void {
+    this.posteFormGroup.patchValue({
+      titre: this.poste?.titre,
+      description: this.poste?.description,
+      image: this.poste?.image
+    });
   }
 
 }
