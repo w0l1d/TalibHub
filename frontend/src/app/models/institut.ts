@@ -5,6 +5,7 @@ class Institut {
     name: string;
     website: string;
     image?: File;
+    imageUri?: string;
     reviews?: Review[];
 
     constructor(
@@ -12,12 +13,14 @@ class Institut {
         name: string, 
         website: string, 
         image?: File,
+        imageUri?: string,
         reviews?: Review[]
         ) {
         this.id = id;
         this.name = name;
         this.website = website;
         this.image = image;
+        this.imageUri = imageUri;
         this.reviews = reviews;
     }
 }

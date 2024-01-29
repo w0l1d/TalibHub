@@ -49,6 +49,10 @@ public class StudentProfileController {
         return profileService.findById(profileId);
     }
 
+    @PutMapping("/{profileId}")
+    public Profile updateProfile(@PathVariable String profileId, @RequestBody Profile profile) {
+        return profileService.updateProfile(profileId, profile);
+    }
 
     @PostMapping("/{profileId}/educations")
     public Profile addEducation(@PathVariable String profileId, @RequestBody @Valid EducationDto educationDto) {

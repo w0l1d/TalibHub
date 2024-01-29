@@ -27,4 +27,5 @@ public class InstitutController {
     public Institut getInstitutById(@PathVariable String id) {
         return institutService.findById(id);
     }
+
 }

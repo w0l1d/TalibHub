@@ -57,3 +57,5 @@ logging:
     # Logging level for web
     web: trace
 
+storage:
+  location: ${java.io.tmpdir}
