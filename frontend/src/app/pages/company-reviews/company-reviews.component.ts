@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LayoutComponent } from '../../components/layout/layout.component';
 import NavbarData from './navbar-data';
 import { NgFor, NgIf } from '@angular/common';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-company-reviews',
@@ -17,6 +18,7 @@ import { NgFor, NgIf } from '@angular/common';
 export class CompanyReviewsComponent {
   navbarData = NavbarData;
   addReviewClicked: boolean = false;
+  currentReviewText: string = '';
   currentRate: number = 1;
   hoveredRate: number = 0;
   stars: number[] = [1, 0, 0, 0, 0];
@@ -36,6 +38,10 @@ export class CompanyReviewsComponent {
 
   submitReview() {
     this.addReviewClicked = false;
+    console.log("Review text: " + this.currentReviewText);
+    console.log("Review rating: " + this.currentRate);
+    this.currentReviewText = '';
+    this.currentRate = 1;
   }
 
   handleRateChange(rate: number) {
@@ -51,6 +57,10 @@ export class CompanyReviewsComponent {
 
   handleHover(rate: number): void {
     this.hoveredRate = rate;
+  }
+
+  onReviewTextChanged(event: any): void {
+    this.currentReviewText = event.target.value;
   }
 
 }
