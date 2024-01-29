@@ -39,9 +39,8 @@
                 </div>
             </div>
             <div class="flex gap-5" *ngFor="let experience of studentProfile?.experiences">
-                <div class="">
-                <img ngSrc="/assets/images/{{ experience.institut.image ?? 'edinfo.jpeg' }}" alt="" class="size-20" height="200" width="200">
-
+                <div class="hover:cursor-pointer">
+                  <img ngSrc="/assets/images/{{ experience.institut.image ?? 'edinfo.jpeg' }}" alt="" class="size-20" height="200" width="200" (click)="navigateToReviews(experience.institut.id)">
                 </div>
               <div class=""  >
                 <p class="font-bold">
