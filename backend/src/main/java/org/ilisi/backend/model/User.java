@@ -36,6 +36,7 @@ public abstract class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String phone;
+    private String imageUri;
 
     @Column(unique = true)
     private String cin;

@@ -9,7 +9,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EducationModalComponent} from "../../components/education-modal/education-modal.component";
 import {ExperienceModalComponent} from "../../components/experience-modal/experience-modal.component";
 import {ProfileForm, ProfileFormModalComponent} from "../../components/profile-form-modal/profile-form-modal.component";
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
+import {environment as env} from "../../../environments/environment.development";
 
 @Component({
   selector: 'app-student-profile',
@@ -37,13 +38,16 @@ export class StudentProfileComponent {
   navbarData = NavbarData;
   studentProfile?: Profile;
   profileId: string = '';
+  baseUrl: string = '';
 
 
 
   constructor(
     protected studentProfileService: StudentProfileService,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+    this.baseUrl = env.api;
+  }
 
 
   ngOnInit() {
@@ -67,7 +71,7 @@ export class StudentProfileComponent {
       console.log(this.studentProfile);
     });
   }
-  
+
   isMyProfile(): boolean {
     return this.profileId == '';
   }
@@ -79,7 +83,8 @@ export class StudentProfileComponent {
   handleProfileUpdate(profileForm: ProfileForm) {
     console.log(profileForm);
     this.studentProfileService.updateProfile(this.studentProfile?.id!,profileForm).subscribe(data => {
-      console.log(data);
+      console.log(data)
+      this.studentProfile = data;
     });
   }
 }

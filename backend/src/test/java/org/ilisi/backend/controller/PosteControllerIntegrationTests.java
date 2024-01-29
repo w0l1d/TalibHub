@@ -13,12 +13,14 @@ import org.ilisi.backend.model.User;
 import org.ilisi.backend.repository.CommentRepository;
 import org.ilisi.backend.repository.PosteRepository;
 import org.ilisi.backend.repository.StudentRepository;
+import org.ilisi.backend.service.FileSystemStorageService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,6 +66,8 @@ class PosteControllerIntegrationTests {
     private CommentRepository commentRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @MockBean
+    private FileSystemStorageService fileSystemStorageService;
 
     @DynamicPropertySource
     static void databaseProperties(DynamicPropertyRegistry registry) {

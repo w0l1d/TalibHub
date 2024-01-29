@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilisi.backend.model.*;
 import org.ilisi.backend.repository.InstitutRepository;
 import org.ilisi.backend.repository.StudentRepository;
+import org.ilisi.backend.service.FileSystemStorageService;
 import org.ilisi.backend.specs.StudentSpecifications;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.jpa.domain.Specification;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -39,6 +41,8 @@ class StudentSpecsTests {
     private StudentRepository studentRepository;
     @Autowired
     private InstitutRepository institutRepository;
+    @MockBean
+    private FileSystemStorageService fileSystemStorageService;
 
 
     @Test

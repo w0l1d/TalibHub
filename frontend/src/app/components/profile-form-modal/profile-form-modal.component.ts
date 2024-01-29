@@ -88,6 +88,7 @@ export class ProfileFormModalComponent {
       }
     }
     this.createProfile.emit(profileForm);
+    this.toggleProfileModal();
   }
 
   onUpdate(): void {
@@ -100,6 +101,7 @@ export class ProfileFormModalComponent {
       }
     }
     this.updateProfile.emit(profileForm);
+    this.toggleProfileModal();
   }
 
   onImagePicked(event: Event): void {

@@ -16,9 +16,10 @@ class Student extends User {
     phone: string,
     birthDate: Date,
     enrollmentYear: number,
-    graduationYear: number
+    graduationYear: number,
+    imageUri?: string
   ) {
-    super(firstName, lastName, email, phone, cin, enabled);
+    super(firstName, lastName, email, phone, cin, enabled, undefined, imageUri);
     this.cne = cne;
     this.birthDate = birthDate;
     this.enrollmentYear = enrollmentYear;

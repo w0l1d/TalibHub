@@ -11,6 +11,7 @@ import org.ilisi.backend.mapper.ExperienceMapper;
 import org.ilisi.backend.model.Education;
 import org.ilisi.backend.model.Experience;
 import org.ilisi.backend.model.Profile;
+import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.EducationRepository;
 import org.ilisi.backend.repository.ExperienceRepository;
 import org.ilisi.backend.repository.InstitutRepository;
@@ -44,6 +45,26 @@ public class ProfileService {
     public Profile findById(String id) {
         Optional<Profile> profile = profileRepository.findById(id);
         return profile.orElse(null);
+    }
+
+    public Profile updateProfile(String profileId, Profile profile) {
+        Profile profileResult = this.findById(profileId);
+        if (profileResult == null) {
+            String errorMessage = String.format("Profile with id %s not found", profileId);
+            log.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage, "PROFILE_NOT_FOUND");
+        }
+        profileResult.setId(profileId);
+        profileResult.setAbout(profile.getAbout());
+        Student student = profileResult.getStudent();
+        student.setEmail(profile.getStudent().getEmail());
+        student.setPhone(profile.getStudent().getPhone());
+
+        if (profile.getStudent().getImageUri() != null && !profile.getStudent().getImageUri().isBlank())
+            student.setImageUri(profile.getStudent().getImageUri());
+
+        profileResult.setStudent(student);
+        return profileRepository.save(profileResult);
     }
 
     public Profile addEducation(Profile profile, EducationDto educationDto) {
@@ -143,4 +164,6 @@ public class ProfileService {
         experienceRepository.delete(experience);
         return profileRepository.save(profile);
     }
+
+
 }
