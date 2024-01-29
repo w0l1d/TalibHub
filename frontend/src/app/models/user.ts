@@ -17,7 +17,7 @@ class User {
     cin: string,
     enabled: boolean,
     picture?: File,
-    imageUri?: string
+    imageUri?: string,
     authorities?: any[]
   ) {
     this.firstName = firstName;
