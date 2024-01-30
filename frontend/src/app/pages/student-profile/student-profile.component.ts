@@ -10,7 +10,8 @@ import {EducationModalComponent} from "../../components/education-modal/educatio
 import {ExperienceModalComponent} from "../../components/experience-modal/experience-modal.component";
 import {ProfileForm, ProfileFormModalComponent} from "../../components/profile-form-modal/profile-form-modal.component";
 import {environment as env} from "../../../environments/environment.development";
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-student-profile',
@@ -30,6 +31,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   ],
   providers: [
     StudentProfileService,
+    AuthService
   ],
   templateUrl: './student-profile.component.html',
   styleUrl: './student-profile.component.css'
@@ -44,9 +46,10 @@ export class StudentProfileComponent {
 
   constructor(
     protected studentProfileService: StudentProfileService,
+    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) 
+  )
   {
     this.baseUrl = env.api;
   }
@@ -87,6 +90,7 @@ export class StudentProfileComponent {
     this.studentProfileService.updateProfile(this.studentProfile?.id!,profileForm).subscribe(data => {
       console.log(data)
       this.studentProfile = data;
+      this.authService.setLoggedUser(this.studentProfile?.student!);
     });
   }
 

@@ -24,7 +24,7 @@ public class FileUploadController {
 
     @GetMapping("/")
     public String listUploadedFiles() {
-        throw new RuntimeException("Not implemented yet bcs of no need for now");
+        return storageService.loadAll().toString();
     }
 
     @GetMapping("/{filename:.+}")

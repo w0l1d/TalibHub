@@ -6,7 +6,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {PostService} from "../../services/post.service";
 import Poste from "../../models/poste";
 import {ActivatedRoute} from "@angular/router";
-import {NgForOf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {environment as env} from "../../../environments/environment.development";
+import {AuthService} from "../../services/auth.service";
+import User from "../../models/user";
 
 @Component({
   selector: 'app-post-forum',
@@ -16,10 +19,13 @@ import {NgForOf} from "@angular/common";
     ReactiveFormsModule,
     HttpClientModule,
     NgForOf,
-    FormsModule
+    FormsModule,
+    DatePipe,
+    NgIf
   ],
   providers: [
-    PostService
+    PostService,
+    AuthService
   ],
   templateUrl: './post-forum.component.html',
   styleUrl: './post-forum.component.css'
@@ -28,15 +34,20 @@ export class PostForumComponent {
 
   navbarData = NavbarData;
   poste?: Poste;
+  user?: User;
   comment: string = '';
+  baseUrl: string = '';
 
   constructor(
     private postService: PostService,
+    private authService: AuthService,
     private route: ActivatedRoute,
   ) {
+    this.baseUrl = env.api;
   }
 
   ngOnInit() {
+    this.user = this.authService.getLoggedUser();
     this.getPosteById();
   }
 

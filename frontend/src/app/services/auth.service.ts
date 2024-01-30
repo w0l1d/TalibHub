@@ -96,6 +96,10 @@ export class AuthService {
     return localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null;
   }
 
+  setLoggedUser(user: User) {
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
   private doLoginUser(user: User, tokens: Token) {
     this.loggedUser = user;
     this.storeTokens(tokens);

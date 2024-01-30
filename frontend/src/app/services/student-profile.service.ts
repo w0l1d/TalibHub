@@ -82,6 +82,7 @@ export class StudentProfileService {
       description: experience.description,
       startAt: experience.startAt,
       endAt: experience.endAt,
+      institut: {}
     }
 
     if (experience.institut.id) {
@@ -97,16 +98,16 @@ export class StudentProfileService {
     let fileUploadObservable: Observable<any> = new Observable<any>();
     if (experience.institut.image) {
       fileUploadObservable = this.fileUploadService.uploadImage(experience.institut.image as File);
+      return fileUploadObservable.pipe(
+        switchMap((data: any) => {
+          if (data) {
+            experienceData.institut.imageUri = data.filename;
+          }
+          return this.http.post(`${this.baseUrl}/profiles/${profileId}/experiences`, experienceData);
+        })
+      );
     }
-
-    return fileUploadObservable.pipe(
-      switchMap((data: any) => {
-        if (data) {
-          experienceData.institut.imageUri = data.filename;
-        }
-        return this.http.post(`${this.baseUrl}/profiles/${profileId}/experiences`, experienceData);
-      })
-    );
+    return this.http.post(`${this.baseUrl}/profiles/${profileId}/experiences`, experienceData);
   }
 
   public updateExperience(profileId:string, experience: Experience): Observable<any> {
@@ -132,16 +133,16 @@ export class StudentProfileService {
     let fileUploadObservable: Observable<any> = new Observable<any>();
     if (experience.institut.image) {
       fileUploadObservable = this.fileUploadService.uploadImage(experience.institut.image as File);
+      return fileUploadObservable.pipe(
+        switchMap((data: any) => {
+          if (data) {
+            experienceData.institut.imageUri = data.filename;
+          }
+          return this.http.put(`${this.baseUrl}/profiles/${profileId}/experiences/${experience.id}`, experienceData);
+        })
+      );
     }
-
-    return fileUploadObservable.pipe(
-      switchMap((data: any) => {
-        if (data) {
-          experienceData.institut.imageUri = data.filename;
-        }
-        return this.http.put(`${this.baseUrl}/profiles/${profileId}/experiences/${experience.id}`, experienceData);
-      })
-    );
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}/experiences/${experience.id}`, experienceData);
   }
 
   public deleteExperience(profileId:string, experienceId: string): Observable<any> {
@@ -161,17 +162,18 @@ export class StudentProfileService {
     let fileUploadObservable: Observable<any> = new Observable<any>();
     if (profileForm.student.picture) {
       fileUploadObservable = this.fileUploadService.uploadImage(profileForm.student.picture as File);
+      return fileUploadObservable.pipe(
+        switchMap((data: any) => {
+          if (data) {
+            profileData.student.imageUri = data.filename;
+            console.log("Image uploaded: " + profileData.student.imageUri);
+          }
+          return this.http.put(`${this.baseUrl}/profiles/${profileId}`, profileData);
+        })
+      );
     }
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}`, profileData);
 
-    return fileUploadObservable.pipe(
-      switchMap((data: any) => {
-        if (data) {
-          profileData.student.imageUri = data.filename;
-          console.log("Image uploaded: " + profileData.student.imageUri);
-        }
-        return this.http.put(`${this.baseUrl}/profiles/${profileId}`, profileData);
-      })
-    );
   }
 
   public searchStudents(searchTerm: string): any {

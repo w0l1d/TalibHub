@@ -1,10 +1,9 @@
 package org.ilisi.backend.service;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
-import org.ilisi.backend.email.EmailService;
 import org.hibernate.validator.constraints.Length;
+import org.ilisi.backend.email.EmailService;
 import org.ilisi.backend.model.Profile;
 import org.ilisi.backend.model.Student;
 import org.ilisi.backend.repository.ProfileRepository;
@@ -12,6 +11,7 @@ import org.ilisi.backend.repository.StudentRepository;
 import org.ilisi.backend.specs.StudentSpecifications;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,11 +27,13 @@ public class StudentService {
     private StudentRepository studentRepository;
     private ProfileRepository profileRepository;
     private EmailService emailService;
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public List<Student> createStudents(@RequestBody List<Student> students) {
         List<Profile> profiles = new ArrayList<>();
-        students.forEach(student -> student.setPassword(generateRandomPassword()));
+        String password = generateRandomPassword();
+        students.forEach(student -> student.setPassword(passwordEncoder.encode(password)));
 
         students.forEach(student -> student.setProfile(new Profile()));
 
@@ -45,7 +47,7 @@ public class StudentService {
                     "Welcome to ILISI",
                     """
                             <h1>Welcome to ILISI</h1>
-                            <p>Your password is: """ + student.getPassword()
+                            <p>Your password is: """ + password
             )
         );
 

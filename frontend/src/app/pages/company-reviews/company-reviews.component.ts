@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
-import { LayoutComponent } from '../../components/layout/layout.component';
+import {Component} from '@angular/core';
+import {LayoutComponent} from '../../components/layout/layout.component';
 import NavbarData from './navbar-data';
 import {DatePipe, NgFor, NgForOf, NgIf} from '@angular/common';
-import { ReviewService } from '../../services/review.service';
-import { ActivatedRoute } from '@angular/router';
+import {ReviewService} from '../../services/review.service';
+import {ActivatedRoute} from '@angular/router';
 import Review from '../../models/review';
-import { HttpClientModule } from '@angular/common/http';
-import { InstitutService } from '../../services/institut.service';
+import {HttpClientModule} from '@angular/common/http';
+import {InstitutService} from '../../services/institut.service';
 import Institut from '../../models/institut';
+import {AuthService} from "../../services/auth.service";
+import User from "../../models/user";
+import {environment as env} from "../../../environments/environment.development";
+
 @Component({
   selector: 'app-company-reviews',
   standalone: true,
@@ -21,7 +25,8 @@ import Institut from '../../models/institut';
   ],
   providers: [
     ReviewService,
-    InstitutService
+    InstitutService,
+    AuthService
   ],
   templateUrl: './company-reviews.component.html',
   styleUrl: './company-reviews.component.css'
@@ -37,14 +42,20 @@ export class CompanyReviewsComponent {
   currentDate: Date = new Date();
   intitutId: string = '';
   reviews?: Review[];
+  user?: User;
+  baseUrl: String = '';
 
   constructor(
     private reviewService: ReviewService,
     private institutService: InstitutService,
+    private AuthService: AuthService,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) {
+    this.baseUrl = env.api;
+  }
 
   ngOnInit() {
+    this.user = this.AuthService.getLoggedUser();
     this.activatedRoute.params.subscribe(params => {
       this.intitutId = params['id'] || '';
       this.institutService.getInstitutById(this.intitutId).subscribe((data: any) => {

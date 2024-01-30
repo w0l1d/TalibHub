@@ -3,13 +3,13 @@ import Comment from "./comment";
 
 class Poste{
   id?: string;
-    titre: string;
-    description: string;
-    image?: File;
+  titre: string;
+  description: string;
+  image?: File;
   user?: User;
-    comments?: Comment[];
-    createdOn?: Date;
-    lastUpdatedOn?: Date;
+  comments?: Comment[];
+  createdOn?: Date;
+  lastUpdatedOn?: Date;
 
   constructor(id: string, titre: string, description: string, image?: File, comments?: Comment[], createdOn?: Date, lastUpdatedOn?: Date, user?: User) {
         this.id = id;

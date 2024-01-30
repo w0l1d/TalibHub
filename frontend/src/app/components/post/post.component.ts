@@ -2,9 +2,12 @@ import {Component} from '@angular/core';
 import {PostForm, PostModalComponent} from '../post-modal/post-modal.component';
 import {PostService} from '../../services/post.service';
 import Poste from '../../models/poste';
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import {Router} from "@angular/router";
+import User from "../../models/user";
+import {AuthService} from "../../services/auth.service";
+import {environment as env} from "../../../environments/environment.development";
 
 @Component({
   selector: 'app-post',
@@ -12,10 +15,12 @@ import {Router} from "@angular/router";
   imports: [
     PostModalComponent,
     HttpClientModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   providers: [
-    PostService
+    PostService,
+    AuthService
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.css'
@@ -23,15 +28,19 @@ import {Router} from "@angular/router";
 export class PostComponent {
 
   posts?: Poste[];
+  user?: User;
+  baseUrl: string = '';
 
   constructor(
     private postService: PostService,
+    private authService: AuthService,
     private router: Router
   ) {
-
+    this.baseUrl = env.api;
   }
 
   ngOnInit() {
+    this.user = this.authService.getLoggedUser();
     this.getPosts();
   }
 

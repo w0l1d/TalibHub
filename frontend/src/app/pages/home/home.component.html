@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-10">
         <div>
             <div>
-                <div class="flex items-center">   
+              <div class="flex items-center">
                     <label for="simple-search" class="sr-only">Search</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -23,7 +23,11 @@
             <div class="flex flex-col gap-5 mx-10 medium-cd-font mt-5 border border-opacity-15 bg-white rounded-md p-5" *ngFor="let studentProfile of studentProfiles">
                 <div class="flex gap-5 cursor-pointer" (click)="navigateToProfile(studentProfile.id)">
                     <div class="">
-                        <img src="./assets/images/user.png" alt="" class="size-20 border border-opacity-15 rounded-full">
+                      <img
+                        alt=""
+                        class="size-20 border border-opacity-15 rounded-full"
+                        src="{{baseUrl}}/public/files/{{studentProfile.student.imageUri}}"
+                      >
                     </div>
                     <div class=""  >
                         <p class="font-bold text-lg">

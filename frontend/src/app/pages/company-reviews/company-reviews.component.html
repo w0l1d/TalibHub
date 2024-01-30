@@ -3,7 +3,11 @@
         <div class="row mb-8">
             <div class="flex justify-start items-center">
                 <div class="flex justify-start items-center">
-                    <img src="/assets/images/edinfo.jpeg" alt="" class="rounded-xl h-20 w-20">
+                    <img
+                            alt=""
+                            class="size-20 rounded-xl"
+                            src="{{baseUrl}}/public/files/{{institut?.imageUri}}"
+                    >
                 </div>
                 <div class="flex justify-start items-center">
                     <p class="text-3xl font-bold mx-2">
@@ -156,11 +160,22 @@
                         <div class="col-span-1">
                             <div class="flex justify-start items-center">
                                 <div class="flex justify-start items-center">
-                                    <img src="https://i.pravatar.cc/150?img=12" alt="" class="rounded-xl h-20 w-20">
+                                    <img
+                                            *ngIf="user?.imageUri"
+                                            alt=""
+                                            class="size-20 rounded-xl"
+                                            src="{{baseUrl}}/public/files/{{user?.imageUri}}"
+                                    >
+                                    <img
+                                            *ngIf="!user?.imageUri"
+                                            alt=""
+                                            class="size-20 rounded-xl"
+                                            src="./assets/images/user.png"
+                                    >
                                 </div>
                                 <div class="flex justify-start items-center">
                                     <p class="text-xl font-bold mx-2">
-                                        John Doe
+                                        {{user?.firstName}} {{user?.lastName}}
                                     </p>
                                 </div>
                             </div>
@@ -207,7 +222,18 @@
                     <div class="col-span-1">
                         <div class="flex justify-start items-center">
                             <div class="flex justify-start items-center">
-                                <img src="https://i.pravatar.cc/150?img=5" alt="" class="rounded-xl h-20 w-20">
+                                <img
+                                        *ngIf="review.student?.imageUri"
+                                        alt=""
+                                        class="size-12 rounded-full"
+                                        src="{{baseUrl}}/public/files/{{review.student?.imageUri}}"
+                                >
+                                <img
+                                        *ngIf="!review.student?.imageUri"
+                                        alt=""
+                                        class="size-12 rounded-full"
+                                        src="./assets/images/user.png"
+                                >
                             </div>
                             <div class="flex justify-start items-center">
                                 <p class="text-xl font-bold mx-2">

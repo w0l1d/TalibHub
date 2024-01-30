@@ -4,15 +4,26 @@
         <div class="flex justify-between px-5 py-2">
 
             <div class="flex rounded-md p-1">
-                <img src="./assets/images/profilePic1.png" class="size-12" alt="">
-                <div class="flex flex-col font-bold ">
-                    <span class="">
-                        Yassine Zawarudo
-                    </span>
-                    <span class="text-bodyGray text-left">
-                        3rd Ilisi
-                    </span>
-                </div>
+              <img
+                *ngIf="user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="{{baseUrl}}/public/files/{{user?.imageUri}}"
+              >
+              <img
+                *ngIf="!user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="./assets/images/user.png"
+              >
+              <div class="flex flex-col font-bold ">
+                  <span class="">
+                      {{user!.firstName}} {{user!.lastName}}
+                  </span>
+                <span class="text-bodyGray text-left">
+                      3rd Ilisi
+                  </span>
+              </div>
             </div>
             <div>
               <app-post-modal (createPoste)="handlePosteCreation($event) " [operation]="'create'" [poste]="post()"
@@ -30,15 +41,26 @@
         <div class="flex justify-between px-5 py-2">
 
             <div class="flex rounded-md p-1">
-                <img src="./assets/images/profilePic1.png" class="size-12" alt="">
-                <div class="flex flex-col font-bold ">
-                    <span class="">
-                        {{post.user!.firstName}} {{post.user!.lastName}}
-                    </span>
-                    <span class="text-bodyGray text-left">
-                        3rd Ilisi
-                    </span>
-                </div>
+              <img
+                *ngIf="post.user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="{{baseUrl}}/public/files/{{ post.user?.imageUri }}"
+              >
+              <img
+                *ngIf="!post.user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="./assets/images/user.png"
+              >
+              <div class="flex flex-col font-bold ">
+                  <span class="">
+                      {{post.user!.firstName}} {{post.user!.lastName}}
+                  </span>
+                <span class="text-bodyGray text-left">
+                      3rd Ilisi
+                  </span>
+              </div>
             </div>
             <button>
                 <i class="fa-regular fa-bookmark text-2xl text-bodyLightPurple"></i>
@@ -46,12 +68,12 @@
         </div>
         <!-- body post -->
         <div class="flex flex-col gap-4">
-            <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
-              {{post.description}}
-            </pre>
+          <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
+            {{post.description}}
+          </pre>
           <div class="hover:cursor-pointer">
             <img (click)="navigateToPost(post.id)" alt="" class="w-full h-96" src="./assets/images/post1.png">
-            </div>
+          </div>
         </div>
 
     <!-- footer post -->

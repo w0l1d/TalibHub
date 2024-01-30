@@ -5,6 +5,7 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import {RouterLink} from "@angular/router";
 import User from "../../models/user";
+import {environment as env} from "../../../environments/environment.development";
 
 @Component({
   selector: 'app-layout',
@@ -29,10 +30,12 @@ export class LayoutComponent {
   }
 
   user?: User;
+  baseUrl: string = '';
 
   constructor(
     private authService: AuthService
   ) {
+    this.baseUrl = env.api;
   }
 
   ngOnInit(): void {

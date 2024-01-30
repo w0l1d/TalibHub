@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { ProfileComponent } from '../../components/profile/profile.component';
-import { LayoutComponent } from '../../components/layout/layout.component';
+import {Component} from '@angular/core';
+import {ProfileComponent} from '../../components/profile/profile.component';
+import {LayoutComponent} from '../../components/layout/layout.component';
 import NavbarData from './navbar-data';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import { StudentProfileService } from '../../services/student-profile.service';
+import {StudentProfileService} from '../../services/student-profile.service';
 import Profile from '../../models/profile';
-import { NgFor } from '@angular/common';
-import { Router } from '@angular/router';
-import { PostComponent } from '../../components/post/post.component';
+import {NgFor, NgOptimizedImage} from '@angular/common';
+import {Router} from '@angular/router';
+import {PostComponent} from '../../components/post/post.component';
+import {environment as env} from "../../../environments/environment.development";
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,8 @@ import { PostComponent } from '../../components/post/post.component';
     LayoutComponent,
     HttpClientModule,
     NgFor,
-    PostComponent
+    PostComponent,
+    NgOptimizedImage
   ],
   providers: [
     HttpClient,
@@ -30,11 +32,13 @@ export class HomeComponent {
   navbarData = NavbarData;
   searchTerm: string = '';
   studentProfiles!: Profile[];
+  baseUrl: string = '';
 
   constructor(
     private studentProfileService: StudentProfileService,
     private router: Router
   ) {
+    this.baseUrl = env.api;
   }
 
   onSearch(): void {
