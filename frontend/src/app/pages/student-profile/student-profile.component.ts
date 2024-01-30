@@ -91,6 +91,7 @@ export class StudentProfileComponent {
       console.log(data)
       this.studentProfile = data;
       this.authService.setLoggedUser(this.studentProfile?.student!);
+      window.location.reload();
     });
   }
 
