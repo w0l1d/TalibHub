@@ -13,7 +13,7 @@ public class PosteMapper {
                 .id(poste.getId())
                 .titre(poste.getTitre())
                 .description(poste.getDescription())
-                .image(poste.getImage())
+                .imageUri(poste.getImageUri())
                 .user(poste.getUser())
                 .build();
     }
@@ -23,7 +23,7 @@ public class PosteMapper {
                 .id(posteDto.getId())
                 .titre(posteDto.getTitre())
                 .description(posteDto.getDescription())
-                .image(posteDto.getImage())
+                .imageUri(posteDto.getImageUri())
                 .user(posteDto.getUser())
                 .build();
     }

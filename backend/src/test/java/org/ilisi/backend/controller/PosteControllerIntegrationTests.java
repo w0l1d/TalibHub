@@ -457,7 +457,7 @@ class PosteControllerIntegrationTests {
                 .id(UUID.randomUUID().toString())
                 .titre(titre)
                 .description(description)
-                .image(image)
+                .imageUri(image)
                 .user(user)
                 .comments(comments)
                 .build();
