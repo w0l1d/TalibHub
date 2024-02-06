@@ -5,6 +5,7 @@ import {StudentManagementComponent} from './pages/student-management/student-man
 import {StudentProfileComponent} from './pages/student-profile/student-profile.component';
 import {PostForumComponent} from './pages/post-forum/post-forum.component';
 import {CompanyReviewsComponent} from './pages/company-reviews/company-reviews.component';
+import {SearchPageComponent} from "./pages/search-page/search-page.component";
 
 
 export const routes: Routes = [
@@ -15,5 +16,6 @@ export const routes: Routes = [
   {path: 'companyReviews/:id', component: CompanyReviewsComponent},
   {path: 'talib/:id', component: StudentProfileComponent},
   {path: 'post/:id', component: PostForumComponent},
+  {path: 'search', component: SearchPageComponent},
   {path: '', redirectTo: '/login', pathMatch: 'full'},
 ];

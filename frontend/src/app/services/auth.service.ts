@@ -75,7 +75,8 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.loggedUser;
+    const currentUser = this.getLoggedUser();
+    return !!currentUser;
   }
 
   private doLogoutUser() {
@@ -85,11 +86,13 @@ export class AuthService {
   }
 
   isStudent(): boolean {
-    return this.isAuthenticated() && this.loggedUser?.authorities?.at(0).authority === "ROLE_STUDENT";
+    const currentUser = this.getLoggedUser();
+    return this.isAuthenticated() && currentUser?.authorities?.at(0).authority === "ROLE_STUDENT";
   }
 
   isManager(): boolean {
-    return this.isAuthenticated() && this.loggedUser?.authorities?.at(0).authority === "ROLE_MANAGER";
+    const currentUser = this.getLoggedUser();
+    return this.isAuthenticated() && currentUser?.authorities?.at(0).authority === "ROLE_MANAGER";
   }
 
   getLoggedUser(): User {

@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {LayoutComponent} from '../../components/layout/layout.component';
-import NavbarData from './navbar-data';
 import {DatePipe, NgFor, NgForOf, NgIf} from '@angular/common';
 import {ReviewService} from '../../services/review.service';
 import {ActivatedRoute} from '@angular/router';
@@ -11,6 +10,7 @@ import Institut from '../../models/institut';
 import {AuthService} from "../../services/auth.service";
 import User from "../../models/user";
 import {environment as env} from "../../../environments/environment.development";
+import NavbarLink from "../../models/NavbarLink";
 
 @Component({
   selector: 'app-company-reviews',
@@ -32,7 +32,7 @@ import {environment as env} from "../../../environments/environment.development"
   styleUrl: './company-reviews.component.css'
 })
 export class CompanyReviewsComponent {
-  navbarData = NavbarData;
+  navbarData: NavbarLink[] | undefined;
   institut?: Institut;
   addReviewClicked: boolean = false;
   currentReviewText: string = '';
@@ -52,6 +52,7 @@ export class CompanyReviewsComponent {
     private activatedRoute: ActivatedRoute
   ) {
     this.baseUrl = env.api;
+    this.setNavbarData();
   }
 
   ngOnInit() {
@@ -120,6 +121,21 @@ export class CompanyReviewsComponent {
 
   getStarClassByIndexAndRate(rate: number, index: number): string {
     return index <= rate ? 'fas fa-star text-yellow-400 p-1' : 'fas fa-star text-gray-300 p-1';
+  }
+
+  private setNavbarData(): void {
+    this.navbarData = [
+      { route: '/home', icon: 'fa-solid fa-house', label: 'Home' , highlight: false},
+      { route: '/search', icon: 'fa-solid fa-search', label: 'Search', highlight: false},
+      { route: '/news', icon: 'fa-solid fa-newspaper', label: 'News', highlight: false },
+      { route: '/logout', icon: 'fa-solid fa-right-from-bracket', label: 'Logout', highlight: false },
+    ];
+
+    if (inject(AuthService).isManager()) {
+      this.navbarData.splice(2, 0, { route: '/studentManagement', icon: 'fa-sharp fa-solid fa-shield-halved', label: 'Admin', highlight: false });
+    } else if (inject(AuthService).isStudent()) {
+      this.navbarData.splice(1, 0, { route: '/studentProfile', icon: 'fa-solid fa-user', label: 'Profile', highlight: true });
+    }
   }
 
   protected readonly DatePipe = DatePipe;

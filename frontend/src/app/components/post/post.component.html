@@ -3,7 +3,7 @@
         <!-- publish post -->
         <div class="flex justify-between px-5 py-2">
 
-            <div class="flex rounded-md p-1">
+            <div class="flex gap-2 rounded-md p-1">
               <img
                 *ngIf="user?.imageUri"
                 alt=""
@@ -21,7 +21,7 @@
                       {{user!.firstName}} {{user!.lastName}}
                   </span>
                 <span class="text-bodyGray text-left">
-                      3rd Ilisi
+
                   </span>
               </div>
             </div>
@@ -38,9 +38,9 @@
   <div *ngFor="let post of posts"
        class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
         <!-- head post -->
-        <div class="flex justify-between px-5 py-2">
+        <div class="flex gap-2 justify-between px-5 py-2">
 
-            <div class="flex rounded-md p-1">
+            <div class="flex gap-2 rounded-md p-1">
               <img
                 *ngIf="post.user?.imageUri"
                 alt=""
@@ -58,7 +58,7 @@
                       {{post.user!.firstName}} {{post.user!.lastName}}
                   </span>
                 <span class="text-bodyGray text-left">
-                      3rd Ilisi
+                      {{post.createdOn | date: 'medium'}}
                   </span>
               </div>
             </div>
@@ -72,14 +72,14 @@
             {{post.description}}
           </pre>
           <div class="hover:cursor-pointer">
-            <img (click)="navigateToPost(post.id)" alt="" class="w-full h-96" src="./assets/images/post1.png">
+            <img alt="" class="w-full h-96" src="./assets/images/post1.png">
           </div>
         </div>
 
     <!-- footer post -->
         <div class="px-5 py-2 flex justify-end">
             <div>
-                <button>
+                <button (click)="navigateToPost(post.id)">
                     <i class="fa-regular fa-comment text-2xl text-bodyLightPurple"></i>
                 </button>
             </div>
