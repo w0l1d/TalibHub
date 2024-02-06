@@ -39,6 +39,7 @@ public class PosteController {
     @PostMapping("")
     public Poste addNewPoste(@RequestBody PosteDto posteDto, Principal principal) {
         log.info("addNewPoste");
+        log.info("PosteDto: " + posteDto.toString());
         User user = (User) ((Authentication) principal).getPrincipal();
         posteDto.setUser(user);
         return posteService.addNewPoste(posteDto);
