@@ -41,6 +41,7 @@ export class StudentProfileComponent {
   studentProfile?: Profile;
   profileId: string = '';
   baseUrl: string = '';
+  imageUrl = '';
 
 
 

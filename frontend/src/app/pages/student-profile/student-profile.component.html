@@ -93,7 +93,12 @@
             </div>
             <div class="flex gap-5" *ngFor="let education of studentProfile?.educations">
                 <div class="">
-                  <img ngSrc="./assets/images/{{ education.institut.image ?? 'fstm_logo.jpeg' }}" alt="" class="size-20" height="200" width="200">
+                  <img alt="" class="size-20"
+                       src="{{baseUrl}}/public/files/{{ education.institut.imageUri ?? '.edinfo.jpeg' }}"
+                       height="200"
+                       width="200"
+                       (click)="navigateToReviews(education.institut.id)"
+                       >
                 </div>
                 <div class=""  >
                     <p class="font-bold">
