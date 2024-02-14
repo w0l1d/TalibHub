@@ -1,0 +1,129 @@
+<app-layout [navBarData]="navbarData">
+   <div class="flex flex-col gap-10">
+    <div class="mx-16 medium-cd-font border border-opacity-15 pb-10 bg-white rounded-xl shadow-md text-textBlack">
+        <!-- head post -->
+        <div class="flex justify-between px-5 py-2">
+
+            <div class="flex gap-2 rounded-md p-1">
+              <img
+                *ngIf="poste?.user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="{{baseUrl}}/public/files/{{poste?.user?.imageUri}}"
+              >
+              <img
+                *ngIf="!poste?.user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="./assets/images/user.png"
+              >
+              <div class="flex flex-col font-bold ">
+                  <span class="">
+                      {{poste!.user!.firstName}} {{poste!.user!.lastName}}
+                  </span>
+                <span class="text-bodyGray text-left">
+                      {{poste?.createdOn | date: 'medium'}}
+                  </span>
+              </div>
+            </div>
+            <button>
+                <i class="fa-regular fa-bookmark text-2xl text-bodyLightPurple"></i>
+            </button>
+        </div>
+        <!-- body post -->
+        <div class="flex flex-col gap-4">
+            <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
+                {{poste!.description}}
+            </pre>
+            <div class="">
+                <img src="./assets/images/post1.png" class="w-full h-96" alt="">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
+        <!-- head post -->
+        <div class="flex justify-between px-5 py-2">
+
+            <div class="flex gap-2 rounded-md p-1 w-full">
+              <img
+                *ngIf="user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="{{baseUrl}}/public/files/{{user?.imageUri}}"
+              >
+              <img
+                *ngIf="!user?.imageUri"
+                alt=""
+                class="size-12 rounded-full"
+                src="./assets/images/user.png"
+              >
+              <div class="flex flex-col font-bold w-full">
+                <textarea [(ngModel)]="comment"
+                          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Reply with your thoughts here ..."
+                          rows="4"></textarea>
+              </div>
+            </div>
+
+        </div>
+
+        <!-- footer post -->
+        <div class="px-5 pb-2 flex justify-end">
+            <div>
+              <button (click)="addCommentToPost()" class="bg-bodyLightPurple text-white px-4 h-8 rounded-2xl mt-3">
+                    Comment
+                </button>
+            </div>
+        </div>
+
+        <hr/>
+        <!-- comments -->
+        <div>
+          <div *ngFor="let comment of poste!.comments" class="border-b-2 py-5">
+            <!-- head comment -->
+
+                <div class="flex gap-2 rounded-md px-6 py-3">
+                  <img
+                    *ngIf="comment?.user?.imageUri"
+                    alt=""
+                    class="size-12 rounded-full"
+                    src="{{baseUrl}}/public/files/{{comment?.user?.imageUri}}"
+                  >
+                  <img
+                    *ngIf="!comment?.user?.imageUri"
+                    alt=""
+                    class="size-12 rounded-full"
+                    src="./assets/images/user.png"
+                  >
+                  <div class="flex flex-col font-bold ">
+                      <span class="">
+                          {{comment!.user!.firstName}} {{comment!.user!.lastName}}
+                      </span>
+                    <span class="text-bodyGray text-left">
+                          {{comment!.createdOn | date:'yyyy-MM-dd'}}
+                      </span>
+                  </div>
+                </div>
+
+            <!-- body comment -->
+                <div class="flex flex-col gap-4">
+                    <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
+                        {{comment!.content}}
+                    </pre>
+                </div>
+                <!-- foot comment -->
+                <div class="flex justify-end" >
+                    <div class="mx-5">
+                        <button>
+                            <i class="fa-solid fa-reply text-2xl text-bodyLightPurple"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   </div>
+</app-layout>

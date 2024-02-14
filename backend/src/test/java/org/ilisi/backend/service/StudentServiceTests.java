@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.Year;
@@ -34,6 +35,9 @@ class StudentServiceTests {
 
     @Mock
     private EmailService emailService;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private StudentService studentService;
@@ -55,6 +59,7 @@ class StudentServiceTests {
         //act
         Mockito.when(studentRepository.saveAll(students)).thenReturn(students);
         Mockito.when(profileRepository.saveAll(profiles)).thenReturn(profiles);
+        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenReturn("password");
         List<Student> result = studentService.createStudents(students);
         //assert
         Assertions.assertFalse(result.isEmpty());
@@ -79,6 +84,7 @@ class StudentServiceTests {
         ConstraintViolationException constraintViolationException = new ConstraintViolationException("Student Already Exists", violations);
         Mockito.when(studentRepository.saveAll(students)).thenThrow(constraintViolationException);
         Mockito.when(profileRepository.saveAll(profiles)).thenReturn(profiles);
+        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenReturn("password");
 
 
         //assert

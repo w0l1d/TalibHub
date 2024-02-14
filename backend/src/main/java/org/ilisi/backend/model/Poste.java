@@ -30,7 +30,7 @@ public class Poste {
     @NotBlank(message = "Description is mandatory")
     private String description;
 
-    private String image;
+    private String imageUri;
 
     @CreationTimestamp
     @Column(updatable = false, nullable = false)

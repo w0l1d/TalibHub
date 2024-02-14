@@ -32,16 +32,27 @@
         <div class=" w-full bottom-0 py-5 medium-cd-font ">
             <div class="flex justify-between  pl-9 m-2 ">
                 <button class="flex hover:bg-bodyWhite rounded-md p-1 cursor-pointer">
-                    <img src="./assets/images/profilePic1.png" class="w-12 h-12" alt="">
-                    <div class="flex flex-col ">
-                        <span class="">
-                            {{user?.firstName}} {{user?.lastName}}
-                        </span>
-                        <span class="text-bodyGray">
-                            <i class="fa-solid fa-moon text-yellow-500"></i>
-                            Idle
-                        </span>
-                    </div>
+                  <img
+                    *ngIf="user?.imageUri"
+                    alt=""
+                    class="size-12 rounded-full"
+                    src="{{baseUrl}}/public/files/{{user?.imageUri}}"
+                  >
+                  <img
+                    *ngIf="!user?.imageUri"
+                    alt=""
+                    class="size-12 rounded-full"
+                    src="./assets/images/user.png"
+                  >
+                  <div class="flex flex-col text-left mt-2">
+                      <span class="">
+                          {{user?.firstName}} {{user?.lastName}}
+                      </span>
+                    <span class="text-bodyGray">
+                          <i class="fa-solid fa-moon text-yellow-500"></i>
+                          Idle
+                      </span>
+                  </div>
                 </button>
                 <div class="mt-4">
                     <i class="fa-solid fa-ellipsis-vertical fa-xl mx-1"></i>

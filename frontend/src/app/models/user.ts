@@ -6,6 +6,7 @@ class User {
   cin: string;
   enabled: boolean;
   picture?: File;
+  imageUri?: string;
   authorities?: any[] = [];
 
   constructor(
@@ -16,6 +17,7 @@ class User {
     cin: string,
     enabled: boolean,
     picture?: File,
+    imageUri?: string,
     authorities?: any[]
   ) {
     this.firstName = firstName;
@@ -25,6 +27,7 @@ class User {
     this.cin = cin;
     this.enabled = enabled;
     this.picture = picture;
+    this.imageUri = imageUri;
     this.authorities = authorities;
   }
 }

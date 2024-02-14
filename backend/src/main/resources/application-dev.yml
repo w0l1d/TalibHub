@@ -3,7 +3,7 @@ jwt:
   # The secret key used for signing the JWT
   key: "YourSecretKeyHereYourSecretKeyHereYourSecretKeyHereYourSecretKeyHere"
   # The expiration time for the access token in minutes
-  access-token-expiration-in-minutes: 10000
+  access-token-expiration-in-minutes: 1000000
   # The expiration time for the refresh token in days
   refresh-token-expiration-in-days: 30
 
@@ -57,3 +57,5 @@ logging:
     # Logging level for web
     web: trace
 
+storage:
+  location: ${java.io.tmpdir}

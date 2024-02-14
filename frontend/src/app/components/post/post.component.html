@@ -1,0 +1,99 @@
+<div class="flex flex-col gap-10">
+  <div class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
+    <!-- publish post -->
+    <div class="flex justify-between px-5 py-2">
+
+      <div class="flex gap-2 rounded-md p-1">
+        <img
+          *ngIf="user?.imageUri"
+          alt=""
+          class="size-12 rounded-full"
+          src="{{baseUrl}}/public/files/{{user?.imageUri}}"
+        >
+        <img
+          *ngIf="!user?.imageUri"
+          alt=""
+          class="size-12 rounded-full"
+          src="./assets/images/user.png"
+        >
+        <div class="flex flex-col font-bold ">
+                  <span class="">
+                      {{ user!.firstName }} {{ user!.lastName }}
+                  </span>
+          <span class="text-bodyGray text-left">
+
+                  </span>
+        </div>
+      </div>
+      <div>
+        <app-post-modal (createPoste)="handlePosteCreation($event) " [operation]="'create'" [poste]="post()"
+                        [title]="'Create New Post'"/>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div *ngFor="let post of posts"
+       class="mx-16 medium-cd-font border border-opacity-15 bg-white rounded-xl shadow-md text-textBlack">
+    <!-- head post -->
+    <div class="flex gap-2 justify-between px-5 py-2">
+
+      <div class="flex gap-2 rounded-md p-1">
+        <img
+          *ngIf="post.user?.imageUri"
+          alt=""
+          class="size-12 rounded-full"
+          src="{{baseUrl}}/public/files/{{ post.user?.imageUri }}"
+        >
+        <img
+          *ngIf="!post.user?.imageUri"
+          alt=""
+          class="size-12 rounded-full"
+          src="./assets/images/user.png"
+        >
+        <div class="flex flex-col font-bold ">
+                  <span class="">
+                      {{ post.user!.firstName }} {{ post.user!.lastName }}
+                  </span>
+          <span class="text-bodyGray text-left">
+                      {{ post.createdOn | date: 'medium' }}
+                  </span>
+        </div>
+      </div>
+      <button>
+        <i class="fa-regular fa-bookmark text-2xl text-bodyLightPurple"></i>
+      </button>
+    </div>
+    <!-- body post -->
+    <div class="flex flex-col gap-4">
+          <pre class="px-10 medium-cd-font w-full overflow-x-auto whitespace-pre-wrap text-sm">
+            {{ post.description }}
+          </pre>
+      <div class="hover:cursor-pointer">
+        <img (click)="navigateToPost(post.id)"
+             *ngIf="post.imageUri"
+             alt="{{post.titre}}"
+             class="w-full h-96"
+             src="{{baseUrl}}/public/files/{{post.imageUri}}"/>
+        <img (click)="navigateToPost(post.id)"
+             *ngIf="!post.imageUri"
+             alt="post.titre"
+             class="w-full h-96"
+             src="./assets/images/post1.png"/>
+
+      </div>
+        </div>
+
+    <!-- footer post -->
+    <div class=" px-5 py-2 flex justify-end">
+      <div>
+        <button (click)="navigateToPost(post.id)">
+          <i class="fa-regular fa-comment text-2xl text-bodyLightPurple"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

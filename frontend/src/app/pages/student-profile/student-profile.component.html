@@ -2,12 +2,22 @@
     <div class="text-textBlack ">
         <div class="mx-10 medium-cd-font border border-opacity-15 bg-white rounded-md pb-10">
             <div class="z-10">
-                <img ngSrc="./assets/images/coverPic.jpg" alt="" class=" h-32 w-full rounded-t-md" height="190"
-                     width="1335">
+                <img src="./assets/images/coverPic.jpg" alt="" class=" h-32 w-full rounded-t-md" >
             </div>
             <div class="ml-10 flex z-20 -mt-10 w-full">
                 <div class="relative">
-                    <img ngSrc="./assets/images/{{ studentProfile?.student.picture?.name ?? 'Default_pfp.svg.png'}}" alt="" class="size-20" height="128" width="128">
+                  <img
+                    *ngIf="studentProfile?.student?.imageUri"
+                    alt=""
+                    class="size-20 rounded-full"
+                    src="{{baseUrl}}/public/files/{{ studentProfile?.student!.imageUri}}"
+                  >
+                  <img
+                    *ngIf="!studentProfile?.student?.imageUri"
+                    alt=""
+                    class="size-20 rounded-full"
+                    src="./assets/images/user.png"
+                  >
                     <i class="fa-solid fa-circle text-green-400 absolute right-1 bottom-1"></i>
                 </div>
             </div>
@@ -39,9 +49,13 @@
                 </div>
             </div>
             <div class="flex gap-5" *ngFor="let experience of studentProfile?.experiences">
-                <div class="">
-                <img ngSrc="/assets/images/{{ experience.institut.image.name ?? '.edinfo.jpeg' }}" alt="" class="size-20" height="200" width="200">
-
+                <div class="hover:cursor-pointer">
+                  <img alt="" class="size-20"
+                       ngSrc="{{baseUrl}}/public/files/{{ experience.institut.imageUri ?? '.edinfo.jpeg' }}"
+                       height="200"
+                       width="200"
+                       (click)="navigateToReviews(experience.institut.id)"
+                       >
                 </div>
               <div class=""  >
                 <p class="font-bold">
@@ -79,7 +93,12 @@
             </div>
             <div class="flex gap-5" *ngFor="let education of studentProfile?.educations">
                 <div class="">
-                  <img ngSrc="./assets/images/{{ education.institut.image.name ?? 'fstm_logo.jpeg' }}" alt="" class="size-20" height="200" width="200">
+                  <img alt="" class="size-20"
+                       src="{{baseUrl}}/public/files/{{ education.institut.imageUri ?? '.edinfo.jpeg' }}"
+                       height="200"
+                       width="200"
+                       (click)="navigateToReviews(education.institut.id)"
+                       >
                 </div>
                 <div class=""  >
                     <p class="font-bold">

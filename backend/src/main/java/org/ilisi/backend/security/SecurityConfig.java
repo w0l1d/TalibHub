@@ -41,6 +41,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)// when we want to use the stateless auth we should disable the csrf service
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(a -> a.requestMatchers("/auth/**").permitAll())
+                .authorizeHttpRequests(a -> a.requestMatchers("/public/files/**").permitAll())
                 .authorizeHttpRequests(a -> a.anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))// we won't make the auth on server side using jwt
                 .authenticationProvider(authenticationProvider())

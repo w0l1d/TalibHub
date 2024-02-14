@@ -1,0 +1,46 @@
+<app-layout [navBarData]="navbarData">
+  <div>
+    <div>
+      <div class="flex items-center">
+        <label for="simple-search" class="sr-only">Search</label>
+        <div class="relative w-full">
+          <button (click)="onSearch()" class="absolute inset-y-0 start-0 flex items-center ps-3">
+            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+          </button>
+          <input type="text" id="simple-search" [value]="searchTerm" (keyup)="onKey($event)" class="bg-searchGray text-bodyGray text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Search for profile..." required>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-5 mx-10 medium-cd-font mt-5 border border-opacity-15 bg-white rounded-md p-5" *ngFor="let studentProfile of studentProfiles">
+      <div class="flex gap-5 cursor-pointer" (click)="navigateToProfile(studentProfile.id)">
+        <div class="">
+          <img
+            *ngIf="studentProfile?.student?.imageUri"
+            alt=""
+            class="size-20 border border-opacity-15 rounded-full"
+            src="{{baseUrl}}/public/files/{{studentProfile.student.imageUri}}"
+          >
+          <img
+            *ngIf="!studentProfile?.student?.imageUri"
+            alt=""
+            class="size-20 rounded-full"
+            src="./assets/images/user.png"
+          >
+        </div>
+        <div class=""  >
+          <p class="font-bold text-lg">
+            {{studentProfile?.student?.firstName}} {{studentProfile?.student?.lastName}}
+          </p>
+          <p class="regular-cd-font text-sm">
+            Software Engineer
+          </p>
+          <p class="light-cd-font text-sm">
+            Current company: Edinfo
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

@@ -15,4 +15,8 @@ export class InstitutService {
   getInstituts(): Observable<any> {
     return this.http.get(`${this.baseUrl}/instituts`);
   }
+
+  getInstitutById(institutId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/instituts/${institutId}`);
+  }
 }

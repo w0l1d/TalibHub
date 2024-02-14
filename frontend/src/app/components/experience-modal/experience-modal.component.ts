@@ -7,6 +7,8 @@ import Institut from "../../models/institut";
 import Experience from "../../models/experience";
 import {InstitutService} from "../../services/institut.service";
 import {endYears, Month, months, startYears} from "../../models/DateTypes";
+import {HttpClientModule} from "@angular/common/http";
+import {FileUploadService} from "../../services/file-upload.service";
 
 @Component({
   selector: 'app-experience-modal',
@@ -15,11 +17,13 @@ import {endYears, Month, months, startYears} from "../../models/DateTypes";
     FormsModule,
     NgForOf,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     DatePipe,
-    InstitutService
+    InstitutService,
+    FileUploadService
   ],
   templateUrl: './experience-modal.component.html',
   styleUrl: './experience-modal.component.css'
@@ -102,10 +106,8 @@ export class ExperienceModalComponent {
     const experience: Experience = {
       title: this.experienceForm.get('title')?.value,
       description: this.experienceForm.get('description')?.value,
-      startAt: this.formatDate(this.experienceForm.get('startAtMonth')?.value,
-        this.experienceForm.get('startAtYear')?.value),
-      endAt: this.formatDate(this.experienceForm.get('endAtMonth')?.value,
-        this.experienceForm.get('endAtYear')?.value),
+      startAt: this.formatDate(this.experienceForm.get('startAtMonth')?.value, this.experienceForm.get('startAtYear')?.value),
+      endAt: this.formatDate(this.experienceForm.get('endAtMonth')?.value, this.experienceForm.get('endAtYear')?.value),
       institut: institut
     };
     console.log(experience);
@@ -123,7 +125,7 @@ export class ExperienceModalComponent {
     if (this.experienceForm.invalid) {
       return;
     }
-    let institut: Institut;
+      let institut: Institut;
     // create institut object
     if (this.experienceForm.get('institutId')?.value === '') {
       institut = {

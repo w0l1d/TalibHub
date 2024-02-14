@@ -15,7 +15,7 @@ public class PosteDto {
     private String id;
     private String titre;
     private String description;
-    private String image;
+    private String imageUri;
     private User user;
 
 }

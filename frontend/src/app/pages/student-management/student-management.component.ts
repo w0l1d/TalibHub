@@ -1,10 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, inject} from "@angular/core";
 import {LayoutComponent} from "../../components/layout/layout.component";
 import {DataTableComponent} from "../../components/data-table/data-table.component";
-import NavbarData from "./navbar-data";
 import Student from "../../models/student";
 import {StudentService} from "../../services/student.service";
 import {HttpClientModule} from "@angular/common/http";
+import {AuthService} from "../../services/auth.service";
+import NavbarLink from "../../models/NavbarLink";
 
 
 @Component({
@@ -22,11 +23,12 @@ import {HttpClientModule} from "@angular/common/http";
   styleUrl: "./student-management.component.css"
 })
 export class StudentManagementComponent {
-  navbarData = NavbarData;
+  navbarData: NavbarLink[] | undefined;
 
   constructor(
     private studentService: StudentService
   ) {
+    this.setNavbarData();
   }
 
   saveStudentsAsCsv(): void {
@@ -90,6 +92,20 @@ export class StudentManagementComponent {
       reader.readAsText(file);
     } else {
       console.error("No file selected");
+    }
+  }
+  private setNavbarData(): void {
+    this.navbarData = [
+      { route: '/home', icon: 'fa-solid fa-house', label: 'Home' , highlight: false},
+      { route: '/search', icon: 'fa-solid fa-search', label: 'Search', highlight: false},
+      { route: '/news', icon: 'fa-solid fa-newspaper', label: 'News', highlight: false },
+      { route: '/logout', icon: 'fa-solid fa-right-from-bracket', label: 'Logout', highlight: false },
+    ];
+
+    if (inject(AuthService).isManager()) {
+      this.navbarData.splice(2, 0, { route: '/studentManagement', icon: 'fa-sharp fa-solid fa-shield-halved', label: 'Admin', highlight: true });
+    } else if (inject(AuthService).isStudent()) {
+      this.navbarData.splice(1, 0, { route: '/studentProfile', icon: 'fa-solid fa-user', label: 'Profile', highlight: false });
     }
   }
 
