@@ -30,45 +30,74 @@ export class StudentProfileService {
   }
 
   public addEducation(profileId:string, education: Education): Observable<any> {
-    const formData: FormData = new FormData();
 
-    // Append Education properties
-    formData.append('title', education.title);
-    formData.append('studyField', education.studyField);
-    formData.append('description', education.description);
-    formData.append('startAt', education.startAt);
-    formData.append('endAt', education.endAt);
-
-    // Append Institut properties
-    formData.append('institut.name', education.institut.name);
-    formData.append('institut.website', education.institut.website);
-
-    // Append Image (if available)
-    if (education.institut.image) {
-      formData.append('institut.image', education.institut.image as Blob);
+    const educationData: any = {
+      title: education.title,
+      studyField: education.studyField,
+      description: education.description,
+      startAt: education.startAt,
+      endAt: education.endAt,
+      institut: {}
     }
-    return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, formData);
+
+    if (education.institut.id) {
+      educationData.institut.id = education.institut.id;
+    } else {
+      educationData.institut = {
+        name: education.institut.name,
+        website: education.institut.website,
+        image: education.institut.image
+      }
+    }
+    let fileUploadObservable: Observable<any> = new Observable<any>();
+    if (education.institut.image) {
+      fileUploadObservable = this.fileUploadService.uploadImage(education.institut.image as File);
+      return fileUploadObservable.pipe(
+        switchMap((data: any) => {
+          if (data) {
+            educationData.institut.imageUri = data.filename;
+          }
+          return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, educationData);
+        })
+      );
+    }
+    return this.http.post(`${this.baseUrl}/profiles/${profileId}/educations`, educationData);
   }
 
   public updateEducation(profileId:string, education: Education): Observable<any> {
-    const formData: FormData = new FormData();
 
-    // Append Education properties
-    formData.append('title', education.title);
-    formData.append('studyField', education.studyField);
-    formData.append('description', education.description);
-    formData.append('startAt', education.startAt);
-    formData.append('endAt', education.endAt);
-
-    // Append Institut properties
-    formData.append('institut.name', education.institut.name);
-    formData.append('institut.website', education.institut.website);
-
-    // Append Image (if available)
-    if (education.institut.image) {
-      formData.append('institut.image', education.institut.image as Blob);
+    const educationData: any = {
+      title: education.title,
+      studyField: education.studyField,
+      description: education.description,
+      startAt: education.startAt,
+      endAt: education.endAt,
+      institut: {}
     }
-    return this.http.put(`${this.baseUrl}/profiles/${profileId}/educations/${education.id}`, formData);
+
+    if (education.institut.id) {
+      educationData.institut.id = education.institut.id;
+    } else {
+      educationData.institut = {
+        name: education.institut.name,
+        website: education.institut.website,
+        image: education.institut.image
+      }
+    }
+
+    let fileUploadObservable: Observable<any> = new Observable<any>();
+    if (education.institut.image) {
+      fileUploadObservable = this.fileUploadService.uploadImage(education.institut.image as File);
+      return fileUploadObservable.pipe(
+        switchMap((data: any) => {
+          if (data) {
+            educationData.institut.imageUri = data.filename;
+          }
+          return this.http.put(`${this.baseUrl}/profiles/${profileId}/educations/${education.id}`, educationData);
+        })
+      );
+    }
+    return this.http.put(`${this.baseUrl}/profiles/${profileId}/educations/${education.id}`, educationData);
   }
 
   public deleteEducation(profileId:string, educationId: string): Observable<any> {

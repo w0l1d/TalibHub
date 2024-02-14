@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {PostForm, PostModalComponent} from '../post-modal/post-modal.component';
 import {PostService} from '../../services/post.service';
 import Poste from '../../models/poste';
-import {NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import {Router} from "@angular/router";
 import User from "../../models/user";
@@ -16,7 +16,8 @@ import {environment as env} from "../../../environments/environment.development"
     PostModalComponent,
     HttpClientModule,
     NgForOf,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   providers: [
     PostService,

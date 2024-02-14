@@ -85,7 +85,7 @@ export class PostModalComponent {
       return;
     }
     // after merging with file management, should uncomment this line
-    // this.posteFormGroup.patchValue({ image: file});
+    this.posteFormGroup.patchValue({ image: file});
     console.log(this.posteFormGroup.get('image')?.value);
   }
 

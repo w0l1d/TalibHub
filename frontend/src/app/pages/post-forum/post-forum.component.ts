@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import NavbarData from './navbar-data';
+import {Component, inject} from '@angular/core';
 import {LayoutComponent} from '../../components/layout/layout.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
@@ -10,6 +9,7 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {environment as env} from "../../../environments/environment.development";
 import {AuthService} from "../../services/auth.service";
 import User from "../../models/user";
+import NavbarLink from "../../models/NavbarLink";
 
 @Component({
   selector: 'app-post-forum',
@@ -32,7 +32,7 @@ import User from "../../models/user";
 })
 export class PostForumComponent {
 
-  navbarData = NavbarData;
+  navbarData: NavbarLink[] | undefined;
   poste?: Poste;
   user?: User;
   comment: string = '';
@@ -44,6 +44,8 @@ export class PostForumComponent {
     private route: ActivatedRoute,
   ) {
     this.baseUrl = env.api;
+    this.setNavbarData();
+
   }
 
   ngOnInit() {
@@ -81,6 +83,19 @@ export class PostForumComponent {
       });
   }
 
+  private setNavbarData(): void {
+    this.navbarData = [
+      { route: '/home', icon: 'fa-solid fa-house', label: 'Home' , highlight: true},
+      { route: '/search', icon: 'fa-solid fa-search', label: 'Search', highlight: false},
+      { route: '/news', icon: 'fa-solid fa-newspaper', label: 'News', highlight: false },
+      { route: '/logout', icon: 'fa-solid fa-right-from-bracket', label: 'Logout', highlight: false },
+    ];
 
+    if (inject(AuthService).isManager()) {
+      this.navbarData.splice(2, 0, { route: '/studentManagement', icon: 'fa-sharp fa-solid fa-shield-halved', label: 'Admin', highlight: false });
+    } else if (inject(AuthService).isStudent()) {
+      this.navbarData.splice(1, 0, { route: '/studentProfile', icon: 'fa-solid fa-user', label: 'Profile', highlight: false });
+    }
+  }
 
 }

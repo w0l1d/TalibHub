@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         bodyLightWhite: "#F9F9F9",
         bodyLightGray: "#D9D9D9",
+        searchGray: "#F2F2F2",
         bodyWhite: "#F3F3F3",
         bodyLightPurple: "#CCB3F5",
         bodyGray: "#9F9999",
@@ -16,7 +17,7 @@ module.exports = {
       fontSize: {
         ss: '0.65rem',
       }
-  
+
     },
     screens: {
       '2xl': {'max': '1535px'},

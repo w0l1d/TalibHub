@@ -80,11 +80,11 @@ export class EducationModalComponent {
   }
 
   public onCreate(): void {
-    console.warn('Your form has been submitted', this.educationForm);
     if(this.educationForm.invalid) {
+      console.log('form invalid ' + this.educationForm);
       return;
     }
-    let institut: {};
+    let institut: Institut;
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {
@@ -125,7 +125,7 @@ export class EducationModalComponent {
     if(this.educationForm.invalid) {
       return;
     }
-    let institut: {};
+    let institut: Institut;
     // create institut object
     if (this.educationForm.get('institutId')?.value === '') {
       institut  = {

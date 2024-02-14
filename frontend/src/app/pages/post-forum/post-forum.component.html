@@ -4,7 +4,7 @@
         <!-- head post -->
         <div class="flex justify-between px-5 py-2">
 
-            <div class="flex rounded-md p-1">
+            <div class="flex gap-2 rounded-md p-1">
               <img
                 *ngIf="poste?.user?.imageUri"
                 alt=""
@@ -22,7 +22,7 @@
                       {{poste!.user!.firstName}} {{poste!.user!.lastName}}
                   </span>
                 <span class="text-bodyGray text-left">
-                      3rd Ilisi
+                      {{poste?.createdOn | date: 'medium'}}
                   </span>
               </div>
             </div>
@@ -46,7 +46,7 @@
         <!-- head post -->
         <div class="flex justify-between px-5 py-2">
 
-            <div class="flex rounded-md p-1 w-full">
+            <div class="flex gap-2 rounded-md p-1 w-full">
               <img
                 *ngIf="user?.imageUri"
                 alt=""
@@ -84,7 +84,7 @@
           <div *ngFor="let comment of poste!.comments" class="border-b-2 py-5">
             <!-- head comment -->
 
-                <div class="flex rounded-md px-6 py-3">
+                <div class="flex gap-2 rounded-md px-6 py-3">
                   <img
                     *ngIf="comment?.user?.imageUri"
                     alt=""
